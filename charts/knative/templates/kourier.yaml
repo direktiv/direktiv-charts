@@ -69,7 +69,7 @@ data:
                 endpoint:
                   address:
                     socket_address:
-                      address: "net-kourier-controller.knative-serving-{{ .Release.Name }}"
+                      address: "net-kourier-controller.{{ .Release.Namespace }}"
                       port_value: 18000
           http2_protocol_options: {}
           type: STRICT_DNS
@@ -84,12 +84,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: kourier-bootstrap
-  namespace: kourier-system
+  namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: v1
 data:
@@ -119,12 +119,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: config-kourier
-  namespace: knative-serving
+  namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -133,12 +133,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: net-kourier
-  namespace: knative-serving
+  namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -147,7 +147,7 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
@@ -216,7 +216,7 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
@@ -237,12 +237,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: net-kourier-controller
-  namespace: knative-serving
+  namespace: '{{ .Release.Namespace }}'
 spec:
   replicas: 1
   selector:
@@ -266,7 +266,7 @@ spec:
         - name: METRICS_DOMAIN
           value: knative.dev/samples
         - name: KOURIER_GATEWAY_NAMESPACE
-          value: knative-serving-{{ .Release.Name }}
+          value: '{{ .Release.Namespace }}'
         image: gcr.io/knative-releases/knative.dev/net-kourier/cmd/kourier@sha256:d10a5b94d1d9f59156493cc13ec710b4354c43b0aba71d7d57a43bc33024a715
         name: controller
         ports:
@@ -297,12 +297,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: net-kourier-controller
-  namespace: knative-serving
+  namespace: '{{ .Release.Namespace }}'
 spec:
   ports:
   - name: grpc-xds
@@ -322,12 +322,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: 3scale-kourier-gateway
-  namespace: kourier-system
+  namespace: '{{ .Release.Namespace }}'
 spec:
   selector:
     matchLabels:
@@ -407,12 +407,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: kourier
-  namespace: kourier-system
+  namespace: '{{ .Release.Namespace }}'
 spec:
   ports:
   - name: http2
@@ -436,12 +436,12 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
     app.kubernetes.io/version: 1.1.0
     networking.knative.dev/ingress-provider: kourier
     serving.knative.dev/release: v1.1.0
   name: kourier-internal
-  namespace: kourier-system
+  namespace: '{{ .Release.Namespace }}'
 spec:
   ports:
   - name: http2

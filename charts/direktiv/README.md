@@ -2,7 +2,7 @@
 
 direktiv helm chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square)
 
 ## Additional Information
 
@@ -47,7 +47,7 @@ $ helm install direktiv direktiv/direktiv
 | database.sslmode | string | `"require"` | sslmode for database |
 | database.user | string | `"direktiv"` | database user |
 | debug | bool | `false` | enable debug across all direktiv components |
-| encryptionKey | string | `""` |  if set to empty, one will be generated on install |
+| encryptionKey | string | `"01234567890123456789012345678912"` |  if set to empty, one will be generated on install |
 | eventing | object | `{"enabled":false}` | knative eventing enabled, requires knative setup and configuration |
 | flow.extraContainers | list | `[]` | extra container in flow pod |
 | flow.extraVolumeMounts | string | `nil` | extra volume mounts in flow pod |
@@ -72,14 +72,14 @@ $ helm install direktiv direktiv/direktiv
 | functions.runtime | string | `"default"` | runtime to use, e.g. gvisor on GCP |
 | functions.sidecar | string | `"direktiv/sidecar"` |  |
 | functions.tag | string | `""` |  |
-| functions.timeout | int | `900000` |  |
+| functions.timeout | int | `7200000` |  |
 | http_proxy | string | `""` | http proxy settings |
 | https_proxy | string | `""` | https proxy settings |
 | imagePullSecrets | list | `[]` |  |
 | ingress.certificate | string | `"none"` | TLS secret |
 | ingress.class | string | `"kong"` | ingress class |
 | ingress.host | string | `""` | host for external services, only required for TLS |
-| ingress.timeout | int | `900000` | timeout for /api route |
+| ingress.timeout | int | `7200000` | timeout for /api route |
 | logging | string | `"json"` | json or console logger |
 | minio-operator.enabled | bool | `false` |  |
 | minio-operator.tenants[0].name | string | `"direktiv-tenant"` |  |
@@ -126,6 +126,7 @@ $ helm install direktiv direktiv/direktiv
 | thanos.ruler.enabled | bool | `false` |  |
 | thanos.storegateway.enabled | bool | `true` |  |
 | thanos.storegateway.persistence.storageClass | string | `"local-path"` |  |
-| timeout | int | `900000` | api timeouts |
+| timeout | int | `7200000` | api timeouts |
 | tolerations | list | `[]` |  |
 | ui | object | `{"certificate":"none","extraContainers":[],"image":"direktiv/ui","kongPlugins":"none","tag":""}` | UI configuration |
+

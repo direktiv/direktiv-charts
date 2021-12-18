@@ -28,14 +28,15 @@ $ helm install knative direktiv/knative
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| autoscaler.grace-period | string | `"120s"` |  |
-| autoscaler.max-scale-limit | string | `"5"` |  |
-| autoscaler.retention-period | string | `"120s"` |  |
-| defaults.max-timeout-seconds | string | `"7200"` | maximum timeout for knative functions in seconds |
-| defaults.timeout-seconds | string | `"900"` | default timeout for knative functions in seconds |
-| deployment.skip-tag | string | `"kind.local,ko.local,dev.local,localhost:5000,localhost:31212"` |  |
+| autoscaler.grace_period | string | `"120s"` |  |
+| autoscaler.max_scale_limit | string | `"5"` |  |
+| autoscaler.retention_period | string | `"120s"` |  |
+| defaults.max_timeout_seconds | string | `"7200"` | maximum timeout for knative functions in seconds |
+| defaults.timeout_seconds | string | `"900"` | default timeout for knative functions in seconds |
+| deployment.skip_tag | string | `"kind.local,ko.local,dev.local,localhost:5000,localhost:31212"` |  |
 | http_proxy | string | `""` | HTTP proxy information for knative |
 | https_proxy | string | `""` | HTTPS proxy information for knative |
 | kong-external | object | `{"env":{"plugins":"key-auth,request-transformer","prefix":"/kong_prefix/"},"proxy":{"http":{"servicePort":8080},"tls":{"servicePort":8443}}}` | Kong for Direktiv's UI / API. Based on Kong Helm chart. |
 | no_proxy | string | `"localhost,127.0.0.1,10.0.0.0/8,.svc,.cluster.local"` | No proxy information for knative |
+| replicas | int | `1` | Replicas for knative components |
 

@@ -17,7 +17,7 @@ defaults:
 autoscaler:
   grace_period: "120s"
   retention_period: "120s"
-  max-scale_limit: "5"
+  max_scale_limit: "5"
 
 deployment:
   skip_tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"

@@ -26,8 +26,9 @@ import (
 )
 
 const (
-	relaseName = "knative-serving-{{ .Release.Name }}"
-	helmLabels = "AQ-{{- include \"knative.labels\" . | nindent 4 }}"
+	relaseName      = "{{ .Release.Name }}"
+	relaseNameSpace = "{{ .Release.Namespace }}"
+	helmLabels      = "AQ-{{- include \"knative.labels\" . | nindent 4 }}"
 )
 
 var (
@@ -82,15 +83,19 @@ func downloadYAML(url string) string {
 		log.Fatalf("can not read body: %s", err)
 	}
 
-	return string(b)
+	s := string(b)
+	s = strings.ReplaceAll(s, "{{", "opendoublecurly ")
+	s = strings.ReplaceAll(s, "}}", " closedoublecurly")
+
+	return s
 
 }
 
-func addHelmLabels(meta metav1.ObjectMeta, ns bool) {
+func addHelmLabels(meta *metav1.ObjectMeta, ns bool) {
 	meta.Labels["app.kubernetes.io/name"] = relaseName
 	meta.Labels["LABELREMOVE"] = helmLabels
 	if ns {
-		meta.Namespace = relaseName
+		meta.Namespace = relaseNameSpace
 	}
 }
 
@@ -121,24 +126,24 @@ func prepareKnativeKourier(version string) {
 			// remove
 			print = false
 		case "ConfigMap":
-			addHelmLabels(obj.(*corev1.ConfigMap).ObjectMeta, true)
+			addHelmLabels(&obj.(*corev1.ConfigMap).ObjectMeta, true)
 		case "ServiceAccount":
-			addHelmLabels(obj.(*corev1.ServiceAccount).ObjectMeta, true)
+			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, true)
 		case "ClusterRole":
-			addHelmLabels(obj.(*rbacv1.ClusterRole).ObjectMeta, false)
+			addHelmLabels(&obj.(*rbacv1.ClusterRole).ObjectMeta, false)
 		case "ClusterRoleBinding":
-			addHelmLabels(obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
+			addHelmLabels(&obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
 		case "Deployment":
-			addHelmLabels(obj.(*appsv1.Deployment).ObjectMeta, true)
+			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, true)
 
 			depl := obj.(*appsv1.Deployment)
 			for i := range depl.Spec.Template.Spec.Containers[0].Env {
 				if depl.Spec.Template.Spec.Containers[0].Env[i].Name == "KOURIER_GATEWAY_NAMESPACE" {
-					depl.Spec.Template.Spec.Containers[0].Env[i].Value = relaseName
+					depl.Spec.Template.Spec.Containers[0].Env[i].Value = relaseNameSpace
 				}
 			}
 		case "Service":
-			addHelmLabels(obj.(*corev1.Service).ObjectMeta, true)
+			addHelmLabels(&obj.(*corev1.Service).ObjectMeta, true)
 		default:
 			log.Fatalf("unknown kind: %v", gvk.Kind)
 		}
@@ -151,7 +156,7 @@ func prepareKnativeKourier(version string) {
 
 	s := buf.String()
 	s = strings.Replace(s, "address: \"net-kourier-controller.knative-serving\"",
-		fmt.Sprintf("address: \"net-kourier-controller.%s\"", relaseName), 1)
+		fmt.Sprintf("address: \"net-kourier-controller.%s\"", relaseNameSpace), 1)
 	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
 	s = strings.ReplaceAll(s, "AQ-", "")
 
@@ -197,11 +202,18 @@ func prepareKnativeServing(version string) {
 			// remove
 			print = false
 		case "HorizontalPodAutoscaler":
-			addHelmLabels(obj.(*scalev2beta2.HorizontalPodAutoscaler).ObjectMeta, true)
+			addHelmLabels(&obj.(*scalev2beta2.HorizontalPodAutoscaler).ObjectMeta, true)
+
+			// helm/kubernetes needs this, no nil allowed
+			obj.(*scalev2beta2.HorizontalPodAutoscaler).Status =
+				scalev2beta2.HorizontalPodAutoscalerStatus{
+					Conditions: make([]scalev2beta2.HorizontalPodAutoscalerCondition, 0),
+				}
+
 		case "Service":
-			addHelmLabels(obj.(*corev1.Service).ObjectMeta, true)
+			addHelmLabels(&obj.(*corev1.Service).ObjectMeta, true)
 		case "Deployment":
-			addHelmLabels(obj.(*appsv1.Deployment).ObjectMeta, true)
+			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, true)
 			depl := obj.(*appsv1.Deployment)
 
 			var j int32 = 11223344
@@ -227,23 +239,23 @@ func prepareKnativeServing(version string) {
 				depl.Spec.Template.Spec.Containers[0].Env = e
 			}
 		case "CustomResourceDefinition":
-			addHelmLabels(obj.(*apiextv1beta1.CustomResourceDefinition).ObjectMeta, false)
+			print = false
 		case "ClusterRoleBinding":
-			addHelmLabels(obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
+			addHelmLabels(&obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
 		case "ClusterRole":
-			addHelmLabels(obj.(*rbacv1.ClusterRole).ObjectMeta, false)
+			addHelmLabels(&obj.(*rbacv1.ClusterRole).ObjectMeta, false)
 		case "ValidatingWebhookConfiguration":
-			addHelmLabels(obj.(*admissionregistrationv1.ValidatingWebhookConfiguration).ObjectMeta, false)
+			addHelmLabels(&obj.(*admissionregistrationv1.ValidatingWebhookConfiguration).ObjectMeta, false)
 		case "MutatingWebhookConfiguration":
-			addHelmLabels(obj.(*admissionregistrationv1.MutatingWebhookConfiguration).ObjectMeta, false)
+			addHelmLabels(&obj.(*admissionregistrationv1.MutatingWebhookConfiguration).ObjectMeta, false)
 		case "ServiceAccount":
-			addHelmLabels(obj.(*corev1.ServiceAccount).ObjectMeta, true)
+			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, true)
 		case "PodDisruptionBudget":
-			addHelmLabels(obj.(*policyv1beta1.PodDisruptionBudget).ObjectMeta, true)
+			addHelmLabels(&obj.(*policyv1beta1.PodDisruptionBudget).ObjectMeta, true)
 		case "Secret":
-			addHelmLabels(obj.(*corev1.Secret).ObjectMeta, true)
+			addHelmLabels(&obj.(*corev1.Secret).ObjectMeta, true)
 		case "Image":
-			addHelmLabels(obj.(*cachingv1alpha1.Image).ObjectMeta, true)
+			addHelmLabels(&obj.(*cachingv1alpha1.Image).ObjectMeta, true)
 		case "ConfigMap":
 			obj = updateConfigMaps(obj)
 		default:
@@ -270,7 +282,7 @@ func prepareKnativeServing(version string) {
 func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 
 	cm := obj.(*corev1.ConfigMap)
-	cm.ObjectMeta.Namespace = relaseName
+	cm.ObjectMeta.Namespace = relaseNameSpace
 	cm.ObjectMeta.Labels["app.kubernetes.io/name"] = relaseName
 	cm.ObjectMeta.Labels["LABELREMOVE"] = helmLabels
 
@@ -289,7 +301,7 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 	if cm.ObjectMeta.Name == "config-autoscaler" {
 		data["scale-to-zero-grace-period"] = "AQ-\"{{ .Values.autoscaler.grace_period }}\""
 		data["scale-to-zero-pod-retention-period"] = "AQ-\"{{ .Values.autoscaler.retention_period }}\""
-		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max-scale_limit }}\""
+		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max_scale_limit }}\""
 		cm.Data = data
 	}
 
