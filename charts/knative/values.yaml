@@ -5,8 +5,13 @@ https_proxy: ""
 # -- No proxy information for knative
 no_proxy: "localhost,127.0.0.1,10.0.0.0/8,.svc,.cluster.local"
 
+# -- Replicas for knative components
+replicas: 1
+
 defaults:
+  # -- default timeout for knative functions in seconds
   timeout-seconds: "900"
+  # -- maximum timeout for knative functions in seconds
   max-timeout-seconds: "7200"
 
 autoscaler:

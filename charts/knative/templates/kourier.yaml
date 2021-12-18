@@ -1,31 +1,4 @@
-
----
-# Copyright 2020 The Knative Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kourier-bootstrap
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
-    app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
 data:
   envoy-bootstrap.yaml: |
     dynamic_resources:
@@ -96,7 +69,7 @@ data:
                 endpoint:
                   address:
                     socket_address:
-                      address: "net-kourier-controller.knative-serving"
+                      address: "net-kourier-controller.knative-serving-{{ .Release.Name }}"
                       port_value: 18000
           http2_protocol_options: {}
           type: STRICT_DNS
@@ -105,34 +78,20 @@ data:
       address:
         pipe:
           path: /tmp/envoy.admin
-
----
-# Copyright 2021 The Knative Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-kourier
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: kourier-bootstrap
+  namespace: kourier-system
+---
+apiVersion: v1
 data:
   _example: |
     ################################
@@ -154,319 +113,343 @@ data:
     # in the context of services should be logged. Readiness
     # probes etc. must be configured via the bootstrap config.
     enable-service-access-logging: "true"
-
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: net-kourier
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: config-kourier
+  namespace: knative-serving
 ---
-# Copyright 2020 The Knative Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: net-kourier
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: net-kourier
+  namespace: knative-serving
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: net-kourier
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: net-kourier
+  namespace: knative-serving
 rules:
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["create", "update", "patch"]
-  - apiGroups: [""]
-    resources: ["pods", "endpoints", "services", "secrets"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["coordination.k8s.io"]
-    resources: ["leases"]
-    verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
-  - apiGroups: ["networking.internal.knative.dev"]
-    resources: ["ingresses"]
-    verbs: ["get", "list", "watch", "patch"]
-  - apiGroups: ["networking.internal.knative.dev"]
-    resources: ["ingresses/status"]
-    verbs: ["update"]
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - endpoints
+  - services
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - networking.internal.knative.dev
+  resources:
+  - ingresses
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - networking.internal.knative.dev
+  resources:
+  - ingresses/status
+  verbs:
+  - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: net-kourier
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: net-kourier
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: net-kourier
 subjects:
-  - kind: ServiceAccount
-    name: net-kourier
-    namespace: {{ .Release.Namespace }}
-
+- kind: ServiceAccount
+  name: net-kourier
+  namespace: knative-serving
 ---
-# Copyright 2020 The Knative Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: net-kourier-controller
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: net-kourier-controller
+  namespace: knative-serving
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: net-kourier-controller
+  strategy: {}
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: net-kourier-controller
     spec:
       containers:
-        - image: gcr.io/knative-releases/knative.dev/net-kourier/cmd/kourier@sha256:d10a5b94d1d9f59156493cc13ec710b4354c43b0aba71d7d57a43bc33024a715
-          name: controller
-          env:
-            - name: CERTS_SECRET_NAMESPACE
-              value: ""
-            - name: CERTS_SECRET_NAME
-              value: ""
-            - name: SYSTEM_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: METRICS_DOMAIN
-              value: "knative.dev/samples"
-            - name: KOURIER_GATEWAY_NAMESPACE
-              value: {{ .Release.Namespace }}
-          ports:
-            - name: http2-xds
-              containerPort: 18000
-              protocol: TCP
-          readinessProbe:
-            exec:
-              command: ["/ko-app/kourier", "-probe-addr=:18000"]
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - all
+      - env:
+        - name: CERTS_SECRET_NAMESPACE
+        - name: CERTS_SECRET_NAME
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: METRICS_DOMAIN
+          value: knative.dev/samples
+        - name: KOURIER_GATEWAY_NAMESPACE
+          value: knative-serving-{{ .Release.Name }}
+        image: gcr.io/knative-releases/knative.dev/net-kourier/cmd/kourier@sha256:d10a5b94d1d9f59156493cc13ec710b4354c43b0aba71d7d57a43bc33024a715
+        name: controller
+        ports:
+        - containerPort: 18000
+          name: http2-xds
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /ko-app/kourier
+            - -probe-addr=:18000
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
       restartPolicy: Always
       serviceAccountName: net-kourier
+status: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: net-kourier-controller
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: net-kourier-controller
+  namespace: knative-serving
 spec:
   ports:
-    - name: grpc-xds
-      port: 18000
-      protocol: TCP
-      targetPort: 18000
+  - name: grpc-xds
+    port: 18000
+    protocol: TCP
+    targetPort: 18000
   selector:
     app: net-kourier-controller
   type: ClusterIP
-
+status:
+  loadBalancer: {}
 ---
-# Copyright 2020 The Knative Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 3scale-kourier-gateway
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: 3scale-kourier-gateway
+  namespace: kourier-system
 spec:
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
   selector:
     matchLabels:
       app: 3scale-kourier-gateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
+      annotations:
+        networking.knative.dev/poke: v0.26
+      creationTimestamp: null
       labels:
         app: 3scale-kourier-gateway
-      annotations:
-        # v0.26 supports envoy v3 API, so
-        # adding this label to restart pod.
-        networking.knative.dev/poke: "v0.26"
     spec:
       containers:
-        - args:
-            - --base-id 1
-            - -c /tmp/config/envoy-bootstrap.yaml
-            - --log-level info
-          command:
-            - /usr/local/bin/envoy
-          image: docker.io/envoyproxy/envoy:v1.18-latest
-          name: kourier-gateway
-          ports:
-            - name: http2-external
-              containerPort: 8080
-              protocol: TCP
-            - name: http2-internal
-              containerPort: 8081
-              protocol: TCP
-            - name: https-external
-              containerPort: 8443
-              protocol: TCP
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
-            runAsNonRoot: false
-            capabilities:
-              drop:
-                - all
-          volumeMounts:
-            - name: config-volume
-              mountPath: /tmp/config
-          lifecycle:
-            preStop:
-              exec:
-                command: ["/bin/sh", "-c", "curl -X POST --unix /tmp/envoy.admin http://localhost/healthcheck/fail; sleep 15"]
-          readinessProbe:
-            httpGet:
-              httpHeaders:
-                - name: Host
-                  value: internalkourier
-              path: /ready
-              port: 8081
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 5
-      volumes:
-        - name: config-volume
-          configMap:
-            name: kourier-bootstrap
+      - args:
+        - --base-id 1
+        - -c /tmp/config/envoy-bootstrap.yaml
+        - --log-level info
+        command:
+        - /usr/local/bin/envoy
+        image: docker.io/envoyproxy/envoy:v1.18-latest
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - curl -X POST --unix /tmp/envoy.admin http://localhost/healthcheck/fail;
+                sleep 15
+        name: kourier-gateway
+        ports:
+        - containerPort: 8080
+          name: http2-external
+          protocol: TCP
+        - containerPort: 8081
+          name: http2-internal
+          protocol: TCP
+        - containerPort: 8443
+          name: https-external
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            httpHeaders:
+            - name: Host
+              value: internalkourier
+            path: /ready
+            port: 8081
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        volumeMounts:
+        - mountPath: /tmp/config
+          name: config-volume
       restartPolicy: Always
+      volumes:
+      - configMap:
+          name: kourier-bootstrap
+        name: config-volume
+status: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kourier
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: kourier
+  namespace: kourier-system
 spec:
   ports:
-    - name: http2
-      port: 80
-      protocol: TCP
-      targetPort: 8080
-    - name: https
-      port: 443
-      protocol: TCP
-      targetPort: 8443
+  - name: http2
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8443
   selector:
     app: 3scale-kourier-gateway
   type: LoadBalancer
+status:
+  loadBalancer: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kourier-internal
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
-    networking.knative.dev/ingress-provider: kourier
     app.kubernetes.io/component: net-kourier
-    app.kubernetes.io/version: "1.1.0"
-    app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.1.0"
+    app.kubernetes.io/name: knative-serving-{{ .Release.Name }}
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: kourier
+    serving.knative.dev/release: v1.1.0
+  name: kourier-internal
+  namespace: kourier-system
 spec:
   ports:
-    - name: http2
-      port: 80
-      protocol: TCP
-      targetPort: 8081
+  - name: http2
+    port: 80
+    protocol: TCP
+    targetPort: 8081
   selector:
     app: 3scale-kourier-gateway
   type: ClusterIP
-
----
+status:
+  loadBalancer: {}

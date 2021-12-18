@@ -1,0 +1,12 @@
+dependencies:
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 14.7.1
+- name: minio-operator
+  repository: https://operator.min.io/
+  version: 4.2.7
+- name: thanos
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.0.1
+digest: sha256:f8c7734010b8d3d4a7d411c4737012c2076343fb2cacf0b34cb99149bb71dc29
+generated: "2021-12-18T06:09:16.82004375+10:00"

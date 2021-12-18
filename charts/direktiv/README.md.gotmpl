@@ -5,16 +5,16 @@
 
 ## Additional Information
 
-This chart installs Knative for Direktiv. It configures Knative with correct values in Direktiv's context and adds
- support to provide proxy values for corporate proxies.
+This chart installs direktiv.
 
 ## Installing the Chart
 
-To install the chart with the release name `knative`:
+To install the chart with the release name `direktiv`:
 
 ```console
+$ kubectl create ns direktiv-services-direktiv
 $ helm repo add direktiv https://charts.direktiv.io
-$ helm install knative direktiv/{{ template "chart.name" . }}
+$ helm install direktiv direktiv/{{ template "chart.name" . }}
 ```
 
 {{ template "chart.requirementsSection" . }}

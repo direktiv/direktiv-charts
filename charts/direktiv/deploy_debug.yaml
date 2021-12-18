@@ -1,0 +1,84 @@
+pullPolicy: Always
+debug: "true"
+
+
+# ingress:
+#   certificate: direktiv-lb
+#   host: myhost.mydomain
+
+#db: "host=direktiv-db-direktiv-prod.c2zddbq8zbda.us-east-2.rds.amazonaws.com port=5432 user=direktiv dbname=direktiv password=FsPJTBk6Xg2AXVSzyefYVXU"
+# db: host=192.168.0.154 port=5432 user=sisatech dbname=postgres password=sisatech sslmode=disable
+registry: "localhost:5000"
+
+flow:
+  image: "flow"
+  tag: "latest"
+  sidecar: "localhost:5000/sidecar"
+
+secrets:
+  image: secrets
+  tag: "latest"
+  # image: "gerke74/secrets"
+  # db: host=192.168.0.154 port=5432 user=postgres dbname=postgres password=password sslmode=disable
+
+# ui config
+ui:
+  image: direktiv-ui
+  tag: "latest"
+  # certificate: direktiv-cert
+
+api:
+  image: api
+  tag: "latest"
+
+
+netShape: "10M"
+
+networkPolicies:
+  enabled: false
+  db: 192.168.0.0/16
+
+# useNetworkPolicies: true
+#
+# useGvisor: false
+
+
+functions:
+  image: "functions"
+  tag: "latest"
+  replicaCount: 1
+  podAnnotations: {}
+  podCleaner: true
+  db: host=192.168.0.154 port=5432 user=postgres dbname=postgres password=password sslmode=disable
+  sidecar: "localhost:5000/sidecar"
+  initPodImage: "localhost:5000/init-pod"
+  # certificate: direktiv-cert-fn
+  # mtls: direktiv-cert-fn
+  # initPodCertificate: direktiv-cert-flow
+
+
+# https_proxy: http://192.168.0.27:3128
+# http_proxy: http://192.168.0.27:3128
+# no_proxy: .local,10.0.0.0/8,localhost,192.168.0.27,127.0.0.1
+
+fluentbit:
+  host:          "192.168.0.154"
+  port:          5432
+  user:          postgres
+  password:      password
+  database:      postgres
+  # sslmode:       disable
+  extraConfig: |
+    [OUTPUT]
+        Name  http
+        Match application
+        Host  192.168.0.154
+        Port  8000
+        URI   /
+        format json
+    [OUTPUT]
+        name stdout
+        match application
+    [OUTPUT]
+        name stdout
+        match functions

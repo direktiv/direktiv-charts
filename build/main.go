@@ -96,7 +96,6 @@ func addHelmLabels(meta metav1.ObjectMeta, ns bool) {
 
 func prepareKnativeKourier(version string) {
 	yamlData := downloadYAML(fmt.Sprintf(baseKourier, version))
-	// fmt.Printf("%s", yamlData)
 
 	decoder := createDecoder()
 	y := printers.YAMLPrinter{}
@@ -115,10 +114,12 @@ func prepareKnativeKourier(version string) {
 			continue
 		}
 
-		log.Printf("KIND %v", gvk.Kind)
+		print := true
+
 		switch gvk.Kind {
 		case "Namespace":
 			// remove
+			print = false
 		case "ConfigMap":
 			addHelmLabels(obj.(*corev1.ConfigMap).ObjectMeta, true)
 		case "ServiceAccount":
@@ -142,8 +143,9 @@ func prepareKnativeKourier(version string) {
 			log.Fatalf("unknown kind: %v", gvk.Kind)
 		}
 
-		y.PrintObj(obj, &buf)
-		// buf.Write([]byte("---\n"))
+		if print {
+			y.PrintObj(obj, &buf)
+		}
 
 	}
 
@@ -153,13 +155,19 @@ func prepareKnativeKourier(version string) {
 	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
 	s = strings.ReplaceAll(s, "AQ-", "")
 
-	fmt.Printf("%s", s)
+	err := os.WriteFile("/tmp/templates/kourier.yaml", []byte(s), 0644)
+	if err != nil {
+		log.Fatalf("can not write kourier: %v", err)
+	}
 
 }
 
 func prepareKnativeCRDS(version string) {
 	yamlData := downloadYAML(fmt.Sprintf(baseCRD, version))
-	fmt.Printf("%s", yamlData)
+	err := os.WriteFile("/tmp/crds/serving-crds.yaml", []byte(yamlData), 0644)
+	if err != nil {
+		log.Fatalf("can not write crds: %v", err)
+	}
 }
 
 func prepareKnativeServing(version string) {
@@ -182,15 +190,42 @@ func prepareKnativeServing(version string) {
 			continue
 		}
 
+		print := true
+
 		switch gvk.Kind {
 		case "Namespace":
 			// remove
+			print = false
 		case "HorizontalPodAutoscaler":
 			addHelmLabels(obj.(*scalev2beta2.HorizontalPodAutoscaler).ObjectMeta, true)
 		case "Service":
 			addHelmLabels(obj.(*corev1.Service).ObjectMeta, true)
 		case "Deployment":
 			addHelmLabels(obj.(*appsv1.Deployment).ObjectMeta, true)
+			depl := obj.(*appsv1.Deployment)
+
+			var j int32 = 11223344
+			if depl.ObjectMeta.Name != "activator" {
+				depl.Spec.Replicas = &j
+			}
+
+			if depl.ObjectMeta.Name == "controller" {
+
+				e := depl.Spec.Template.Spec.Containers[0].Env
+				e = append(e, corev1.EnvVar{
+					Name:  "HTTPS_PROXY",
+					Value: "AQ-{{ .Values.https_proxy }}",
+				})
+				e = append(e, corev1.EnvVar{
+					Name:  "HTTP_PROXY",
+					Value: "AQ-{{ .Values.http_proxy }}",
+				})
+				e = append(e, corev1.EnvVar{
+					Name:  "NO_PROXY",
+					Value: "AQ-{{ .Values.no_proxy }}",
+				})
+				depl.Spec.Template.Spec.Containers[0].Env = e
+			}
 		case "CustomResourceDefinition":
 			addHelmLabels(obj.(*apiextv1beta1.CustomResourceDefinition).ObjectMeta, false)
 		case "ClusterRoleBinding":
@@ -215,17 +250,20 @@ func prepareKnativeServing(version string) {
 			log.Fatalf("unknown kind: %v", gvk.Kind)
 		}
 
-		y.PrintObj(obj, &buf)
-		// buf.Write([]byte("---\n"))
+		if print {
+			y.PrintObj(obj, &buf)
+		}
 	}
 
 	s := buf.String()
 	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
 	s = strings.ReplaceAll(s, "AQ-", "")
+	s = strings.ReplaceAll(s, "11223344", "{{ .Values.replicas }}")
 
-	fmt.Printf("%s", s)
-
-	// os.WriteFile("/tmp/jens.yaml", []byte(s), 0644)
+	err := os.WriteFile("/tmp/templates/serving-core.yaml", []byte(s), 0644)
+	if err != nil {
+		log.Fatalf("can not write core: %v", err)
+	}
 
 }
 
