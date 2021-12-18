@@ -16,6 +16,9 @@ jobs:
       - name: Configure Git
         run: |
           helm repo add kong https://charts.konghq.com
+          helm repo add prometheus https://prometheus-community.github.io/helm-charts
+          helm repo add minio https://operator.min.io/
+          helm repo add https://charts.bitnami.com/bitnami
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - name: Run chart-releaser
