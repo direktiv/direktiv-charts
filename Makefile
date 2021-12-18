@@ -15,6 +15,14 @@ run-knative-helm: build-knative-helm helm-docs
 	docker run -v ${mkfile_dir}/charts/knative/templates:/tmp/templates build-knative-helm:v1 ${version} core
 	docker run -v ${mkfile_dir}/charts/knative/templates:/tmp/templates build-knative-helm:v1 ${version} kourier
 
+.PHONY: run-pgo-helm
+run-pgo-helm:
+	@rm -Rf /tmp/pgo
+	git clone https://github.com/CrunchyData/postgres-operator-examples.git /tmp/pgo
+	@cp -Rf /tmp/pgo/helm/install ${mkfile_dir}/charts/pgo
+
+# https://github.com/CrunchyData/postgres-operator-examples/tree/main/helm/install
+
 .PHONY: helm-docs
 helm-docs: ## Generates helm documentation
 helm-docs:
