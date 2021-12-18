@@ -1,0 +1,30 @@
+# -- HTTP proxy information for knative
+http_proxy: ""
+# -- HTTPS proxy information for knative
+https_proxy: ""
+# -- No proxy information for knative
+no_proxy: "localhost,127.0.0.1,10.0.0.0/8,.svc,.cluster.local"
+
+defaults:
+  timeout-seconds: "900"
+  max-timeout-seconds: "7200"
+
+autoscaler:
+  grace-period: "120s"
+  retention-period: "120s"
+  max-scale-limit: "5"
+
+deployment:
+  skip-tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
+
+
+# -- Kong for Direktiv's UI / API. Based on Kong Helm chart.
+kong-external:
+  env:
+    prefix: /kong_prefix/
+    plugins: "key-auth,request-transformer"
+  proxy:
+    tls:
+      servicePort: 8443
+    http:
+      servicePort: 8080
