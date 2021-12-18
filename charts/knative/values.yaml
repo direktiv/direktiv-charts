@@ -10,17 +10,17 @@ replicas: 1
 
 defaults:
   # -- default timeout for knative functions in seconds
-  timeout-seconds: "900"
+  timeout_seconds: "900"
   # -- maximum timeout for knative functions in seconds
-  max-timeout-seconds: "7200"
+  max_timeout_seconds: "7200"
 
 autoscaler:
-  grace-period: "120s"
-  retention-period: "120s"
-  max-scale-limit: "5"
+  grace_period: "120s"
+  retention_period: "120s"
+  max-scale_limit: "5"
 
 deployment:
-  skip-tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
+  skip_tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
 
 
 # -- Kong for Direktiv's UI / API. Based on Kong Helm chart.

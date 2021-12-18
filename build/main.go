@@ -281,20 +281,20 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 	}
 
 	if cm.ObjectMeta.Name == "config-defaults" {
-		data["revision-timeout-seconds"] = "AQ-{{ .Values.defaults.timeout-seconds }}"
-		data["max-revision-timeout-seconds"] = "AQ-{{ .Values.defaults.max-timeout-seconds }}"
+		data["revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.timeout_seconds }}\""
+		data["max-revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.max_timeout_seconds }}\""
 		cm.Data = data
 	}
 
 	if cm.ObjectMeta.Name == "config-autoscaler" {
-		data["scale-to-zero-grace-period"] = "AQ-{{ .Values.autoscaler.grace-period }}"
-		data["scale-to-zero-pod-retention-period"] = "AQ-{{ .Values.autoscaler.retention-period }}"
-		data["max-scale-limit"] = "AQ-{{ .Values.autoscaler.max-scale-limit }}"
+		data["scale-to-zero-grace-period"] = "AQ-\"{{ .Values.autoscaler.grace_period }}\""
+		data["scale-to-zero-pod-retention-period"] = "AQ-\"{{ .Values.autoscaler.retention_period }}\""
+		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max-scale_limit }}\""
 		cm.Data = data
 	}
 
 	if cm.ObjectMeta.Name == "config-deployment" {
-		data["registries-skipping-tag-resolving"] = "AQ-{{ .Values.deployment.skip-tag }}"
+		data["registries-skipping-tag-resolving"] = "AQ-{{ .Values.deployment.skip_tag }}"
 		cm.Data = data
 	}
 
