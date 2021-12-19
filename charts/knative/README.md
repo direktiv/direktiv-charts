@@ -29,7 +29,7 @@ $ helm install knative direktiv/knative
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | autoscaler.grace_period | string | `"120s"` |  |
-| autoscaler.max_scale_limit | string | `"5"` |  |
+| autoscaler.max_scale | string | `"5"` |  |
 | autoscaler.retention_period | string | `"120s"` |  |
 | defaults.max_timeout_seconds | string | `"7200"` | maximum timeout for knative functions in seconds |
 | defaults.timeout_seconds | string | `"900"` | default timeout for knative functions in seconds |

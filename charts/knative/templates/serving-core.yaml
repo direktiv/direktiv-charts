@@ -374,9 +374,9 @@ data:
   container-concurrency-target-percentage: "70"
   enable-scale-to-zero: "true"
   initial-scale: "1"
-  max-scale: "0"
+  max-scale: "{{ .Values.autoscaler.max_scale }}"
   max-scale-down-rate: "2.0"
-  max-scale-limit: "{{ .Values.autoscaler.max_scale_limit }}"
+  max-scale-limit: "{{ .Values.autoscaler.max_scale }}"
   max-scale-up-rate: "1000.0"
   min-scale: "0"
   panic-threshold-percentage: "200.0"
@@ -441,8 +441,10 @@ data:
   queue-sidecar-cpu-request: 25m
   queue-sidecar-ephemeral-storage-limit: 1024Mi
   queue-sidecar-ephemeral-storage-request: 512Mi
+  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:48a1753de35ecbe060611aea9e95751e3e4851183c4373e65aa1b9410ea6e263
   queue-sidecar-memory-limit: 800Mi
   queue-sidecar-memory-request: 400Mi
+  queueSidecarImage: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:48a1753de35ecbe060611aea9e95751e3e4851183c4373e65aa1b9410ea6e263
   registries-skipping-tag-resolving: {{ .Values.deployment.skip_tag }}
 kind: ConfigMap
 metadata:

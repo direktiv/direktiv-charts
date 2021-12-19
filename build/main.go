@@ -301,12 +301,15 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 	if cm.ObjectMeta.Name == "config-autoscaler" {
 		data["scale-to-zero-grace-period"] = "AQ-\"{{ .Values.autoscaler.grace_period }}\""
 		data["scale-to-zero-pod-retention-period"] = "AQ-\"{{ .Values.autoscaler.retention_period }}\""
-		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max_scale_limit }}\""
+		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max_scale }}\""
+		data["max-scale"] = "AQ-\"{{ .Values.autoscaler.max_scale }}\""
 		cm.Data = data
 	}
 
 	if cm.ObjectMeta.Name == "config-deployment" {
 		data["registries-skipping-tag-resolving"] = "AQ-{{ .Values.deployment.skip_tag }}"
+		data["queueSidecarImage"] = cm.Data["queueSidecarImage"]
+		data["queue-sidecar-image"] = cm.Data["queueSidecarImage"]
 		cm.Data = data
 	}
 
