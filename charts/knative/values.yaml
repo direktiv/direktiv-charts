@@ -21,3 +21,16 @@ autoscaler:
 
 deployment:
   skip_tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
+
+# -- nginx ingress controller configuration
+ingress-nginx:
+  controller:
+    replicaCount: 1
+    admissionWebhooks:
+      patch:
+        podAnnotations:
+          linkerd.io/inject: disabled
+    service:
+      ports:
+        http: 9090
+        https: 9443
