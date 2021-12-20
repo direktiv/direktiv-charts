@@ -1,4 +1,7 @@
 dependencies:
+- name: ingress-nginx
+  repository: https://kubernetes.github.io/ingress-nginx
+  version: 4.0.13
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 14.7.1
@@ -8,5 +11,5 @@ dependencies:
 - name: thanos
   repository: https://charts.bitnami.com/bitnami
   version: 6.0.1
-digest: sha256:f8c7734010b8d3d4a7d411c4737012c2076343fb2cacf0b34cb99149bb71dc29
-generated: "2021-12-18T06:09:16.82004375+10:00"
+digest: sha256:59cc93b14fb8d6807dbaa5f22b343832c7ee7ecacfa645d60d14eeb7c45b0b78
+generated: "2021-12-20T07:34:01.764114259+10:00"

@@ -21,15 +21,3 @@ autoscaler:
 
 deployment:
   skip_tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
-
-
-# -- Kong for Direktiv's UI / API. Based on Kong Helm chart.
-kong-external:
-  env:
-    prefix: /kong_prefix/
-    plugins: "key-auth,request-transformer"
-  proxy:
-    tls:
-      servicePort: 8443
-    http:
-      servicePort: 8080
