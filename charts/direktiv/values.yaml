@@ -21,7 +21,7 @@ eventing:
 # -- json or console logger
 logging: json
 
-# -- api timeouts
+# -- max request timeouts
 timeout: 7200000
 
 # -- api key, value 'apikey' required in header
@@ -193,7 +193,6 @@ secrets:
 
 # -- UI configuration
 ui:
-  kongPlugins: "none"
   image: "direktiv/ui"
   tag: ""
   certificate: none
