@@ -4,6 +4,7 @@ debug: false
 # -- nginx ingress controller configuration
 ingress-nginx:
   controller:
+    replicaCount: 1
     admissionWebhooks:
       patch:
         podAnnotations:
