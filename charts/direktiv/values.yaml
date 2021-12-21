@@ -222,7 +222,7 @@ functions:
 
   # namespace to run functions in
   namespace: direktiv-services-direktiv
-  ingressClass: kourier.ingress.networking.knative.dev
+  ingressClass: contour.ingress.networking.knative.dev
 
   # images for functions controller, knative sidecar and init-pod
   image: "direktiv/functions"
@@ -231,7 +231,7 @@ functions:
   sidecar: "direktiv/sidecar"
 
   initPodImage:  "direktiv/direktiv-init-pod"
-  
+
   # -- number of controller replicas
   replicas: 1
 

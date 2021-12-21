@@ -59,7 +59,7 @@ $ helm install direktiv direktiv/direktiv
 | functions.http_proxy | string | `""` | http_proxy injected as environment variable in functions |
 | functions.https_proxy | string | `""` | https_proxy injected as environment variable in functions |
 | functions.image | string | `"direktiv/functions"` |  |
-| functions.ingressClass | string | `"kourier.ingress.networking.knative.dev"` |  |
+| functions.ingressClass | string | `"contour.ingress.networking.knative.dev"` |  |
 | functions.initPodImage | string | `"direktiv/direktiv-init-pod"` |  |
 | functions.namespace | string | `"direktiv-services-direktiv"` |  |
 | functions.netShape | string | `"10M"` | Egress/Ingress network limit for functions if supported by network |
