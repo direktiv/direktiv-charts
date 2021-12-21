@@ -130,6 +130,9 @@ func prepareKnativeContour(version string) {
 		switch gvk.Kind {
 		case "Namespace":
 			addHelmLabels(&obj.(*corev1.Namespace).ObjectMeta, false)
+			// we always set it to true. if installed its ok, otherwise no effect
+			obj.(*corev1.Namespace).ObjectMeta.Annotations = make(map[string]string)
+			obj.(*corev1.Namespace).ObjectMeta.Annotations["linkerd.io/inject"] = "enabled"
 		case "Service":
 			addHelmLabels(&obj.(*corev1.Service).ObjectMeta, false)
 		case "ServiceAccount":
@@ -165,6 +168,9 @@ func prepareKnativeContour(version string) {
 	s := buf.String()
 	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
 	s = strings.ReplaceAll(s, "AQ-", "")
+
+	buf.Reset()
+	y = printers.YAMLPrinter{}
 
 	err := os.WriteFile("/tmp/templates/contour.yaml", []byte(s), 0644)
 	if err != nil {
@@ -202,6 +208,9 @@ func prepareKnativeContour(version string) {
 
 	}
 
+	s = buf.String()
+	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
+	s = strings.ReplaceAll(s, "AQ-", "")
 	err = os.WriteFile("/tmp/templates/net-contour.yaml", []byte(s), 0644)
 	if err != nil {
 		log.Fatalf("can not write kourier: %v", err)

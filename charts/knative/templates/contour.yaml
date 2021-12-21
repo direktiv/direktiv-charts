@@ -19,6 +19,8 @@ subjects:
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    linkerd.io/inject: enabled
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
@@ -3284,6 +3286,8 @@ subjects:
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    linkerd.io/inject: enabled
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
