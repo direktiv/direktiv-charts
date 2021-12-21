@@ -8,8 +8,8 @@ eventing:
 # -- json or console logger
 logging: json
 
-# -- max request timeouts
-timeout: 7200000
+# -- max request timeouts in seconds
+timeout: 7200
 
 # -- api key, value 'apikey' required in header
 apikey: ""
@@ -98,8 +98,6 @@ ingress:
   certificate: none
   # -- ingress class
   class: "nginx"
-  # -- timeout for /api route
-  timeout: 7200000
 
 database:
   # -- database host
@@ -233,10 +231,7 @@ functions:
   sidecar: "direktiv/sidecar"
 
   initPodImage:  "direktiv/direktiv-init-pod"
-
-  # kong ingress knative timeout on services
-  timeout: 7200000
-
+  
   # -- number of controller replicas
   replicas: 1
 

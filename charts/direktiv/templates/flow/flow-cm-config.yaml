@@ -8,7 +8,7 @@ metadata:
 data:
   flow-config.yaml: |
       functions-service: {{ include "direktiv.fullname" . }}-functions.{{ .Release.Namespace }}
-      functions-timeout: {{ .Values.functions.timeout }}
+      functions-timeout: {{ .Values.timeout }}
       flow-service: {{ include "direktiv.fullname" . }}-flow.{{ .Release.Namespace }}
       prometheus-backend: {{ include "direktiv.fullname" . }}-prometheus-server
       {{- if .Values.opentelemetry.address }}
