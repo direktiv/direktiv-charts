@@ -22,8 +22,6 @@ $ helm install direktiv direktiv/direktiv
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | thanos | 6.0.1 |
-| https://operator.min.io/ | minio-operator | 4.2.7 |
 | https://prometheus-community.github.io/helm-charts | prometheus | 14.7.1 |
 
 ## Values
@@ -31,12 +29,11 @@ $ helm install direktiv direktiv/direktiv
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| api.extraContainers | list | `[]` | extra container in api pod |
 | api.extraContainers | list | `[]` |  |
+| api.extraContainers | list | `[]` | extra container in api pod |
 | api.extraVolumeMounts | string | `nil` | extra volume mounts in api pod |
 | api.extraVolumes | string | `nil` | extra volumes in api pod |
 | api.image | string | `"direktiv/api"` | image for api pod |
-| api.kongPlugins | string | `"none"` | Kong plugins to enable |
 | api.replicas | int | `1` |  |
 | api.tag | string | `""` | image tag for api pod |
 | apikey | string | `""` | api key, value 'apikey' required in header |
@@ -72,23 +69,13 @@ $ helm install direktiv direktiv/direktiv
 | functions.runtime | string | `"default"` | runtime to use, e.g. gvisor on GCP |
 | functions.sidecar | string | `"direktiv/sidecar"` |  |
 | functions.tag | string | `""` |  |
-| functions.timeout | int | `7200000` |  |
 | http_proxy | string | `""` | http proxy settings |
 | https_proxy | string | `""` | https proxy settings |
 | imagePullSecrets | list | `[]` |  |
 | ingress.certificate | string | `"none"` | TLS secret |
-| ingress.class | string | `"kong"` | ingress class |
+| ingress.class | string | `"nginx"` | ingress class |
 | ingress.host | string | `""` | host for external services, only required for TLS |
-| ingress.timeout | int | `7200000` | timeout for /api route |
 | logging | string | `"json"` | json or console logger |
-| minio-operator.enabled | bool | `false` |  |
-| minio-operator.tenants[0].name | string | `"direktiv-tenant"` |  |
-| minio-operator.tenants[0].pools[0] | object | `{"servers":1,"size":"1Gi","storageClassName":"local-path","volumesPerServer":4}` | set to 4 for HA |
-| minio-operator.tenants[0].pools[0].storageClassName | string | `"local-path"` | storage class to use. k3s uses local-path |
-| minio-operator.tenants[0].secrets.accessKey | string | `"minio"` |  |
-| minio-operator.tenants[0].secrets.enabled | bool | `true` |  |
-| minio-operator.tenants[0].secrets.name | string | `"minio-secret"` |  |
-| minio-operator.tenants[0].secrets.secretKey | string | `"minio123"` |  |
 | networkPolicies.db | string | `"0.0.0.0/0"` | CIDR for database, excempt from policies |
 | networkPolicies.enabled | bool | `false` | adds network policies |
 | networkPolicies.podCidr | string | `"0.0.0.0/0"` | CIDR for pods, excempt from policies |
@@ -114,19 +101,7 @@ $ helm install direktiv direktiv/direktiv
 | registry | string | `"docker.io"` |  |
 | secrets | object | `{"db":"","extraVolumeMounts":[],"image":"direktiv/secrets","tag":""}` | secrets sidecar in flow pod |
 | serviceAccount | object | `{"annotations":{},"name":""}` | service account for flow component |
-| thanos.bucketweb.enabled | bool | `true` |  |
-| thanos.compactor.enabled | bool | `true` |  |
-| thanos.compactor.persistence.storageClass | string | `"local-path"` |  |
-| thanos.enabled | bool | `false` | install Thanos |
-| thanos.enabled | bool | `false` |  |
-| thanos.global.storageClass | string | `"local-path"` |  |
-| thanos.objstoreConfig | string | `"type: s3\nconfig:\n  bucket: thanos\n  endpoint: direktiv-tenant-console.{{ .Release.Namespace }}.svc.cluster.local:9000\n  access_key: minio\n  secret_key: minio123\n  insecure: true"` |  |
-| thanos.query.dnsDiscovery.sidecarsNamespace | string | `"{{ .Release.Namespace }}"` |  |
-| thanos.query.dnsDiscovery.sidecarsService | string | `"{{ .Release.Namespace }}-kube-prometheus-prometheus"` |  |
-| thanos.ruler.enabled | bool | `false` |  |
-| thanos.storegateway.enabled | bool | `true` |  |
-| thanos.storegateway.persistence.storageClass | string | `"local-path"` |  |
-| timeout | int | `7200000` | api timeouts |
+| timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
-| ui | object | `{"certificate":"none","extraContainers":[],"image":"direktiv/ui","kongPlugins":"none","tag":""}` | UI configuration |
+| ui | object | `{"certificate":"none","extraContainers":[],"image":"direktiv/ui","tag":""}` | UI configuration |
 

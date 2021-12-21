@@ -22,7 +22,7 @@ $ helm install knative direktiv/knative
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.konghq.com | kong-external(kong) | 2.3.0 |
+| https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.0.13 |
 
 ## Values
 
@@ -36,7 +36,7 @@ $ helm install knative direktiv/knative
 | deployment.skip_tag | string | `"kind.local,ko.local,dev.local,localhost:5000,localhost:31212"` |  |
 | http_proxy | string | `""` | HTTP proxy information for knative |
 | https_proxy | string | `""` | HTTPS proxy information for knative |
-| kong-external | object | `{"env":{"plugins":"key-auth,request-transformer","prefix":"/kong_prefix/"},"proxy":{"http":{"servicePort":8080},"tls":{"servicePort":8443}}}` | Kong for Direktiv's UI / API. Based on Kong Helm chart. |
+| ingress-nginx | object | `{"controller":{"admissionWebhooks":{"patch":{"podAnnotations":{"linkerd.io/inject":"disabled"}}},"replicaCount":1,"service":{"ports":{"http":9090,"https":9443}}}}` | nginx ingress controller configuration |
 | no_proxy | string | `"localhost,127.0.0.1,10.0.0.0/8,.svc,.cluster.local"` | No proxy information for knative |
 | replicas | int | `1` | Replicas for knative components |
 

@@ -13,6 +13,7 @@ import (
 	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	scalev2beta2 "k8s.io/api/autoscaling/v2beta2"
+	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	policyv1beta1 "k8s.io/api/policy/v1beta1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -35,6 +36,8 @@ var (
 	baseCRD     = "https://github.com/knative/serving/releases/download/knative-%s/serving-crds.yaml"
 	baseCtrl    = "https://github.com/knative/serving/releases/download/knative-%s/serving-core.yaml"
 	baseKourier = "https://github.com/knative/net-kourier/releases/download/knative-%s/kourier.yaml"
+	contourBase = "https://github.com/knative/net-contour/releases/download/knative-%s/contour.yaml"
+	contourCtrl = "https://github.com/knative/net-contour/releases/download/knative-%s/net-contour.yaml"
 )
 
 func main() {
@@ -50,6 +53,8 @@ func main() {
 	switch os.Args[2] {
 	case "kourier":
 		prepareKnativeKourier(version)
+	case "contour":
+		prepareKnativeContour(version)
 	case "crds":
 		prepareKnativeCRDS(version)
 	default:
@@ -97,6 +102,111 @@ func addHelmLabels(meta *metav1.ObjectMeta, ns bool) {
 	if ns {
 		meta.Namespace = relaseNameSpace
 	}
+}
+
+func prepareKnativeContour(version string) {
+	yamlData := downloadYAML(fmt.Sprintf(contourBase, version))
+	yamlDataCtrl := downloadYAML(fmt.Sprintf(contourCtrl, version))
+
+	decoder := createDecoder()
+	y := printers.YAMLPrinter{}
+
+	var buf bytes.Buffer
+
+	for _, resourceYAML := range strings.Split(yamlData, "\n---\n") {
+		// skip empty
+		if len(resourceYAML) <= 1 {
+			continue
+		}
+
+		obj, gvk, err := decoder.Decode([]byte(resourceYAML), nil, nil)
+		if err != nil {
+			log.Print(err)
+			continue
+		}
+
+		// we keep the namespace here
+		print := true
+		switch gvk.Kind {
+		case "Namespace":
+			addHelmLabels(&obj.(*corev1.Namespace).ObjectMeta, false)
+		case "Service":
+			addHelmLabels(&obj.(*corev1.Service).ObjectMeta, false)
+		case "ServiceAccount":
+			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, false)
+		case "ClusterRole":
+			addHelmLabels(&obj.(*rbacv1.ClusterRole).ObjectMeta, false)
+		case "ClusterRoleBinding":
+			addHelmLabels(&obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
+		case "Deployment":
+			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, false)
+		case "ConfigMap":
+			addHelmLabels(&obj.(*corev1.ConfigMap).ObjectMeta, false)
+		case "Role":
+			addHelmLabels(&obj.(*rbacv1.Role).ObjectMeta, false)
+		case "RoleBinding":
+			addHelmLabels(&obj.(*rbacv1.RoleBinding).ObjectMeta, false)
+		case "CustomResourceDefinition":
+			addHelmLabels(&obj.(*apiextv1beta1.CustomResourceDefinition).ObjectMeta, false)
+		case "Job":
+			addHelmLabels(&obj.(*batchv1.Job).ObjectMeta, false)
+		case "DaemonSet":
+			addHelmLabels(&obj.(*appsv1.DaemonSet).ObjectMeta, false)
+		default:
+			log.Fatalf("unknown kind: %v", gvk.Kind)
+		}
+
+		if print {
+			y.PrintObj(obj, &buf)
+		}
+
+	}
+
+	s := buf.String()
+	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
+	s = strings.ReplaceAll(s, "AQ-", "")
+
+	err := os.WriteFile("/tmp/templates/contour.yaml", []byte(s), 0644)
+	if err != nil {
+		log.Fatalf("can not write kourier: %v", err)
+	}
+
+	for _, resourceYAML := range strings.Split(yamlDataCtrl, "\n---\n") {
+		// skip empty
+		if len(resourceYAML) <= 1 {
+			continue
+		}
+
+		obj, gvk, err := decoder.Decode([]byte(resourceYAML), nil, nil)
+		if err != nil {
+			log.Print(err)
+			continue
+		}
+
+		print := true
+		switch gvk.Kind {
+		case "ClusterRole":
+			addHelmLabels(&obj.(*rbacv1.ClusterRole).ObjectMeta, false)
+		case "Deployment":
+			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, true)
+		case "ConfigMap":
+			addHelmLabels(&obj.(*corev1.ConfigMap).ObjectMeta, true)
+
+		default:
+			log.Fatalf("unknown kind: %v", gvk.Kind)
+		}
+
+		if print {
+			y.PrintObj(obj, &buf)
+		}
+
+	}
+
+	err = os.WriteFile("/tmp/templates/net-contour.yaml", []byte(s), 0644)
+	if err != nil {
+		log.Fatalf("can not write kourier: %v", err)
+	}
+
 }
 
 func prepareKnativeKourier(version string) {
