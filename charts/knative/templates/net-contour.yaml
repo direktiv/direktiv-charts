@@ -82,7 +82,7 @@ metadata:
   name: net-contour-controller
   namespace: '{{ .Release.Namespace }}'
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: net-contour-controller

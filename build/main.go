@@ -143,6 +143,11 @@ func prepareKnativeContour(version string) {
 			addHelmLabels(&obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
 		case "Deployment":
 			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, false)
+			depl := obj.(*appsv1.Deployment)
+			var j int32 = 11223344
+			if depl.ObjectMeta.Name != "activator" {
+				depl.Spec.Replicas = &j
+			}
 		case "ConfigMap":
 			addHelmLabels(&obj.(*corev1.ConfigMap).ObjectMeta, false)
 		case "Role":
@@ -153,6 +158,8 @@ func prepareKnativeContour(version string) {
 			addHelmLabels(&obj.(*apiextv1beta1.CustomResourceDefinition).ObjectMeta, false)
 		case "Job":
 			addHelmLabels(&obj.(*batchv1.Job).ObjectMeta, false)
+			obj.(*batchv1.Job).Spec.Template.ObjectMeta.Annotations = make(map[string]string)
+			obj.(*batchv1.Job).Spec.Template.ObjectMeta.Annotations["linkerd.io/inject"] = "disabled"
 		case "DaemonSet":
 			addHelmLabels(&obj.(*appsv1.DaemonSet).ObjectMeta, false)
 		default:
@@ -168,6 +175,7 @@ func prepareKnativeContour(version string) {
 	s := buf.String()
 	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
 	s = strings.ReplaceAll(s, "AQ-", "")
+	s = strings.ReplaceAll(s, "11223344", "{{ .Values.replicas }}")
 
 	buf.Reset()
 	y = printers.YAMLPrinter{}
@@ -195,6 +203,11 @@ func prepareKnativeContour(version string) {
 			addHelmLabels(&obj.(*rbacv1.ClusterRole).ObjectMeta, false)
 		case "Deployment":
 			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, true)
+			depl := obj.(*appsv1.Deployment)
+			var j int32 = 11223344
+			if depl.ObjectMeta.Name != "activator" {
+				depl.Spec.Replicas = &j
+			}
 		case "ConfigMap":
 			addHelmLabels(&obj.(*corev1.ConfigMap).ObjectMeta, true)
 
@@ -211,6 +224,7 @@ func prepareKnativeContour(version string) {
 	s = buf.String()
 	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
 	s = strings.ReplaceAll(s, "AQ-", "")
+	s = strings.ReplaceAll(s, "11223344", "{{ .Values.replicas }}")
 	err = os.WriteFile("/tmp/templates/net-contour.yaml", []byte(s), 0644)
 	if err != nil {
 		log.Fatalf("can not write kourier: %v", err)

@@ -2768,6 +2768,8 @@ spec:
   parallelism: 1
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: disabled
       creationTimestamp: null
       labels:
         app: contour-certgen
@@ -3002,7 +3004,7 @@ metadata:
   name: contour
   namespace: contour-external
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: contour
@@ -3545,6 +3547,8 @@ spec:
   parallelism: 1
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: disabled
       creationTimestamp: null
       labels:
         app: contour-certgen
@@ -3638,7 +3642,7 @@ metadata:
   name: contour
   namespace: contour-internal
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: contour
