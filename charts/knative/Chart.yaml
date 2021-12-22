@@ -1,6 +1,7 @@
-apiVersion: v3
+apiVersion: v2
 name: knative
 description: knative for direktiv
+icon: https://raw.githubusercontent.com/direktiv/direktiv-charts/gh-pages/logo.png
 
 # A chart can be either an 'application' or a 'library' chart.
 #
