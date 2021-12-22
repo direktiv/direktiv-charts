@@ -33,6 +33,7 @@ $ helm install direktiv direktiv/direktiv
 | api.affinity | object | `{}` |    configMap:     name: service-template |
 | api.extraContainers | list | `[]` |  |
 | api.extraContainers | list | `[]` | extra container in api pod |
+| api.extraContainers | list | `[]` |  |
 | api.extraVolumeMounts | string | `nil` | extra volume mounts in api pod |
 | api.extraVolumes | string | `nil` | extra volumes in api pod |
 | api.image | string | `"direktiv/api"` | image for api pod |
@@ -109,4 +110,3 @@ $ helm install direktiv direktiv/direktiv
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
 | ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":""}` | UI configuration |
-

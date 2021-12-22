@@ -5,16 +5,16 @@
 
 ## Additional Information
 
-This chart installs direktiv.
+Installer for PGO, the open source Postgres Operator from Crunchy Data.
+This chart installs <a href="https://www.crunchydata.com/">CrunchyData's postgres controller</a>.
 
 ## Installing the Chart
 
-To install the chart with the release name `direktiv`:
+To install the chart with the name `pgo`:
 
 ```console
-$ kubectl create ns direktiv-services-direktiv
 $ helm repo add direktiv https://chart.direktiv.io
-$ helm install direktiv direktiv/{{ template "chart.name" . }}
+$ helm install pgo direktiv/{{ template "chart.name" . }}
 ```
 
 {{ template "chart.requirementsSection" . }}
