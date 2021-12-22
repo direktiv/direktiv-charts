@@ -3,37 +3,29 @@ entries:
   direktiv:
   - apiVersion: v2
     appVersion: v0.5.10
-    created: "2021-12-19T00:53:49.220634943Z"
+    created: "2021-12-22T04:31:07.581678874Z"
     dependencies:
     - name: prometheus
       repository: https://prometheus-community.github.io/helm-charts
       version: 14.7.1
-    - condition: minio-operator.enabled
-      name: minio-operator
-      repository: https://operator.min.io/
-      version: 4.2.7
-    - condition: thanos.enabled
-      name: thanos
-      repository: https://charts.bitnami.com/bitnami
-      version: 6.0.1
+    - name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      version: 4.0.13
     description: direktiv helm chart
-    digest: 44309b3b551544810eeb4753b637e5dcc53a88447f0bea8f682881dd2c6b6259
+    digest: 367630782d8e7d1cc601f8ca458a89828f66f9d0657a032b8485509192acb61e
+    icon: https://raw.githubusercontent.com/direktiv/direktiv-charts/gh-pages/logo.png
     name: direktiv
     type: application
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.0/direktiv-0.1.0.tgz
     version: 0.1.0
   knative:
-  - apiVersion: v3
+  - apiVersion: v2
     appVersion: 1.1.0
-    created: "2021-12-18T00:52:46.269306336Z"
-    dependencies:
-    - alias: kong-external
-      name: kong
-      repository: https://charts.konghq.com
-      version: 2.3.0
+    created: "2021-12-22T04:31:07.668135141Z"
     description: knative for direktiv
-    digest: 84b3a4fae7935a65810ed323795bc778d542b6362b466181659018915f21ad62
+    digest: 3af796d179e0f73a399ec08755e8dd772121e250b13ffc91cc51701ba6905aaf
+    icon: https://raw.githubusercontent.com/direktiv/direktiv-charts/gh-pages/logo.png
     name: knative
     type: application
     urls:
@@ -42,12 +34,13 @@ entries:
   pgo:
   - apiVersion: v2
     appVersion: 5.0.4
-    created: "2021-12-19T00:53:49.529822775Z"
-    description: Installer for PGO, the open source Postgres Operator from Crunchy Data
-    digest: fdcda1a57e86de4ff431f38100fdf546a76ed7f4760f2d87d4198633168f3f89
+    created: "2021-12-22T04:31:07.754379806Z"
+    description: Installer for PGO, the open source Postgres Operator from Crunchy
+      Data
+    digest: 7ed84d857b02855906845a9cf1e8221f725d0fd68116a627753e320d0a9b9377
     name: pgo
     type: application
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.2.3/pgo-0.2.3.tgz
     version: 0.2.3
-generated: "2021-12-18T00:52:46.140377176Z"
+generated: "2021-12-22T04:31:07.754384806Z"
