@@ -2979,11 +2979,11 @@ spec:
   externalTrafficPolicy: Local
   ports:
   - name: http
-    port: 80
+    port: 8080
     protocol: TCP
     targetPort: 8080
   - name: https
-    port: 443
+    port: 8443
     protocol: TCP
     targetPort: 8443
   selector:

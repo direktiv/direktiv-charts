@@ -303,7 +303,7 @@ ingress-nginx:
       patch:
         podAnnotations:
           linkerd.io/inject: disabled
-    service:
-      ports:
-        http: 9090
-        https: 9443
+    # service:
+    #   ports:
+    #     http: 9090
+    #     https: 9443
