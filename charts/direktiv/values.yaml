@@ -51,7 +51,7 @@ opentelemetry:
     extensions:
       zpages: {}
     service:
-      extensions: [zpages]
+      extensions: [zpagui:es]
       pipelines:
         traces:
           receivers: [otlp]
@@ -77,6 +77,7 @@ api:
     # - name: service-template
     #   configMap:
     #     name: service-template
+  affinity: {}
 
 networkPolicies:
   # -- adds network policies
@@ -150,6 +151,18 @@ flow:
     # - name: service-template
     #   configMap:
     #     name: service-template
+  # -- affinity for flow pods
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app.kubernetes.io/name
+    #         operator: In
+    #         values:
+    #         - direktiv
+    #     topologyKey: kubernetes.io/hostname
+
 
 nodeSelector: {}
 tolerations: []
@@ -175,10 +188,12 @@ secrets:
 
 # -- UI configuration
 ui:
+  replicas: 1
   image: "direktiv/ui"
   tag: ""
   certificate: none
   extraContainers: []
+  affinity: {}
 
 prometheus:
   global:
@@ -240,6 +255,8 @@ functions:
 
   # -- runtime to use, e.g. gvisor on GCP
   runtime: "default"
+
+  affinity: {}
 
   # -- extra containers for function controller, e.g. database containers for google cloud or logging
   extraContainersPod: []

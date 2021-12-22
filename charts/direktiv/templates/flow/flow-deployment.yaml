@@ -17,6 +17,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/scheme: "http"
       labels:
+        jens: gerke
         {{- include "direktiv.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
@@ -141,7 +142,7 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.flow.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
