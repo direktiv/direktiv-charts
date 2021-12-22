@@ -11,9 +11,6 @@ logging: json
 # -- max request timeouts in seconds
 timeout: 7200
 
-# -- api key, value 'apikey' required in header
-apikey: ""
-
 # used for encrpytion in the following resources: secrets
 # if set to empty, one will be generated on install
 encryptionKey: "01234567890123456789012345678912"
@@ -272,3 +269,24 @@ functions:
     #     requests:
     #       memory: "2Gi"
     #       cpu:    "1"
+
+# -- enabled api key for the API, key set in http-snippet in `ingress-nginx`
+apikey: false
+
+# -- nginx ingress controller configuration
+ingress-nginx:
+  controller:
+    config:
+      http-snippet: |
+        map $http_apikey $apikey_is_ok {
+        myapikey 1;
+        }
+    replicaCount: 1
+    admissionWebhooks:
+      patch:
+        podAnnotations:
+          linkerd.io/inject: disabled
+    service:
+      ports:
+        http: 9090
+        https: 9443
