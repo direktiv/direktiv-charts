@@ -1,0 +1,133 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: net-contour
+    app.kubernetes.io/name: '{{ .Release.Name }}'
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: contour
+    serving.knative.dev/controller: "true"
+  name: knative-serving-contour
+rules:
+- apiGroups:
+  - projectcontour.io
+  resources:
+  - httpproxies
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - deletecollection
+  - patch
+  - watch
+---
+apiVersion: v1
+data:
+  _example: |
+    ################################
+    #                              #
+    #    EXAMPLE CONFIGURATION     #
+    #                              #
+    ################################
+
+    # timeout-policy-idle sets TimeoutPolicy.Idle in contour HTTPProxy spec
+    timeout-policy-idle: "infinity"
+
+    # timeout-policy-response sets TimeoutPolicy.Response in contour HTTPProxy spec
+    timeout-policy-response: "infinity"
+
+    # If auto-TLS is disabled fallback to the following certificate
+    #
+    # An operator is required to setup a TLSCertificateDelegation
+    # for this secret to be used
+    default-tls-secret: "some-namespace/some-secret"
+
+    # visibility contains the configuration for how to expose services
+    # of assorted visibilities.  Each entry is keyed by the visibility
+    # and contains two keys:
+    #  1. the "class" value to pass to the Contour class annotations,
+    #  2. the namespace/name of the Contour Envoy service.
+    visibility: |
+      ExternalIP:
+        class: contour-external
+        service: contour-external/envoy
+      ClusterLocal:
+        class: contour-internal
+        service: contour-internal/envoy
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: net-contour
+    app.kubernetes.io/name: '{{ .Release.Name }}'
+    app.kubernetes.io/version: 1.1.0
+    networking.knative.dev/ingress-provider: contour
+    serving.knative.dev/release: v1.1.0
+  name: config-contour
+  namespace: '{{ .Release.Namespace }}'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/name: '{{ .Release.Name }}'
+    networking.knative.dev/ingress-provider: contour
+  name: net-contour-controller
+  namespace: '{{ .Release.Namespace }}'
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: net-contour-controller
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: net-contour-controller
+        app.kubernetes.io/component: net-contour
+        app.kubernetes.io/name: knative-serving
+        app.kubernetes.io/version: 1.1.0
+    spec:
+      containers:
+      - env:
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CONFIG_LOGGING_NAME
+          value: config-logging
+        - name: CONFIG_OBSERVABILITY_NAME
+          value: config-observability
+        - name: METRICS_DOMAIN
+          value: knative.dev/net-contour
+        image: gcr.io/knative-releases/knative.dev/net-contour/cmd/controller@sha256:922ce3f28a1dc618e4ebd62cfdf10216f06543bb70e280277107c4ec3d2e4eac
+        name: controller
+        ports:
+        - containerPort: 9090
+          name: metrics
+        - containerPort: 8008
+          name: profiling
+        resources:
+          limits:
+            cpu: 400m
+            memory: 400Mi
+          requests:
+            cpu: 40m
+            memory: 40Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+      serviceAccountName: controller
+status: {}

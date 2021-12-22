@@ -29,7 +29,7 @@ data:
       {{- end }}
 
       # maximum timeout, needs to be in below knative max
-      request-timeout: {{ div .Values.timeout 1000 }}
+      request-timeout: {{ .Values.timeout }}
 
       # name of the service account to run the pods
       service-account: {{ include "direktiv.serviceAccountName" . }}-functions-pod

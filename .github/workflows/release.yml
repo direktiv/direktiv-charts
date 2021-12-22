@@ -25,6 +25,7 @@ jobs:
           helm lint charts/direktiv/
           helm lint charts/knative/
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.1.0
+        uses: helm/chart-releaser-action@v1.2.1
         env:
           CR_TOKEN: "${{ secrets.GH_TOKEN }}"
+          CR_SKIP_EXISTING: true

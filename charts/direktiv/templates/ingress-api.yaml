@@ -11,6 +11,12 @@ metadata:
     {{- if ne .Values.ingress.certificate "none" }}
     ingress.kubernetes.io/force-ssl-redirect: "true"
     {{- end }}
+    {{- if .Values.apikey }}
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($apikey_is_ok != 1) {
+      return 401;
+      }
+    {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.class }}
   {{- if ne .Values.ingress.certificate "none" }}

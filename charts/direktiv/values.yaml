@@ -1,19 +1,6 @@
 # -- enable debug across all direktiv components
 debug: false
 
-# -- nginx ingress controller configuration
-ingress-nginx:
-  controller:
-    replicaCount: 1
-    admissionWebhooks:
-      patch:
-        podAnnotations:
-          linkerd.io/inject: disabled
-    service:
-      ports:
-        http: 9090
-        https: 9443
-
 # -- knative eventing enabled, requires knative setup and configuration
 eventing:
   enabled: false
@@ -21,11 +8,8 @@ eventing:
 # -- json or console logger
 logging: json
 
-# -- max request timeouts
-timeout: 7200000
-
-# -- api key, value 'apikey' required in header
-apikey: ""
+# -- max request timeouts in seconds
+timeout: 7200
 
 # used for encrpytion in the following resources: secrets
 # if set to empty, one will be generated on install
@@ -111,8 +95,6 @@ ingress:
   certificate: none
   # -- ingress class
   class: "nginx"
-  # -- timeout for /api route
-  timeout: 7200000
 
 database:
   # -- database host
@@ -237,7 +219,7 @@ functions:
 
   # namespace to run functions in
   namespace: direktiv-services-direktiv
-  ingressClass: kourier.ingress.networking.knative.dev
+  ingressClass: contour.ingress.networking.knative.dev
 
   # images for functions controller, knative sidecar and init-pod
   image: "direktiv/functions"
@@ -246,9 +228,6 @@ functions:
   sidecar: "direktiv/sidecar"
 
   initPodImage:  "direktiv/direktiv-init-pod"
-
-  # kong ingress knative timeout on services
-  timeout: 7200000
 
   # -- number of controller replicas
   replicas: 1
@@ -290,3 +269,24 @@ functions:
     #     requests:
     #       memory: "2Gi"
     #       cpu:    "1"
+
+# -- enabled api key for the API, key set in http-snippet in `ingress-nginx`
+apikey: false
+
+# -- nginx ingress controller configuration
+ingress-nginx:
+  controller:
+    config:
+      http-snippet: |
+        map $http_apikey $apikey_is_ok {
+        myapikey 1;
+        }
+    replicaCount: 1
+    admissionWebhooks:
+      patch:
+        podAnnotations:
+          linkerd.io/inject: disabled
+    service:
+      ports:
+        http: 9090
+        https: 9443

@@ -13,7 +13,7 @@ run-knative-helm: build-knative-helm helm-docs
 	@echo "running knative helm"
 	docker run -v ${mkfile_dir}/charts/knative/crds:/tmp/crds build-knative-helm:v1 ${version} crds
 	docker run -v ${mkfile_dir}/charts/knative/templates:/tmp/templates build-knative-helm:v1 ${version} core
-	docker run -v ${mkfile_dir}/charts/knative/templates:/tmp/templates build-knative-helm:v1 ${version} kourier
+	docker run -v ${mkfile_dir}/charts/knative/templates:/tmp/templates build-knative-helm:v1 ${version} contour
 
 .PHONY: run-pgo-helm
 run-pgo-helm:
