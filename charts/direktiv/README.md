@@ -22,6 +22,7 @@ $ helm install direktiv direktiv/direktiv
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.0.13 |
 | https://prometheus-community.github.io/helm-charts | prometheus | 14.7.1 |
 
 ## Values
@@ -29,14 +30,14 @@ $ helm install direktiv direktiv/direktiv
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| api.extraContainers | list | `[]` |  |
 | api.extraContainers | list | `[]` | extra container in api pod |
+| api.extraContainers | list | `[]` |  |
 | api.extraVolumeMounts | string | `nil` | extra volume mounts in api pod |
 | api.extraVolumes | string | `nil` | extra volumes in api pod |
 | api.image | string | `"direktiv/api"` | image for api pod |
 | api.replicas | int | `1` |  |
 | api.tag | string | `""` | image tag for api pod |
-| apikey | string | `""` | api key, value 'apikey' required in header |
+| apikey | bool | `false` | enabled api key for the API, key set in http-snippet in `ingress-nginx` |
 | database.host | string | `"postgres-postgresql-ha-pgpool.postgres"` | database host |
 | database.name | string | `"direktiv"` | database name, auto created if it does not exist |
 | database.password | string | `"direktivdirektiv"` | database password |
@@ -72,6 +73,7 @@ $ helm install direktiv direktiv/direktiv
 | http_proxy | string | `""` | http proxy settings |
 | https_proxy | string | `""` | https proxy settings |
 | imagePullSecrets | list | `[]` |  |
+| ingress-nginx | object | `{"controller":{"admissionWebhooks":{"patch":{"podAnnotations":{"linkerd.io/inject":"disabled"}}},"config":{"http-snippet":"map $http_apikey $apikey_is_ok {\nmyapikey 1;\n}\n"},"replicaCount":1,"service":{"ports":{"http":9090,"https":9443}}}}` | nginx ingress controller configuration |
 | ingress.certificate | string | `"none"` | TLS secret |
 | ingress.class | string | `"nginx"` | ingress class |
 | ingress.host | string | `""` | host for external services, only required for TLS |
@@ -104,4 +106,3 @@ $ helm install direktiv direktiv/direktiv
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
 | ui | object | `{"certificate":"none","extraContainers":[],"image":"direktiv/ui","tag":""}` | UI configuration |
-

@@ -1,8 +1,22 @@
 # pgo
 
+Installer for PGO, the open source Postgres Operator from Crunchy Data
+
 ![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.4](https://img.shields.io/badge/AppVersion-5.0.4-informational?style=flat-square)
 
-Installer for PGO, the open source Postgres Operator from Crunchy Data
+## Additional Information
+
+Installer for PGO, the open source Postgres Operator from Crunchy Data.
+This chart installs <a href="https://www.crunchydata.com/">CrunchyData's postgres controller</a>.
+
+## Installing the Chart
+
+To install the chart with the name `pgo`:
+
+```console
+$ helm repo add direktiv https://chart.direktiv.io
+$ helm install pgo direktiv/pgo
+```
 
 ## Values
 
