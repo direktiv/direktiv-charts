@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
   annotations:
+    nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.timeout }}"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.timeout }}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.timeout }}"

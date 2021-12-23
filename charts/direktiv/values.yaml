@@ -293,7 +293,10 @@ apikey: false
 # -- nginx ingress controller configuration
 ingress-nginx:
   controller:
+    podAnnotations:
+      linkerd.io/inject: disabled
     config:
+      proxy-buffer-size: "16k"
       http-snippet: |
         map $http_apikey $apikey_is_ok {
         myapikey 1;
@@ -303,7 +306,3 @@ ingress-nginx:
       patch:
         podAnnotations:
           linkerd.io/inject: disabled
-    service:
-      ports:
-        http: 9090
-        https: 9443
