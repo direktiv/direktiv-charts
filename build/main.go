@@ -51,8 +51,6 @@ func main() {
 	log.Printf("building knative helm for %s\n", version)
 
 	switch os.Args[2] {
-	case "kourier":
-		prepareKnativeKourier(version)
 	case "contour":
 		prepareKnativeContour(version)
 	case "crds":
@@ -135,6 +133,19 @@ func prepareKnativeContour(version string) {
 			obj.(*corev1.Namespace).ObjectMeta.Annotations["linkerd.io/inject"] = "enabled"
 		case "Service":
 			addHelmLabels(&obj.(*corev1.Service).ObjectMeta, false)
+			svc := obj.(*corev1.Service)
+			// there is only one loadbalancer for external, change ports
+			if svc.Spec.Type == corev1.ServiceTypeLoadBalancer {
+				for i := range svc.Spec.Ports {
+					if svc.Spec.Ports[i].Name == "http" {
+						svc.Spec.Ports[i].Port = 8080
+					}
+					if svc.Spec.Ports[i].Name == "https" {
+						svc.Spec.Ports[i].Port = 8443
+					}
+				}
+			}
+
 		case "ServiceAccount":
 			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, false)
 		case "ClusterRole":
@@ -226,74 +237,6 @@ func prepareKnativeContour(version string) {
 	s = strings.ReplaceAll(s, "AQ-", "")
 	s = strings.ReplaceAll(s, "11223344", "{{ .Values.replicas }}")
 	err = os.WriteFile("/tmp/templates/net-contour.yaml", []byte(s), 0644)
-	if err != nil {
-		log.Fatalf("can not write kourier: %v", err)
-	}
-
-}
-
-func prepareKnativeKourier(version string) {
-	yamlData := downloadYAML(fmt.Sprintf(baseKourier, version))
-
-	decoder := createDecoder()
-	y := printers.YAMLPrinter{}
-
-	var buf bytes.Buffer
-
-	for _, resourceYAML := range strings.Split(yamlData, "\n---\n") {
-		// skip empty
-		if len(resourceYAML) <= 1 {
-			continue
-		}
-
-		obj, gvk, err := decoder.Decode([]byte(resourceYAML), nil, nil)
-		if err != nil {
-			log.Print(err)
-			continue
-		}
-
-		print := true
-
-		switch gvk.Kind {
-		case "Namespace":
-			// remove
-			print = false
-		case "ConfigMap":
-			addHelmLabels(&obj.(*corev1.ConfigMap).ObjectMeta, true)
-		case "ServiceAccount":
-			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, true)
-		case "ClusterRole":
-			addHelmLabels(&obj.(*rbacv1.ClusterRole).ObjectMeta, false)
-		case "ClusterRoleBinding":
-			addHelmLabels(&obj.(*rbacv1.ClusterRoleBinding).ObjectMeta, false)
-		case "Deployment":
-			addHelmLabels(&obj.(*appsv1.Deployment).ObjectMeta, true)
-
-			depl := obj.(*appsv1.Deployment)
-			for i := range depl.Spec.Template.Spec.Containers[0].Env {
-				if depl.Spec.Template.Spec.Containers[0].Env[i].Name == "KOURIER_GATEWAY_NAMESPACE" {
-					depl.Spec.Template.Spec.Containers[0].Env[i].Value = relaseNameSpace
-				}
-			}
-		case "Service":
-			addHelmLabels(&obj.(*corev1.Service).ObjectMeta, true)
-		default:
-			log.Fatalf("unknown kind: %v", gvk.Kind)
-		}
-
-		if print {
-			y.PrintObj(obj, &buf)
-		}
-
-	}
-
-	s := buf.String()
-	s = strings.Replace(s, "address: \"net-kourier-controller.knative-serving\"",
-		fmt.Sprintf("address: \"net-kourier-controller.%s\"", relaseNameSpace), 1)
-	s = strings.ReplaceAll(s, "LABELREMOVE: ", "")
-	s = strings.ReplaceAll(s, "AQ-", "")
-
-	err := os.WriteFile("/tmp/templates/kourier.yaml", []byte(s), 0644)
 	if err != nil {
 		log.Fatalf("can not write kourier: %v", err)
 	}
