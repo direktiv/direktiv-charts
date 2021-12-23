@@ -1,0 +1,46 @@
+apiVersion: v1
+entries:
+  direktiv:
+  - apiVersion: v2
+    appVersion: v0.5.10
+    created: "2021-12-23T22:33:44.542473986Z"
+    dependencies:
+    - name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 14.7.1
+    - name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      version: 4.0.13
+    description: direktiv helm chart
+    digest: a5d6d8f58061211a0558a42cc06276f542cd3847a64356921aa1413cd9d709e8
+    icon: https://chart.direktiv.io/logo.png
+    name: direktiv
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.0/direktiv-0.1.0.tgz
+    version: 0.1.0
+  knative:
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2021-12-23T22:33:44.721293243Z"
+    description: knative for direktiv
+    digest: ee204633c21e00671cfd08f9309fda75847fadcd65f4f6b671945811585ac367
+    icon: https://chart.direktiv.io/logo.png
+    name: knative
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/knative-0.4.0/knative-0.4.0.tgz
+    version: 0.4.0
+  pgo:
+  - apiVersion: v2
+    appVersion: 5.0.4
+    created: "2021-12-23T22:33:44.884848402Z"
+    description: Installer for PGO, the open source Postgres Operator from Crunchy
+      Data
+    digest: 8bb2d845fb449146ea1cf8faff0c65c4498b889db9c3adb1cd919736afb9cacc
+    name: pgo
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.2.3/pgo-0.2.3.tgz
+    version: 0.2.3
+generated: "2021-12-23T22:33:44.884853402Z"
