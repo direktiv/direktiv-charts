@@ -16,8 +16,8 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 33333
-        runAsGroup: 22222
+        runAsUser: 65532
+        runAsGroup: 65532
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
