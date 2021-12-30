@@ -12,10 +12,10 @@ metadata:
     {{- if ne .Values.ingress.certificate "none" }}
     ingress.kubernetes.io/force-ssl-redirect: "true"
     {{- end }}
-    {{- if .Values.apikey }}
+    {{- if ne .Values.apikey "none" }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($apikey_is_ok != 1) {
-      return 401;
+      if ( $http_apikey != "{{ .Values.apikey }}" ) {
+          return 401;
       }
     {{- end }}
 spec:

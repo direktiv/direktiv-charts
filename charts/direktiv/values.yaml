@@ -287,8 +287,8 @@ functions:
     #       memory: "2Gi"
     #       cpu:    "1"
 
-# -- enabled api key for the API, key set in http-snippet in `ingress-nginx`
-apikey: false
+# -- enabled api key for the API, key set in http-snippet in `ingress-nginx` none
+apikey: none
 
 # -- nginx ingress controller configuration
 ingress-nginx:
@@ -297,10 +297,6 @@ ingress-nginx:
       linkerd.io/inject: disabled
     config:
       proxy-buffer-size: "16k"
-      http-snippet: |
-        map $http_apikey $apikey_is_ok {
-        myapikey 1;
-        }
     replicaCount: 1
     admissionWebhooks:
       patch:
