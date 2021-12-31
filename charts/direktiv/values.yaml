@@ -96,7 +96,9 @@ ingress:
   certificate: none
   # -- ingress class
   class: "nginx"
-
+  # -- Additional Annotations
+  additionalAnnotations: {}
+    
 database:
   # -- database host
   host: "postgres-postgresql-ha-pgpool.postgres"
@@ -292,6 +294,7 @@ apikey: none
 
 # -- nginx ingress controller configuration
 ingress-nginx:
+  install: true
   controller:
     podAnnotations:
       linkerd.io/inject: disabled

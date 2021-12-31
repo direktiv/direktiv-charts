@@ -9,6 +9,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.timeout }}"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.timeout }}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.timeout }}"
+    {{- range $key, $value := .Values.ingress.additionalAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
     {{- if ne .Values.ingress.certificate "none" }}
     ingress.kubernetes.io/force-ssl-redirect: "true"
     {{- end }}

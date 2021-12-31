@@ -81,6 +81,7 @@ $ helm install direktiv direktiv/direktiv
 | ingress.certificate | string | `"none"` | TLS secret |
 | ingress.class | string | `"nginx"` | ingress class |
 | ingress.host | string | `""` | host for external services, only required for TLS |
+| ingress.additionalAnnotations | object | `{}` | Additional Annontations for ingress |
 | logging | string | `"json"` | json or console logger |
 | networkPolicies.db | string | `"0.0.0.0/0"` | CIDR for database, excempt from policies |
 | networkPolicies.enabled | bool | `false` | adds network policies |
