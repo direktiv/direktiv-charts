@@ -96,7 +96,9 @@ ingress:
   certificate: none
   # -- ingress class
   class: "nginx"
-
+  # -- Additional Annotations
+  additionalAnnotations: {}
+    
 database:
   # -- database host
   host: "postgres-postgresql-ha-pgpool.postgres"
