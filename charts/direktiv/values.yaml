@@ -294,6 +294,7 @@ apikey: none
 
 # -- nginx ingress controller configuration
 ingress-nginx:
+  install: true
   controller:
     podAnnotations:
       linkerd.io/inject: disabled
