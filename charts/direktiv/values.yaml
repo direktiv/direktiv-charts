@@ -198,7 +198,8 @@ ui:
   affinity: {}
 
 prometheus:
-  install: true
+  install: false
+  backendName: "prom-backend-server" # required if install = false
   global:
     scrape_interval: 1m
     evaluation_interval: 1m

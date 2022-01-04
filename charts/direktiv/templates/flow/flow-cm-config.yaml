@@ -10,7 +10,11 @@ data:
       functions-service: {{ include "direktiv.fullname" . }}-functions.{{ .Release.Namespace }}
       functions-timeout: {{ .Values.timeout }}
       flow-service: {{ include "direktiv.fullname" . }}-flow.{{ .Release.Namespace }}
+      {{- if .Values.prometheus.install }}
       prometheus-backend: {{ include "direktiv.fullname" . }}-prometheus-server
+      {{- else }}
+      prometheus-backend: {{ .Values.prometheus.backendName }}
+      {{- end }}
       {{- if .Values.opentelemetry.address }}
       {{- if .Values.opentelemetry.enabled }}
       opentelemetry-backend: {{ .Values.opentelemetry.address }}
