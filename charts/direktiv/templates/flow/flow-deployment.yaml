@@ -31,7 +31,7 @@ spec:
       serviceAccountName: {{ include "direktiv.serviceAccountName" . }}
       initContainers:
         - name: updatedb
-          image: "{{ .Values.registry }}/flow-dbinit:{{ .Values.flow.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.registry }}/{{ .Values.flow.dbimage }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
           env:
           - name: DIREKTIV_DB
             valueFrom:
