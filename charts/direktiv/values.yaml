@@ -139,7 +139,7 @@ flow:
   # -- number of flow replicas
   replicas: 1
   # -- image for db update init container
-  image: "direktiv/flow-dbinit"
+  dbimage: "direktiv/flow-dbinit"
   # -- image for flow pod
   image: "direktiv/flow"
   # -- image tag for flow pod
