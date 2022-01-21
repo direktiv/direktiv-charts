@@ -38,10 +38,10 @@ data:
       namespace: {{ .Values.functions.namespace }}
 
       # pod sidecar name
-      sidecar: {{ .Values.functions.sidecar }}
+      sidecar: {{ .Values.registry }}/{{ .Values.functions.sidecar }}:{{ .Values.functions.tag | default .Chart.AppVersion }}
 
       # init pod name
-      init-pod: {{ .Values.functions.initPodImage }}
+      init-pod: {{ .Values.registry }}/{{ .Values.functions.initPodImage }}:{{ .Values.functions.tag | default .Chart.AppVersion }}
 
       # max number of revisions to keep per namespace or global
       keep-revisions: 3
