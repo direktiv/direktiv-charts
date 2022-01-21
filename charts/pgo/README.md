@@ -22,7 +22,7 @@ $ helm install pgo direktiv/pgo
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| debug | bool | `true` |  Defaults to the value below. |
+| debug | bool | `true` |  |
 | image.image | string | `"registry.developers.crunchydata.com/crunchydata/postgres-operator:ubi8-5.0.4-0"` |  |
 | relatedImages."postgres_13_gis_3.1".image | string | `"registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:centos8-13.5-3.1-0"` |  |
 | relatedImages."postgres_14_gis_3.1".image | string | `"registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:centos8-14.1-3.1-0"` |  |
@@ -31,5 +31,5 @@ $ helm install pgo direktiv/pgo
 | relatedImages.pgexporter.image | string | `"registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:ubi8-5.0.4-0"` |  |
 | relatedImages.postgres_13.image | string | `"registry.developers.crunchydata.com/crunchydata/crunchy-postgres:centos8-13.5-0"` |  |
 | relatedImages.postgres_14.image | string | `"registry.developers.crunchydata.com/crunchydata/crunchy-postgres:centos8-14.1-0"` |  |
-| singleNamespace | bool | `false` |  false, PGO will watch for Postgres clusters in all namesapces Setting to "true" will instruct PGO to only watch for Postgres clusters in the namespace that it is installed in. Defaults to the value below. |
+| singleNamespace | bool | `false` |  |
 
