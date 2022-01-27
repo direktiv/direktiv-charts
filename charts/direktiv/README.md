@@ -14,7 +14,7 @@ To install the chart with the release name `direktiv`:
 
 ```console
 $ kubectl create ns direktiv-services-direktiv
-$ helm repo add direktiv https://charts.direktiv.io
+$ helm repo add direktiv https://chart.direktiv.io
 $ helm install direktiv direktiv/direktiv
 ```
 
@@ -30,8 +30,7 @@ $ helm install direktiv direktiv/direktiv
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| api.affinity | object | `{}` |    configMap:     name: service-template |
-| api.extraContainers | list | `[]` |  |
+| api.affinity | object | `{}` |  |
 | api.extraContainers | list | `[]` | extra container in api pod |
 | api.extraContainers | list | `[]` |  |
 | api.extraVolumeMounts | string | `nil` | extra volume mounts in api pod |
@@ -39,7 +38,7 @@ $ helm install direktiv direktiv/direktiv
 | api.image | string | `"direktiv/api"` | image for api pod |
 | api.replicas | int | `1` |  |
 | api.tag | string | `""` | image tag for api pod |
-| apikey | bool | `false` | enabled api key for the API, key set in http-snippet in `ingress-nginx` |
+| apikey | string | `"none"` | enabled api key for the API, key set in http-snippet in `ingress-nginx` none |
 | database.host | string | `"postgres-postgresql-ha-pgpool.postgres"` | database host |
 | database.name | string | `"direktiv"` | database name, auto created if it does not exist |
 | database.password | string | `"direktivdirektiv"` | database password |
@@ -47,9 +46,10 @@ $ helm install direktiv direktiv/direktiv
 | database.sslmode | string | `"require"` | sslmode for database |
 | database.user | string | `"direktiv"` | database user |
 | debug | bool | `false` | enable debug across all direktiv components |
-| encryptionKey | string | `"01234567890123456789012345678912"` |  if set to empty, one will be generated on install |
+| encryptionKey | string | `"01234567890123456789012345678912"` |  |
 | eventing | object | `{"enabled":false}` | knative eventing enabled, requires knative setup and configuration |
 | flow.affinity | object | `{}` | affinity for flow pods |
+| flow.dbimage | string | `"direktiv/flow-dbinit"` | image for db update init container |
 | flow.extraContainers | list | `[]` | extra container in flow pod |
 | flow.extraVolumeMounts | string | `nil` | extra volume mounts in flow pod |
 | flow.extraVolumes | string | `nil` | extra volumes in flow pod |
@@ -77,11 +77,11 @@ $ helm install direktiv direktiv/direktiv
 | http_proxy | string | `""` | http proxy settings |
 | https_proxy | string | `""` | https proxy settings |
 | imagePullSecrets | list | `[]` |  |
-| ingress-nginx | object | `{"controller":{"admissionWebhooks":{"patch":{"podAnnotations":{"linkerd.io/inject":"disabled"}}},"config":{"http-snippet":"map $http_apikey $apikey_is_ok {\nmyapikey 1;\n}\n"},"replicaCount":1}}` | nginx ingress controller configuration |
+| ingress-nginx | object | `{"controller":{"admissionWebhooks":{"patch":{"podAnnotations":{"linkerd.io/inject":"disabled"}}},"config":{"proxy-buffer-size":"16k"},"podAnnotations":{"linkerd.io/inject":"disabled"},"replicaCount":1},"install":true}` | nginx ingress controller configuration |
+| ingress.additionalAnnotations | object | `{}` | Additional Annotations |
 | ingress.certificate | string | `"none"` | TLS secret |
 | ingress.class | string | `"nginx"` | ingress class |
 | ingress.host | string | `""` | host for external services, only required for TLS |
-| ingress.additionalAnnotations | object | `{}` | Additional Annontations for ingress |
 | logging | string | `"json"` | json or console logger |
 | networkPolicies.db | string | `"0.0.0.0/0"` | CIDR for database, excempt from policies |
 | networkPolicies.enabled | bool | `false` | adds network policies |
@@ -93,8 +93,10 @@ $ helm install direktiv direktiv/direktiv
 | opentelemetry.agentconfig | string | `"receivers:\n  otlp:\n    protocols:\n      grpc:\n      http:\nexporters:\n  otlp:\n    endpoint: \"192.168.1.113:14250\"\n    insecure: true\n    sending_queue:\n      num_consumers: 4\n      queue_size: 100\n    retry_on_failure:\n      enabled: true\n  logging:\n    loglevel: debug\nprocessors:\n  batch:\n  memory_limiter:\n    # Same as --mem-ballast-size-mib CLI argument\n    ballast_size_mib: 165\n    # 80% of maximum memory up to 2G\n    limit_mib: 400\n    # 25% of limit up to 2G\n    spike_limit_mib: 100\n    check_interval: 5s\nextensions:\n  zpages: {}\nservice:\n  extensions: [zpagui:es]\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [memory_limiter, batch]\n      exporters: [logging, otlp]\n"` | config for sidecar agent |
 | opentelemetry.enabled | bool | `false` | installs opentelemtry agent as sidecar in flow |
 | prometheus.alertmanager.enabled | bool | `false` |  |
+| prometheus.backendName | string | `"prom-backend-server"` |  |
 | prometheus.global.evaluation_interval | string | `"1m"` |  |
 | prometheus.global.scrape_interval | string | `"1m"` |  |
+| prometheus.install | bool | `true` |  |
 | prometheus.kubeStateMetrics.enabled | bool | `false` |  |
 | prometheus.nodeExporter.enabled | bool | `false` |  |
 | prometheus.pushgateway.enabled | bool | `false` |  |
@@ -111,3 +113,4 @@ $ helm install direktiv direktiv/direktiv
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
 | ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":""}` | UI configuration |
+
