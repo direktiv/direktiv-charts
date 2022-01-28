@@ -45,9 +45,7 @@ spec:
           - name: SERVE_ADDRESS
             value: "0.0.0.0"
           - name: API_URL
-            value: "/api"
-          - name: KEYCLOAK_URL
-            value: {{ .Values.ui.keycloakUrl }}
+            value: {{ .Values.ui.url }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           ports:
             - name: ui

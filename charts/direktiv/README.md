@@ -2,11 +2,20 @@
 
 direktiv helm chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.6.0](https://img.shields.io/badge/AppVersion-v0.6.0-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.2
+
+*API url is now configurable with ui.url*
+
+```yaml
+ui:
+    url: "/api"
+```
 
 ## Installing the Chart
 
@@ -112,5 +121,5 @@ $ helm install direktiv direktiv/direktiv
 | serviceAccount | object | `{"annotations":{},"name":""}` | service account for flow component |
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
-| ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":""}` | UI configuration |
+| ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":"","url":"/api"}` | UI configuration |
 
