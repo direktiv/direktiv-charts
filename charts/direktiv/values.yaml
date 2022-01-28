@@ -198,8 +198,7 @@ ui:
   certificate: none
   extraContainers: []
   affinity: {}
-  url: "/api"
-
+  
 prometheus:
   install: true
   backendName: "prom-backend-server" # required if install = false

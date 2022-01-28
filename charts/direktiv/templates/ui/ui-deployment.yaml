@@ -44,8 +44,6 @@ spec:
             value: "8080"
           - name: SERVE_ADDRESS
             value: "0.0.0.0"
-          - name: API_URL
-            value: {{ .Values.ui.url }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           ports:
             - name: ui
