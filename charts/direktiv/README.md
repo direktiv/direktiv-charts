@@ -10,12 +10,7 @@ This chart installs direktiv.
 
 ### Changes in 0.1.2
 
-*API url is now configurable with ui.url*
-
-```yaml
-ui:
-    url: "/api"
-```
+*Removed unnecessary environment variables in UI deployment*
 
 ## Installing the Chart
 
@@ -121,5 +116,5 @@ $ helm install direktiv direktiv/direktiv
 | serviceAccount | object | `{"annotations":{},"name":""}` | service account for flow component |
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
-| ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":"","url":"/api"}` | UI configuration |
+| ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":""}` | UI configuration |
 
