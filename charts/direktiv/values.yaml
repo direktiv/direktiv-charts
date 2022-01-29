@@ -51,7 +51,7 @@ opentelemetry:
     extensions:
       zpages: {}
     service:
-      extensions: [zpagui:es]
+      extensions: [zpages]
       pipelines:
         traces:
           receivers: [otlp]
