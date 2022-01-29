@@ -3,6 +3,26 @@ entries:
   direktiv:
   - apiVersion: v2
     appVersion: v0.6.0
+    created: "2022-01-29T03:38:29.746288621Z"
+    dependencies:
+    - condition: prometheus.install
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 14.7.1
+    - condition: ingress-nginx.install
+      name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      version: 4.0.13
+    description: direktiv helm chart
+    digest: 6d6f28f9d3344e208ab1bf3da785cd098beb1c6c3162bdc695dde808c59d4169
+    icon: https://chart.direktiv.io/logo.png
+    name: direktiv
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.2/direktiv-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: v0.6.0
     created: "2022-01-27T04:21:48.860468319Z"
     dependencies:
     - condition: prometheus.install
@@ -63,4 +83,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.2.3/pgo-0.2.3.tgz
     version: 0.2.3
-generated: "2022-01-27T04:21:49.041884342Z"
+generated: "2022-01-29T03:38:29.746300621Z"
