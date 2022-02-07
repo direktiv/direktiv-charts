@@ -382,6 +382,7 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 	if cm.ObjectMeta.Name == "config-defaults" {
 		data["revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.timeout_seconds }}\""
 		data["max-revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.max_timeout_seconds }}\""
+		data["revision-cpu-request"] = "AQ-\"{{ .Values.defaults.revision_cpu_request }}\""
 		cm.Data = data
 	}
 
@@ -390,6 +391,10 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 		data["scale-to-zero-pod-retention-period"] = "AQ-\"{{ .Values.autoscaler.retention_period }}\""
 		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max_scale }}\""
 		data["max-scale"] = "AQ-\"{{ .Values.autoscaler.max_scale }}\""
+
+		fmt.Println("CHANGE IT NOW!!")
+		data["initial-scale"] = "AQ-\"{{ .Values.autoscaler.initial_scale }}\""
+		data["allow-zero-initial-scale"] = "AQ-\"{{ .Values.autoscaler.allow_zero_initial_scale }}\""
 		cm.Data = data
 	}
 
