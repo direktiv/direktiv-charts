@@ -10,7 +10,7 @@ build-knative-helm:
 	docker build -t build-knative-helm:v1 build
 
 .PHONY: run-knative-helm
-run-knative-helm: build-knative-helm helm-docs
+run-knative-helm: build-knative-helm
 	@echo "running knative helm"
 	docker run -v ${mkfile_dir}/charts/knative/crds:/tmp/crds build-knative-helm:v1 ${version} crds
 	docker run -v ${mkfile_dir}/charts/knative/templates:/tmp/templates build-knative-helm:v1 ${version} core

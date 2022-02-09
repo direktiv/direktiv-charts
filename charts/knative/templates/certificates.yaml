@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ca-secret
+type: Opaque
+data:
+{{- if ne .Values.controller.ca "none" }}
+  ca.crt:
+    {{ .Values.controller.ca | b64enc }}
+{{- else }}
+  ca.crt:
+    UmVhbGx5Pz8/
+{{- end }}

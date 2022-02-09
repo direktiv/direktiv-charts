@@ -13,11 +13,19 @@ defaults:
   timeout_seconds: "900"
   # -- maximum timeout for knative functions in seconds
   max_timeout_seconds: "7200"
+  # -- cpu requests for direktiv sidecar
+  revision_cpu_request: "50m"
 
 autoscaler:
   grace_period: "120s"
   retention_period: "120s"
   max_scale: "5"
+  initial_scale: "0"
+  allow_zero_initial_scale: "true"
 
 deployment:
   skip_tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
+
+controller:
+  # -- CA certifcate for self-signed certificate registries
+  ca: none

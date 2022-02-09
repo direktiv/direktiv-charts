@@ -15,7 +15,7 @@ import (
 	scalev2beta2 "k8s.io/api/autoscaling/v2beta2"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
-	policyv1beta1 "k8s.io/api/policy/v1beta1"
+	v1 "k8s.io/api/policy/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -312,7 +312,35 @@ func prepareKnativeServing(version string) {
 					Name:  "NO_PROXY",
 					Value: "AQ-{{ .Values.no_proxy }}",
 				})
+				e = append(e, corev1.EnvVar{
+					Name:  "SSL_CERT_FILE",
+					Value: "/ca-secret/ca.crt",
+				})
 				depl.Spec.Template.Spec.Containers[0].Env = e
+
+				// create volumemount from secret. it is either a provided cert
+				// or dummy base64
+				vms := depl.Spec.Template.Spec.Containers[0].VolumeMounts
+				vm := corev1.VolumeMount{
+					Name:      "ca-secret",
+					MountPath: "/ca-secret",
+				}
+				vms = append(vms, vm)
+				depl.Spec.Template.Spec.Containers[0].VolumeMounts = vms
+
+				// add volume for ca-cert
+				vs := depl.Spec.Template.Spec.Volumes
+				v := corev1.Volume{
+					Name: "ca-secret",
+					VolumeSource: corev1.VolumeSource{
+						Secret: &corev1.SecretVolumeSource{
+							SecretName: "ca-secret",
+						},
+					},
+				}
+				vs = append(vs, v)
+				depl.Spec.Template.Spec.Volumes = vs
+
 			}
 		case "CustomResourceDefinition":
 			print = false
@@ -327,7 +355,7 @@ func prepareKnativeServing(version string) {
 		case "ServiceAccount":
 			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, true)
 		case "PodDisruptionBudget":
-			addHelmLabels(&obj.(*policyv1beta1.PodDisruptionBudget).ObjectMeta, true)
+			addHelmLabels(&obj.(*v1.PodDisruptionBudget).ObjectMeta, true)
 		case "Secret":
 			addHelmLabels(&obj.(*corev1.Secret).ObjectMeta, true)
 		case "Image":
@@ -371,6 +399,7 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 	if cm.ObjectMeta.Name == "config-defaults" {
 		data["revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.timeout_seconds }}\""
 		data["max-revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.max_timeout_seconds }}\""
+		data["revision-cpu-request"] = "AQ-\"{{ .Values.defaults.revision_cpu_request }}\""
 		cm.Data = data
 	}
 
@@ -379,6 +408,8 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 		data["scale-to-zero-pod-retention-period"] = "AQ-\"{{ .Values.autoscaler.retention_period }}\""
 		data["max-scale-limit"] = "AQ-\"{{ .Values.autoscaler.max_scale }}\""
 		data["max-scale"] = "AQ-\"{{ .Values.autoscaler.max_scale }}\""
+		data["initial-scale"] = "AQ-\"{{ .Values.autoscaler.initial_scale }}\""
+		data["allow-zero-initial-scale"] = "AQ-\"{{ .Values.autoscaler.allow_zero_initial_scale }}\""
 		cm.Data = data
 	}
 
