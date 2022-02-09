@@ -26,4 +26,6 @@ autoscaler:
 deployment:
   skip_tag: "kind.local,ko.local,dev.local,localhost:5000,localhost:31212"
 
-
+controller:
+  # -- CA certifcate for self-signed certificate registries
+  ca: none
