@@ -15,7 +15,7 @@ import (
 	scalev2beta2 "k8s.io/api/autoscaling/v2beta2"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/api/policy/v1"
+	"k8s.io/api/policy/v1beta1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -355,7 +355,8 @@ func prepareKnativeServing(version string) {
 		case "ServiceAccount":
 			addHelmLabels(&obj.(*corev1.ServiceAccount).ObjectMeta, true)
 		case "PodDisruptionBudget":
-			addHelmLabels(&obj.(*v1.PodDisruptionBudget).ObjectMeta, true)
+			// addHelmLabels(&obj.(*v1.PodDisruptionBudget).ObjectMeta, true)
+			addHelmLabels(&obj.(*v1beta1.PodDisruptionBudget).ObjectMeta, true)
 		case "Secret":
 			addHelmLabels(&obj.(*corev1.Secret).ObjectMeta, true)
 		case "Image":

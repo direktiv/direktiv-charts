@@ -11,9 +11,9 @@ This chart installs Knative for Direktiv. It configures Knative with correct val
 
 ### Changes in 0.4.1
 
-*Disable auto-injection of linkerd for all components*
-*Inital scale default is 0, sidecar cpu request set to 50m*
-*SSL_CERT_FILE can be set with controller.ca*
+- *Disable auto-injection of linkerd for all components*
+- *Inital scale default is 0, sidecar cpu request set to 50m*
+- *SSL_CERT_FILE can be set with controller.ca*
 
 ## Installing the Chart
 
