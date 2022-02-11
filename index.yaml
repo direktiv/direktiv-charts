@@ -61,6 +61,17 @@ entries:
     version: 0.1.0
   knative:
   - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2022-02-11T03:49:37.748644089Z"
+    description: knative for direktiv
+    digest: c3652a3174bd090a7fa88ebd9b5aaa21caa8be7ddb3964083ce54bea1cc1ba75
+    icon: https://chart.direktiv.io/logo.png
+    name: knative
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/knative-0.4.2/knative-0.4.2.tgz
+    version: 0.4.2
+  - apiVersion: v2
     appVersion: 1.2.0
     created: "2022-02-09T03:42:48.79678915Z"
     description: knative for direktiv
@@ -94,4 +105,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.2.3/pgo-0.2.3.tgz
     version: 0.2.3
-generated: "2022-02-09T03:42:48.796806751Z"
+generated: "2022-02-11T03:49:37.748666089Z"
