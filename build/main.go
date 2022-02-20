@@ -401,6 +401,7 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 		data["revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.timeout_seconds }}\""
 		data["max-revision-timeout-seconds"] = "AQ-\"{{ .Values.defaults.max_timeout_seconds }}\""
 		data["revision-cpu-request"] = "AQ-\"{{ .Values.defaults.revision_cpu_request }}\""
+
 		cm.Data = data
 	}
 
@@ -427,6 +428,7 @@ func updateConfigMaps(obj runtime.Object) *corev1.ConfigMap {
 		data["tag-header-based-routing"] = "enabled"
 		data["kubernetes.podspec-volumes-emptydir"] = "enabled"
 		data["kubernetes.podspec-init-containers"] = "enabled"
+		data["kubernetes.podspec-affinity"] = "enabled"
 		cm.Data = data
 	}
 

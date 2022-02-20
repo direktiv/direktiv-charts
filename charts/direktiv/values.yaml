@@ -264,6 +264,16 @@ functions:
 
   affinity: {}
 
+  # -- affinity for the knative function pods. It will be taken 'as-is' except if the first key in requiredDuringSchedulingIgnoredDuringExecution is 
+  # direktiv.io/namespace. In that case the value of that key is the direktiv namespace of the pod. Can be used if the functions are running
+  # on dedicated nodes for namespaces, e.g.
+  # knativeAffinity:
+  #  requiredDuringSchedulingIgnoredDuringExecution:
+  #            nodeSelectorTerms:
+  #            - matchExpressions:
+  #              - key: direktiv.io/namespace
+  knativeAffinity: {}
+
   # -- extra containers for function controller, e.g. database containers for google cloud or logging
   extraContainersPod: []
 
