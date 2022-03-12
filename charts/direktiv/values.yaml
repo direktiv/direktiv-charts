@@ -125,7 +125,9 @@ fluentbit:
   #           match application
 
 
-# -- service account for flow component
+# -- service account for components. If preconfigured serviceaccounts are used the name ise the base 
+# and two additional service accounts are needed, e.g. service account name is myaccount then another two 
+# acounts are needed: myaccount-functions and myaccount-functions-pod
 serviceAccount:
   annotations: {}
   name: ""

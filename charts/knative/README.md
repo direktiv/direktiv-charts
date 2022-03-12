@@ -2,7 +2,7 @@
 
 knative for direktiv
 
-![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.2.0](https://img.shields.io/badge/AppVersion-1.2.0-informational?style=flat-square)
+![Version: 0.4.2](https://img.shields.io/badge/Version-0.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.1.0](https://img.shields.io/badge/AppVersion-1.1.0-informational?style=flat-square)
 
 ## Additional Information
 
@@ -14,6 +14,14 @@ This chart installs Knative for Direktiv. It configures Knative with correct val
 - *Disable auto-injection of linkerd for all components*
 - *Inital scale default is 0, sidecar cpu request set to 50m*
 - *SSL_CERT_FILE can be set with controller.ca*
+
+### Changes in 0.4.2
+
+- *Downgrade to knative 1.1.0 because of isssues with private registries*
+
+### Changes in 0.4.3
+
+- *Allowing node affinities for knative pods*
 
 ## Installing the Chart
 

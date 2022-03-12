@@ -8,6 +8,10 @@ direktiv helm chart
 
 This chart installs direktiv.
 
+### Changes in 0.1.3 (TBR)
+
+*creating of service accounts is optional*
+
 ### Changes in 0.1.2
 
 *Removed unnecessary environment variables in UI deployment*
@@ -71,6 +75,7 @@ $ helm install direktiv direktiv/direktiv
 | functions.image | string | `"direktiv/functions"` |  |
 | functions.ingressClass | string | `"contour.ingress.networking.knative.dev"` |  |
 | functions.initPodImage | string | `"direktiv/direktiv-init-pod"` |  |
+| functions.knativeAffinity | object | `{}` | affinity for the knative function pods. It will be taken 'as-is' except if the first key in requiredDuringSchedulingIgnoredDuringExecution is  direktiv.io/namespace. In that case the value of that key is the direktiv namespace of the pod. Can be used if the functions are running on dedicated nodes for namespaces, e.g. knativeAffinity:  requiredDuringSchedulingIgnoredDuringExecution:            nodeSelectorTerms:            - matchExpressions:              - key: direktiv.io/namespace |
 | functions.namespace | string | `"direktiv-services-direktiv"` |  |
 | functions.netShape | string | `"10M"` | Egress/Ingress network limit for functions if supported by network |
 | functions.no_proxy | string | `""` | no_proxy injected as environment variable in functions |
@@ -114,7 +119,7 @@ $ helm install direktiv direktiv/direktiv
 | pullPolicy | string | `"Always"` |  |
 | registry | string | `"docker.io"` |  |
 | secrets | object | `{"db":"","extraVolumeMounts":[],"image":"direktiv/secrets","tag":""}` | secrets sidecar in flow pod |
-| serviceAccount | object | `{"annotations":{},"name":""}` | service account for flow component |
+| serviceAccount | object | `{"annotations":{},"create":true,"name":""}` | service account for components. If preconfigured serviceaccounts are used the name ise the base  and two additional service accounts are needed, e.g. service account name is myaccount then another two  acounts are needed: myaccount-functions and myaccount-functions-pod |
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
 | ui | object | `{"affinity":{},"certificate":"none","extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":""}` | UI configuration |
