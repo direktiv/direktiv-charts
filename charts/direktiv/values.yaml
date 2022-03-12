@@ -129,6 +129,7 @@ fluentbit:
 serviceAccount:
   annotations: {}
   name: ""
+  create: true
   # example to annotate for GCP database access
   #   annotations:
   #      iam.gke.io/gcp-service-account: IAM_USER@GCP_PROJECT.iam.gserviceaccount.com
