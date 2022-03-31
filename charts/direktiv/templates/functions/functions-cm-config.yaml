@@ -86,12 +86,6 @@ data:
         https: "{{ .Values.functions.https_proxy }}"
         http: "{{ .Values.functions.http_proxy }}"
 
-      # node affinity for knative pods
-      knativeAffinity:
-{{- if .Values.functions.knativeAffinity }}
-{{ toYaml .Values.functions.knativeAffinity | indent 8}}
-{{- end }}
-
       # additional volumes
       extraVolumes:
 {{- if .Values.opentelemetry.enabled }}
