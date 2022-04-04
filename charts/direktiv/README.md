@@ -8,9 +8,12 @@ direktiv helm chart
 
 This chart installs direktiv.
 
-### Changes in 0.1.3 (TBR)
+### Changes in 0.1.3
 
 *creating of service accounts is optional*
+*added `additional` for additional attribuites for db connections*
+*make the cpu/mem limits for knative containers configurable*
+*multiple replicas have now requiredDuringSchedulingIgnoredDuringExecution podAntiAffinity*
 
 ### Changes in 0.1.2
 
@@ -48,6 +51,7 @@ $ helm install direktiv direktiv/direktiv
 | api.replicas | int | `1` |  |
 | api.tag | string | `""` | image tag for api pod |
 | apikey | string | `"none"` | enabled api key for the API, key set in http-snippet in `ingress-nginx` none |
+| database.additional | string | `""` | additional connection attributes, e.g. target_session_attrs |
 | database.host | string | `"postgres-postgresql-ha-pgpool.postgres"` | database host |
 | database.name | string | `"direktiv"` | database name, auto created if it does not exist |
 | database.password | string | `"direktivdirektiv"` | database password |
@@ -75,7 +79,7 @@ $ helm install direktiv direktiv/direktiv
 | functions.image | string | `"direktiv/functions"` |  |
 | functions.ingressClass | string | `"contour.ingress.networking.knative.dev"` |  |
 | functions.initPodImage | string | `"direktiv/direktiv-init-pod"` |  |
-| functions.knativeAffinity | object | `{}` | affinity for the knative function pods. It will be taken 'as-is' except if the first key in requiredDuringSchedulingIgnoredDuringExecution is  direktiv.io/namespace. In that case the value of that key is the direktiv namespace of the pod. Can be used if the functions are running on dedicated nodes for namespaces, e.g. knativeAffinity:  requiredDuringSchedulingIgnoredDuringExecution:            nodeSelectorTerms:            - matchExpressions:              - key: direktiv.io/namespace |
+| functions.limits | object | `{"cpu":{"large":1,"medium":0.5,"small":0.25},"memory":{"large":2048,"medium":1024,"small":512}}` | knative service limits  |
 | functions.namespace | string | `"direktiv-services-direktiv"` |  |
 | functions.netShape | string | `"10M"` | Egress/Ingress network limit for functions if supported by network |
 | functions.no_proxy | string | `""` | no_proxy injected as environment variable in functions |

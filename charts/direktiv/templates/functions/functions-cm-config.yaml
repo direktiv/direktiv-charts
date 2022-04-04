@@ -70,15 +70,16 @@ data:
       # runtime for services, e.g. gvisor
       runtime: {{ .Values.functions.runtime }}
 
-      # memory/cpu value defined for different service sizes
+      # max memory/cpu value defined for different service sizes
+      # Memory in Megabyte, 0 is no limit
       memory:
-        small: 64
-        medium: 128
-        large: 256
+        small: {{ .Values.functions.limits.memory.small }}
+        medium: {{ .Values.functions.limits.memory.medium }}
+        large: {{ .Values.functions.limits.memory.large }}
       cpu:
-        small: 0.1
-        medium: 0.25
-        large: 0.5
+        small: {{ .Values.functions.limits.cpu.small }}
+        medium: {{ .Values.functions.limits.cpu.medium }}
+        large: {{ .Values.functions.limits.cpu.large }}
 
       # proxy values
       proxy:

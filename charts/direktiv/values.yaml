@@ -243,6 +243,17 @@ functions:
   # -- no_proxy injected as environment variable in functions
   no_proxy: ""
 
+  # -- knative service limits 
+  limits:
+    memory:
+      small: 512
+      medium: 1024
+      large: 2048
+    cpu:
+      small: 0.25
+      medium: 0.5
+      large: 1
+
   # namespace to run functions in
   namespace: direktiv-services-direktiv
   ingressClass: contour.ingress.networking.knative.dev
