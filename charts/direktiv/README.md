@@ -2,11 +2,14 @@
 
 direktiv helm chart
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.6.0](https://img.shields.io/badge/AppVersion-v0.6.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.6.5](https://img.shields.io/badge/AppVersion-v0.6.5-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.6
+*Flow filesystem is writable for git integration*
 
 ### Changes in 0.1.3
 
@@ -53,7 +56,7 @@ $ helm install direktiv direktiv/direktiv
 | apikey | string | `"none"` | enabled api key for the API, key set in http-snippet in `ingress-nginx` none |
 | database.additional | string | `""` | additional connection attributes, e.g. target_session_attrs |
 | database.host | string | `"postgres-postgresql-ha-pgpool.postgres"` | database host |
-| database.name | string | `"direktiv"` | database name, auto created if it does not exist |
+| database.name | string | `"direktiv"` | database name, has to be created before installation |
 | database.password | string | `"direktivdirektiv"` | database password |
 | database.port | int | `5432` | database port |
 | database.sslmode | string | `"require"` | sslmode for database |

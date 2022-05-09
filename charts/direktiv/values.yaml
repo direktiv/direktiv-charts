@@ -108,7 +108,7 @@ database:
   user: "direktiv"
   # -- database password
   password: "direktivdirektiv"
-  # -- database name, auto created if it does not exist
+  # -- database name, has to be created before installation
   name: "direktiv"
   # -- sslmode for database
   sslmode: require
