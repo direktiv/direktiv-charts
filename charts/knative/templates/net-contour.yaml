@@ -6,7 +6,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-contour
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     networking.knative.dev/ingress-provider: contour
     serving.knative.dev/controller: "true"
   name: knative-serving-contour
@@ -65,9 +65,8 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: net-contour
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     networking.knative.dev/ingress-provider: contour
-    serving.knative.dev/release: v1.1.0
   name: config-contour
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -94,7 +93,7 @@ spec:
         app: net-contour-controller
         app.kubernetes.io/component: net-contour
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
+        app.kubernetes.io/version: 1.4.0
     spec:
       containers:
       - env:
@@ -108,7 +107,7 @@ spec:
           value: config-observability
         - name: METRICS_DOMAIN
           value: knative.dev/net-contour
-        image: gcr.io/knative-releases/knative.dev/net-contour/cmd/controller@sha256:922ce3f28a1dc618e4ebd62cfdf10216f06543bb70e280277107c4ec3d2e4eac
+        image: gcr.io/knative-releases/knative.dev/net-contour/cmd/controller@sha256:11cd42b6e36004d8965a26953de7ebb364d8e7d8ca5307459af4893079305e3c
         name: controller
         ports:
         - containerPort: 9090
