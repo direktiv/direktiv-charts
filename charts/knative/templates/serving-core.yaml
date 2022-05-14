@@ -9,8 +9,7 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: knative-serving-aggregated-addressable-resolver
 rules: null
 ---
@@ -21,9 +20,8 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     duck.knative.dev/addressable: "true"
-    serving.knative.dev/release: v1.1.0
   name: knative-serving-addressable-resolver
 rules:
 - apiGroups:
@@ -45,9 +43,8 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
-    serving.knative.dev/release: v1.1.0
   name: knative-serving-namespaced-admin
 rules:
 - apiGroups:
@@ -74,9 +71,8 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-    serving.knative.dev/release: v1.1.0
   name: knative-serving-namespaced-edit
 rules:
 - apiGroups:
@@ -106,9 +102,8 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     rbac.authorization.k8s.io/aggregate-to-view: "true"
-    serving.knative.dev/release: v1.1.0
   name: knative-serving-namespaced-view
 rules:
 - apiGroups:
@@ -130,9 +125,8 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     serving.knative.dev/controller: "true"
-    serving.knative.dev/release: v1.1.0
   name: knative-serving-core
 rules:
 - apiGroups:
@@ -266,9 +260,8 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     duck.knative.dev/podspecable: "true"
-    serving.knative.dev/release: v1.1.0
   name: knative-serving-podspecable-binding
 rules:
 - apiGroups:
@@ -289,8 +282,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: controller
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -305,8 +297,7 @@ metadata:
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: knative-serving-admin
 rules: null
 ---
@@ -318,8 +309,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: knative-serving-controller-admin
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -338,8 +328,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: knative-serving-controller-addressable-resolver
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -358,12 +347,11 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: queue-proxy
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: queue-proxy
   namespace: '{{ .Release.Namespace }}'
 spec:
-  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:48a1753de35ecbe060611aea9e95751e3e4851183c4373e65aa1b9410ea6e263
+  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:a40f6e84de1a0d145d27084a94cc7fa221159e75cafde7d332ac8f4f0aed58fb
 status: {}
 ---
 apiVersion: v1
@@ -387,18 +375,17 @@ data:
   scale-to-zero-grace-period: "{{ .Values.autoscaler.grace_period }}"
   scale-to-zero-pod-retention-period: "{{ .Values.autoscaler.retention_period }}"
   stable-window: 60s
-  target-burst-capacity: "200"
+  target-burst-capacity: "211"
 kind: ConfigMap
 metadata:
   annotations:
-    knative.dev/example-checksum: b4401cf4
+    knative.dev/example-checksum: 47c2487f
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: autoscaler
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-autoscaler
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -427,8 +414,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-defaults
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -441,10 +427,10 @@ data:
   queue-sidecar-cpu-request: 25m
   queue-sidecar-ephemeral-storage-limit: 1024Mi
   queue-sidecar-ephemeral-storage-request: 512Mi
-  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:48a1753de35ecbe060611aea9e95751e3e4851183c4373e65aa1b9410ea6e263
+  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:a40f6e84de1a0d145d27084a94cc7fa221159e75cafde7d332ac8f4f0aed58fb
   queue-sidecar-memory-limit: 800Mi
   queue-sidecar-memory-request: 400Mi
-  queueSidecarImage: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:48a1753de35ecbe060611aea9e95751e3e4851183c4373e65aa1b9410ea6e263
+  queueSidecarImage: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:a40f6e84de1a0d145d27084a94cc7fa221159e75cafde7d332ac8f4f0aed58fb
   registries-skipping-tag-resolving: {{ .Values.deployment.skip_tag }}
 kind: ConfigMap
 metadata:
@@ -455,8 +441,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-deployment
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -508,8 +493,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-domain
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -523,25 +507,27 @@ data:
   kubernetes.podspec-hostaliases: disabled
   kubernetes.podspec-init-containers: enabled
   kubernetes.podspec-nodeselector: disabled
+  kubernetes.podspec-persistent-volume-claim: disabled
+  kubernetes.podspec-persistent-volume-write: disabled
   kubernetes.podspec-priorityclassname: disabled
   kubernetes.podspec-runtimeclassname: enabled
   kubernetes.podspec-schedulername: disabled
   kubernetes.podspec-securitycontext: enabled
   kubernetes.podspec-tolerations: disabled
+  kubernetes.podspec-topologyspreadconstraints: disabled
   kubernetes.podspec-volumes-emptydir: enabled
   multi-container: enabled
   tag-header-based-routing: enabled
 kind: ConfigMap
 metadata:
   annotations:
-    knative.dev/example-checksum: 2897f625
+    knative.dev/example-checksum: e1c6e542
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-features
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -586,6 +572,7 @@ data:
     #
     # Example config to immediately collect any inactive revision:
     #    min-non-active-revisions: "0"
+    #    max-non-active-revisions: "0"
     #    retain-since-create-time: "disabled"
     #    retain-since-last-active-time: "disabled"
     #
@@ -622,14 +609,13 @@ data:
 kind: ConfigMap
 metadata:
   annotations:
-    knative.dev/example-checksum: 51b4d68a
+    knative.dev/example-checksum: "45463e45"
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-gc
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -653,15 +639,15 @@ data:
 
     # lease-duration is how long non-leaders will wait to try to acquire the
     # lock; 15 seconds is the value used by core kubernetes controllers.
-    lease-duration: "15s"
+    lease-duration: "60s"
 
     # renew-deadline is how long a leader will try to renew the lease before
     # giving up; 10 seconds is the value used by core kubernetes controllers.
-    renew-deadline: "10s"
+    renew-deadline: "40s"
 
     # retry-period is how long the leader election client waits between tries of
     # actions; 2 seconds is the value used by core kubernetes controllers.
-    retry-period: "2s"
+    retry-period: "10s"
 
     # buckets is the number of buckets used to partition key space of each
     # Reconciler. If this number is M and the replica number of the controller
@@ -672,14 +658,13 @@ data:
 kind: ConfigMap
 metadata:
   annotations:
-    knative.dev/example-checksum: f7948630
+    knative.dev/example-checksum: f4b71f57
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-leader-election
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -736,16 +721,17 @@ data:
     loglevel.hpaautoscaler: "info"
     loglevel.net-certmanager-controller: "info"
     loglevel.net-istio-controller: "info"
+    loglevel.net-contour-controller: "info"
 kind: ConfigMap
 metadata:
   annotations:
-    knative.dev/example-checksum: be93ff10
+    knative.dev/example-checksum: b0f3c6f2
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: logging
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-logging
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -899,16 +885,64 @@ data:
     # fronting Knative with an external loadbalancer that deals with TLS termination and
     # Knative doesn't know about that otherwise.
     default-external-scheme: "http"
+
+    # The CA public certificate used to sign the activator TLS certificate.
+    # It is specified by the secret name, which has the "ca.crt" data field.
+    # Use an empty value to disable the feature (default).
+    #
+    # NOTE: This flag is in an alpha state and is mostly here to enable internal testing
+    #       for now. Use with caution.
+    activator-ca: ""
+
+    # The SAN (Subject Alt Name) used to validate the activator TLS certificate.
+    # It must be set when "activator-ca" is specified.
+    # Use an empty value to disable the feature (default).
+    #
+    # NOTE: This flag is in an alpha state and is mostly here to enable internal testing
+    #       for now. Use with caution.
+    activator-san: ""
+
+    # The server certificates to serve the TLS traffic from ingress to activator.
+    # It is specified by the secret name, which has the "tls.crt" and "tls.key" data field.
+    # Use an empty value to disable the feature (default).
+    #
+    # NOTE: This flag is in an alpha state and is mostly here to enable internal testing
+    #       for now. Use with caution.
+    activator-cert-secret: ""
+
+    # The CA public certificate used to sign the queue-proxy TLS certificate.
+    # It is specified by the secret name, which has the "ca.crt" data field.
+    # Use an empty value to disable the feature (default).
+    #
+    # NOTE: This flag is in an alpha state and is mostly here to enable internal testing
+    #       for now. Use with caution.
+    queue-proxy-ca: ""
+
+    # The SAN (Subject Alt Name) used to validate the activator TLS certificate.
+    # It must be set when "queue-proxy-ca" is specified.
+    # Use an empty value to disable the feature (default).
+    #
+    # NOTE: This flag is in an alpha state and is mostly here to enable internal testing
+    #       for now. Use with caution.
+    queue-proxy-san: ""
+
+    # The server certificates to serve the TLS traffic from activator to queue-proxy.
+    # It is specified by the secret name, which has the "tls.crt" and "tls.key" data field.
+    # Use an empty value to disable the feature (default).
+    #
+    # NOTE: This flag is in an alpha state and is mostly here to enable internal testing
+    #       for now. Use with caution.
+    queue-proxy-cert-secret: ""
 kind: ConfigMap
 metadata:
   annotations:
-    knative.dev/example-checksum: 6e2033e0
+    knative.dev/example-checksum: d0b91f80
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: networking
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-network
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -1002,9 +1036,9 @@ metadata:
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: observability
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-observability
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -1046,9 +1080,9 @@ metadata:
   creationTimestamp: null
   labels:
     {{- include "knative.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tracing
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config-tracing
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -1060,8 +1094,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: activator
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1084,7 +1117,7 @@ status:
   currentReplicas: 0
   desiredReplicas: 0
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   creationTimestamp: null
@@ -1092,8 +1125,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: activator-pdb
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1115,8 +1147,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: activator
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1134,9 +1165,8 @@ spec:
         app: activator
         app.kubernetes.io/component: activator
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
+        app.kubernetes.io/version: 1.4.0
         role: activator
-        serving.knative.dev/release: v1.1.0
     spec:
       containers:
       - env:
@@ -1160,7 +1190,7 @@ spec:
           value: config-observability
         - name: METRICS_DOMAIN
           value: knative.dev/internal/serving
-        image: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256:ba1485ded12049525afb9856c2fa10d613dbc2b2da90556116bf257f2128eaae
+        image: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256:7d664e052ec0e78961dbb7b5acb62c70ba106ba1fdd46f2177ab56e1d0d360fb
         livenessProbe:
           failureThreshold: 12
           httpGet:
@@ -1169,6 +1199,7 @@ spec:
               value: activator
             port: 8012
           initialDelaySeconds: 15
+          periodSeconds: 10
         name: activator
         ports:
         - containerPort: 9090
@@ -1180,12 +1211,13 @@ spec:
         - containerPort: 8013
           name: h2c
         readinessProbe:
-          failureThreshold: 12
+          failureThreshold: 5
           httpGet:
             httpHeaders:
             - name: k-kubelet-probe
               value: activator
             port: 8012
+          periodSeconds: 5
         resources:
           limits:
             cpu: "1"
@@ -1213,8 +1245,7 @@ metadata:
     app: activator
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: activator-service
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1231,6 +1262,9 @@ spec:
   - name: http2
     port: 81
     targetPort: 8013
+  - name: https
+    port: 443
+    targetPort: 8112
   selector:
     app: activator
   type: ClusterIP
@@ -1245,8 +1279,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: autoscaler
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: autoscaler
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1254,7 +1287,10 @@ spec:
   selector:
     matchLabels:
       app: autoscaler
-  strategy: {}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       annotations:
@@ -1264,8 +1300,7 @@ spec:
         app: autoscaler
         app.kubernetes.io/component: autoscaler
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
-        serving.knative.dev/release: v1.1.0
+        app.kubernetes.io/version: 1.4.0
     spec:
       affinity:
         podAntiAffinity:
@@ -1296,7 +1331,7 @@ spec:
           value: config-observability
         - name: METRICS_DOMAIN
           value: knative.dev/serving
-        image: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler@sha256:dca8258a46dd225b8a72dfe63e8971b23876458f6f64b4ad82792c4d6e470bdc
+        image: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler@sha256:02f187b21cc00bc91c45db85571299f338fcbd58aa5c9193f0833782a7710dea
         livenessProbe:
           failureThreshold: 6
           httpGet:
@@ -1344,8 +1379,7 @@ metadata:
     app: autoscaler
     app.kubernetes.io/component: autoscaler
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: autoscaler
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1372,8 +1406,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: controller
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1391,8 +1424,7 @@ spec:
         app: controller
         app.kubernetes.io/component: controller
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
-        serving.knative.dev/release: v1.1.0
+        app.kubernetes.io/version: 1.4.0
     spec:
       affinity:
         podAntiAffinity:
@@ -1427,7 +1459,7 @@ spec:
           value: {{ .Values.no_proxy }}
         - name: SSL_CERT_FILE
           value: /ca-secret/ca.crt
-        image: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256:2765feeaa3958827388e6f5119010ee08c0eec9ad7518bb38ac4b9a4355d87fb
+        image: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256:8d84706d53adcf89c49687b4fade06261769b9f99257cb64d1758398f085b062
         name: controller
         ports:
         - containerPort: 9090
@@ -1467,8 +1499,7 @@ metadata:
     app: controller
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: controller
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1492,8 +1523,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: domain-mapping
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1511,8 +1541,7 @@ spec:
         app: domain-mapping
         app.kubernetes.io/component: domain-mapping
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
-        serving.knative.dev/release: v1.1.0
+        app.kubernetes.io/version: 1.4.0
     spec:
       affinity:
         podAntiAffinity:
@@ -1535,7 +1564,7 @@ spec:
           value: config-observability
         - name: METRICS_DOMAIN
           value: knative.dev/serving
-        image: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping@sha256:25df5b854d28dac69c6293db4db50d8fa819c96ad2f2a30bdde6aad467de1b17
+        image: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping@sha256:43d9ef8ef868aa8fd72a1f1f69ba07da99cfa0a73014636ff7ece9bc614b1f8f
         name: domain-mapping
         ports:
         - containerPort: 9090
@@ -1567,8 +1596,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: domainmapping-webhook
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1587,9 +1615,8 @@ spec:
         app: domainmapping-webhook
         app.kubernetes.io/component: domain-mapping
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
+        app.kubernetes.io/version: 1.4.0
         role: domainmapping-webhook
-        serving.knative.dev/release: v1.1.0
     spec:
       affinity:
         podAntiAffinity:
@@ -1618,7 +1645,7 @@ spec:
           value: "8443"
         - name: METRICS_DOMAIN
           value: knative.dev/serving
-        image: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook@sha256:6ccc1f6ac07d27e97d96c502b4c6e928d5fb3abd165ae7670e94a57788416c75
+        image: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook@sha256:b0039cd8d749608e4ab04544d36026556be04fe6ac39041223372b1c9031d8d6
         livenessProbe:
           failureThreshold: 6
           httpGet:
@@ -1671,9 +1698,8 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     role: domainmapping-webhook
-    serving.knative.dev/release: v1.1.0
   name: domainmapping-webhook
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1700,8 +1726,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: webhook
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1724,7 +1749,7 @@ status:
   currentReplicas: 0
   desiredReplicas: 0
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   creationTimestamp: null
@@ -1732,8 +1757,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: webhook-pdb
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1755,8 +1779,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: webhook
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1773,11 +1796,9 @@ spec:
       creationTimestamp: null
       labels:
         app: webhook
-        app.kubernetes.io/component: webhook
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: 1.1.0
+        app.kubernetes.io/version: 1.4.0
         role: webhook
-        serving.knative.dev/release: v1.1.0
     spec:
       affinity:
         podAntiAffinity:
@@ -1808,7 +1829,7 @@ spec:
           value: "8443"
         - name: METRICS_DOMAIN
           value: knative.dev/internal/serving
-        image: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256:9f3c83def9d0d5de0e8e1d1f4c10f262e283fe12d21dcbb91de06b65d3bd08ad
+        image: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256:bf58bf8d3790440aa7fb700b45e52ae9678e1ea6dc1135b10ff4b9b1087ee016
         livenessProbe:
           failureThreshold: 6
           httpGet:
@@ -1861,9 +1882,8 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
+    app.kubernetes.io/version: 1.4.0
     role: webhook
-    serving.knative.dev/release: v1.1.0
   name: webhook
   namespace: '{{ .Release.Namespace }}'
 spec:
@@ -1890,8 +1910,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: config.webhook.serving.knative.dev
 webhooks:
 - admissionReviewVersions:
@@ -1903,10 +1922,21 @@ webhooks:
       namespace: knative-serving
   failurePolicy: Fail
   name: config.webhook.serving.knative.dev
-  namespaceSelector:
+  objectSelector:
     matchExpressions:
-    - key: serving.knative.dev/release
-      operator: Exists
+    - key: app.kubernetes.io/name
+      operator: In
+      values:
+      - knative-serving
+    - key: app.kubernetes.io/component
+      operator: In
+      values:
+      - autoscaler
+      - controller
+      - logging
+      - networking
+      - observability
+      - tracing
   sideEffects: None
   timeoutSeconds: 10
 ---
@@ -1918,8 +1948,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: webhook.serving.knative.dev
 webhooks:
 - admissionReviewVersions:
@@ -1963,8 +1992,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: webhook.domainmapping.serving.knative.dev
 webhooks:
 - admissionReviewVersions:
@@ -1999,8 +2027,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: domainmapping-webhook-certs
   namespace: '{{ .Release.Namespace }}'
 ---
@@ -2012,8 +2039,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: validation.webhook.domainmapping.serving.knative.dev
 webhooks:
 - admissionReviewVersions:
@@ -2049,8 +2075,7 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: validation.webhook.serving.knative.dev
 webhooks:
 - admissionReviewVersions:
@@ -2095,7 +2120,6 @@ metadata:
     {{- include "knative.labels" . | nindent 4 }}
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: '{{ .Release.Name }}'
-    app.kubernetes.io/version: 1.1.0
-    serving.knative.dev/release: v1.1.0
+    app.kubernetes.io/version: 1.4.0
   name: webhook-certs
   namespace: '{{ .Release.Namespace }}'
