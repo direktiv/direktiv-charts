@@ -2,26 +2,30 @@
 
 knative for direktiv
 
-![Version: 0.4.3](https://img.shields.io/badge/Version-0.4.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.1.0](https://img.shields.io/badge/AppVersion-1.1.0-informational?style=flat-square)
+![Version: 0.4.4](https://img.shields.io/badge/Version-0.4.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.4.0](https://img.shields.io/badge/AppVersion-1.4.0-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs Knative for Direktiv. It configures Knative with correct values in Direktiv's context and adds
  support to provide proxy values for corporate proxies.
 
-### Changes in 0.4.1
+### Changes in 0.4.4
 
-- *Disable auto-injection of linkerd for all components*
-- *Inital scale default is 0, sidecar cpu request set to 50m*
-- *SSL_CERT_FILE can be set with controller.ca*
+- *Upgraded to 1.4.0*
+
+### Changes in 0.4.3
+
+- *Allowing node affinities for knative pods*
 
 ### Changes in 0.4.2
 
 - *Downgrade to knative 1.1.0 because of isssues with private registries*
 
-### Changes in 0.4.3
+### Changes in 0.4.1
 
-- *Allowing node affinities for knative pods*
+- *Disable auto-injection of linkerd for all components*
+- *Inital scale default is 0, sidecar cpu request set to 50m*
+- *SSL_CERT_FILE can be set with controller.ca*
 
 ## Installing the Chart
 
