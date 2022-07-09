@@ -9,6 +9,10 @@ knative for direktiv
 This chart installs Knative for Direktiv. It configures Knative with correct values in Direktiv's context and adds
  support to provide proxy values for corporate proxies.
 
+### Changes in 0.4.5
+
+- *Upgraded to 1.5.0*
+
 ### Changes in 0.4.4
 
 - *Upgraded to 1.4.0*
