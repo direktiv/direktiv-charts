@@ -27,5 +27,5 @@ run-pgo-helm:
 .PHONY: helm-docs
 helm-docs: ## Generates helm documentation
 helm-docs:
-	GO111MODULE=on go get github.com/norwoodj/helm-docs/cmd/helm-docs
+	go install github.com/norwoodj/helm-docs/cmd/helm-docs
 	helm-docs kubernetes/charts
