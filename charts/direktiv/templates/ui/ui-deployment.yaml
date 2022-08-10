@@ -40,6 +40,11 @@ spec:
 {{ toYaml .Values.ui.extraContainers | indent 8 }}
 {{- end }}
         - name: ui
+          volumeMounts:
+          - mountPath: /var/run
+            name: tmpfs-nginx
+          - mountPath: /var/cache/nginx
+            name: tmpfs-nginx-cache
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -62,6 +67,10 @@ spec:
               containerPort: 8080
               protocol: TCP
       volumes:
+      - name: tmpfs-nginx
+        emptyDir: {}
+      - name: tmpfs-nginx-cache
+        emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
