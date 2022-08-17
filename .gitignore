@@ -16,3 +16,4 @@
 
 charts/knative/charts/*
 charts/direktiv/charts/*
+.vscode
