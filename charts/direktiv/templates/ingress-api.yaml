@@ -18,7 +18,7 @@ metadata:
     {{- end }}
     {{- if ne .Values.apikey "none" }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ( $http_apikey != "{{ .Values.apikey }}" ) {
+      if ( $http_direktiv_token != "{{ .Values.apikey }}" ) {
           return 401;
       }
     {{- end }}

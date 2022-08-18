@@ -309,7 +309,7 @@ functions:
     #       memory: "2Gi"
     #       cpu:    "1"
 
-# -- enabled api key for the API, key set in http-snippet in `ingress-nginx` none
+# -- enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none
 apikey: none
 
 # -- nginx ingress controller configuration

@@ -62,7 +62,7 @@ $ helm install direktiv direktiv/direktiv
 | api.image | string | `"direktiv/api"` | image for api pod |
 | api.replicas | int | `1` |  |
 | api.tag | string | `""` | image tag for api pod |
-| apikey | string | `"none"` | enabled api key for the API, key set in http-snippet in `ingress-nginx` none |
+| apikey | string | `"none"` | enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none |
 | database.additional | string | `""` | additional connection attributes, e.g. target_session_attrs |
 | database.host | string | `"postgres-postgresql-ha-pgpool.postgres"` | database host |
 | database.name | string | `"direktiv"` | database name, has to be created before installation |
