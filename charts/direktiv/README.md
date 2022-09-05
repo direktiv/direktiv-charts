@@ -2,11 +2,16 @@
 
 direktiv helm chart
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.6.7](https://img.shields.io/badge/AppVersion-v0.6.7-informational?style=flat-square)
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0-rc1](https://img.shields.io/badge/AppVersion-v0.7.0--rc1-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.10
+
+*Version upgrade*
+*Added API secret*
 
 ### Changes in 0.1.9
 *Version fix*

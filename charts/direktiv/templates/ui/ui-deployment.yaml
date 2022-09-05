@@ -46,7 +46,7 @@ spec:
           - mountPath: /var/cache/nginx
             name: tmpfs-nginx-cache
           securityContext:
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
           resources:
             requests:
