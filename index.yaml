@@ -328,6 +328,17 @@ entries:
     version: 0.4.0
   pgo:
   - apiVersion: v2
+    appVersion: 5.2.0
+    created: "2022-10-23T09:25:12.90613008Z"
+    description: Installer for PGO, the open source Postgres Operator from Crunchy
+      Data
+    digest: 526cee21f351024b2bc3775fb58a842b0edea7756f76d5a4ea61de592ef145cb
+    name: pgo
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.6.0/pgo-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
     appVersion: 5.0.4
     created: "2021-12-23T22:33:44.884848402Z"
     description: Installer for PGO, the open source Postgres Operator from Crunchy
@@ -338,4 +349,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.2.3/pgo-0.2.3.tgz
     version: 0.2.3
-generated: "2022-10-16T12:29:10.867583561Z"
+generated: "2022-10-23T09:25:12.906198581Z"
