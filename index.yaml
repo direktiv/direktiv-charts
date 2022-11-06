@@ -349,4 +349,15 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/pgo-0.2.3/pgo-0.2.3.tgz
     version: 0.2.3
-generated: "2022-10-23T09:25:12.906198581Z"
+  postgrescluster:
+  - apiVersion: v2
+    appVersion: 5.2.0
+    created: "2022-11-06T12:09:31.662409741Z"
+    description: A Helm chart for Kubernetes
+    digest: 6c89b65b5273cae34c33189c57a9145ba2d95a59cd85eef02a89f39167911f32
+    name: postgrescluster
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/postgrescluster-0.6.0/postgrescluster-0.6.0.tgz
+    version: 0.6.0
+generated: "2022-11-06T12:09:31.662737047Z"
