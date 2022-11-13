@@ -8,6 +8,12 @@ direktiv helm chart
 
 This chart installs direktiv.
 
+### Changes in 0.1.13
+
+* Added function namespace generation automatically
+* Added update strategy for deployments
+* Ingresses are optional, default true
+
 ### Changes in 0.1.12
 
 *Version upgrade*
@@ -120,6 +126,7 @@ $ helm install direktiv direktiv/direktiv
 | ingress.additionalAnnotations | object | `{}` | Additional Annotations |
 | ingress.certificate | string | `"none"` | TLS secret |
 | ingress.class | string | `"nginx"` | ingress class |
+| ingress.enabled | bool | `true` |  |
 | ingress.host | string | `""` | host for external services, only required for TLS |
 | logging | string | `"json"` | json or console logger |
 | networkPolicies.db | string | `"0.0.0.0/0"` | CIDR for database, excempt from policies |

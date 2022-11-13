@@ -6,6 +6,10 @@ metadata:
     {{- include "direktiv.labels" . | nindent 4 }}-functions
 spec:
   replicas: {{ .Values.functions.replicas }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       {{- include "direktiv.selectorLabelsFunctions" . | nindent 6 }}

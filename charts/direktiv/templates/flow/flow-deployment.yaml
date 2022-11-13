@@ -6,6 +6,10 @@ metadata:
     {{- include "direktiv.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.flow.replicas }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       {{- include "direktiv.selectorLabels" . | nindent 6 }}
@@ -30,6 +34,8 @@ spec:
                   values:
                   - direktiv
             topologyKey: "kubernetes.io/hostname"
+
+
       {{- end }}
       securityContext:
         runAsNonRoot: true

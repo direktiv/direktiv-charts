@@ -6,6 +6,10 @@ metadata:
     {{ include "direktiv.labelsUI" . | nindent 4 }}-ui
 spec:
   replicas: {{ .Values.ui.replicas }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       {{- include "direktiv.selectorLabelsUI" . | nindent 6 }}

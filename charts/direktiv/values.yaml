@@ -90,6 +90,7 @@ networkPolicies:
   podCidr: 0.0.0.0/0
 
 ingress:
+  enabled: true
   # -- host for external services, only required for TLS
   host: ""
   # -- TLS secret
