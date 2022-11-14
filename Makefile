@@ -28,4 +28,4 @@ run-pgo-helm:
 helm-docs: ## Generates helm documentation
 helm-docs:
 	go install github.com/norwoodj/helm-docs/cmd/helm-docs
-	helm-docs kubernetes/charts
+	helm-docs charts

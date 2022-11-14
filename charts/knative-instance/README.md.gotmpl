@@ -1,0 +1,23 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Additional Information
+
+This chart installs a Knative Service instance for the Knative Operator and Contour as the network component.
+
+## Installing the Chart
+
+To install the chart with the release name `knative`:
+
+```console
+$ helm repo add direktiv https://chart.direktiv.io
+$ helm install knative direktiv/{{ template "chart.name" . }}
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}

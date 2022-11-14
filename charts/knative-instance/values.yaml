@@ -1,0 +1,18 @@
+# -- Knative version
+version: 1.8.0
+
+# -- Knative replicas
+replicas: 1
+
+# -- Proxy settings for controller
+http_proxy: ""
+https_proxy: ""
+no_proxy: ""
+
+# -- Custom certificate for controller. This needs to be a secret create before installation in the knative-serving namespace
+certificate: ""
+
+# -- Repositories which skip digest resolution
+skip-digest: kind.local,ko.local,dev.local,localhost:5000,localhost:31212
+
+
