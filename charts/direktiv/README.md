@@ -2,11 +2,16 @@
 
 direktiv helm chart
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
+![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.14
+
+* Added helm labels to function namespace
+* Updated prometheus, nginx dependencies
 
 ### Changes in 0.1.13
 
@@ -65,8 +70,8 @@ $ helm install direktiv direktiv/direktiv
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.0.13 |
-| https://prometheus-community.github.io/helm-charts | prometheus | 14.7.1 |
+| https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.4.0 |
+| https://prometheus-community.github.io/helm-charts | prometheus | 15.18.0 |
 
 ## Values
 
