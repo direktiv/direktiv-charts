@@ -251,8 +251,8 @@ functions:
       medium: 1024
       large: 2048
     cpu:
-      small: 0.25
-      medium: 0.5
+      small: 250m
+      medium: 500m
       large: 1
     disk:
       small: 256
