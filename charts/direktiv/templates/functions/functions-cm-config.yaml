@@ -28,9 +28,6 @@ data:
       opentelemetry-backend: ""
       {{- end }}
 
-      # maximum timeout, needs to be in below knative max
-      request-timeout: {{ .Values.timeout }}
-
       # name of the service account to run the pods
       service-account: {{ include "direktiv.serviceAccountName" . }}-functions-pod
 
@@ -40,32 +37,11 @@ data:
       # pod sidecar name
       sidecar: {{ .Values.registry }}/{{ .Values.functions.sidecar }}:{{ .Values.functions.tag | default .Chart.AppVersion }}
 
-      # init pod name
-      init-pod: {{ .Values.registry }}/{{ .Values.functions.initPodImage }}:{{ .Values.functions.tag | default .Chart.AppVersion }}
-
-      # max number of revisions to keep per namespace or global
-      keep-revisions: 3
-
-      # max number of parallel jobs per namespace
-      max-jobs: 5
-
-      # kubernetes 1.20 auto cleans up jobs, for < 1.19, should be enabled
-      pod-cleaner: {{ .Values.functions.podCleaner }}
-
       # max number of pods per service
       max-scale: 3
 
-      # rollout seconds for knative services
-      rollout-duration: 10
-
       # shaping network traffic if supported by network plugin
       net-shape: {{ .Values.functions.netShape }}
-
-      # default concurrency level
-      concurrency: 100
-
-      # max ephemeral storage in MB
-      storage: 100
 
       # runtime for services, e.g. gvisor
       runtime: {{ .Values.functions.runtime }}
@@ -80,6 +56,13 @@ data:
         small: {{ .Values.functions.limits.cpu.small }}
         medium: {{ .Values.functions.limits.cpu.medium }}
         large: {{ .Values.functions.limits.cpu.large }}
+
+      # disk size can not be large than the max configuration
+      # in Knative which is 4GB by default
+      disk:
+        small: {{ .Values.functions.limits.disk.small }}
+        medium: {{ .Values.functions.limits.disk.medium }}
+        large: {{ .Values.functions.limits.disk.large }}
 
       # proxy values
       proxy:
@@ -101,3 +84,20 @@ data:
 {{- if .Values.functions.extraContainersPod }}
 {{ toYaml .Values.functions.extraContainersPod | indent 8}}
 {{- end }}
+
+      ######### Deprecated #########
+      # default concurrency level
+      concurrency: 100
+
+      # maximum timeout, needs to be in below knative max
+      request-timeout: {{ .Values.timeout }}
+
+      # max ephemeral storage in MB
+      storage: 100
+
+      # rollout seconds for knative services
+      rollout-duration: 10
+      
+      # init pod name
+      init-pod: {{ .Values.registry }}/{{ .Values.functions.initPodImage }}:{{ .Values.functions.tag | default .Chart.AppVersion }}    
+

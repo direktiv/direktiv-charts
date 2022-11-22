@@ -254,6 +254,10 @@ functions:
       small: 0.25
       medium: 0.5
       large: 1
+    disk:
+      small: 256
+      medium: 1024
+      large: 4096
 
   # namespace to run functions in
   namespace: direktiv-services-direktiv
@@ -265,7 +269,7 @@ functions:
 
   sidecar: "direktiv/sidecar"
 
-  initPodImage:  "direktiv/direktiv-init-pod"
+  initPodImage:  "direktiv/direktiv-init-pod" # deprecated
 
   # -- number of controller replicas
   replicas: 1
@@ -274,7 +278,7 @@ functions:
   netShape: "10M"
 
   # -- Cleaning up tasks, Kubernetes < 1.20 does not clean finished tasks
-  podCleaner: true
+  podCleaner: true  # deprecated
 
   # -- runtime to use, e.g. gvisor on GCP
   runtime: "default"
