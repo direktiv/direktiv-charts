@@ -18,7 +18,7 @@ spec:
       labels:
         {{- include "direktiv.selectorLabelsUI" . | nindent 8 }}
     spec:
-    {{- if ge (default $.Values.ui.replicas 1) 1 }}
+    {{- if gt (default $.Values.ui.replicas 1) 1 }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
