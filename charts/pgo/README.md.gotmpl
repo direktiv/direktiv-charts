@@ -1,0 +1,24 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Additional Information
+
+Installer for PGO, the open source Postgres Operator from Crunchy Data.
+This chart installs <a href="https://www.crunchydata.com/">CrunchyData's postgres controller</a>.
+
+## Installing the Chart
+
+To install the chart with the name `pgo`:
+
+```console
+$ helm repo add direktiv https://chart.direktiv.io
+$ helm install pgo direktiv/{{ template "chart.name" . }}
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}
