@@ -1,9 +1,9 @@
 dependencies:
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 14.7.1
+  version: 15.18.0
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
-  version: 4.0.13
-digest: sha256:9d2dc654f955ea7933a0074ab501cb420b032c0fef3e78fe846ef82ca57a725f
-generated: "2022-01-21T10:06:42.279265116+10:00"
+  version: 4.4.0
+digest: sha256:d7475b0f6f06b2b7ed547ea6318f723e25204fcdafd1244d351e132ec651850e
+generated: "2023-02-07T16:29:09.295424637+01:00"

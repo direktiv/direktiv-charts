@@ -89,6 +89,10 @@ spec:
           - name: "NO_PROXY"
             value: "{{ .Values.no_proxy }}"
           {{- end }}
+          - name: "DIREKTIV_NAMESPACE"
+            value: "{{ .Release.Namespace }}"
+          - name: "DIREKTIV_HOST"
+            value: "{{ .Values.ingress.host }}"
           - name: DIREKTIV_DB
             valueFrom:
               secretKeyRef:

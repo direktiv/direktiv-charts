@@ -2,11 +2,18 @@
 
 direktiv helm chart
 
-![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
+![Version: 0.1.15](https://img.shields.io/badge/Version-0.1.15-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.1](https://img.shields.io/badge/AppVersion-v0.7.1-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.15
+
+* Deprecated unused function configuration items
+* Added disk size to small, medium, large function settings
+* Added permission to watch configmaps to function deployment
+* Updated dependencies (Prometheus, Nginx)
 
 ### Changes in 0.1.14
 
@@ -115,7 +122,7 @@ $ helm install direktiv direktiv/direktiv
 | functions.image | string | `"direktiv/functions"` |  |
 | functions.ingressClass | string | `"contour.ingress.networking.knative.dev"` |  |
 | functions.initPodImage | string | `"direktiv/direktiv-init-pod"` |  |
-| functions.limits | object | `{"cpu":{"large":1,"medium":0.5,"small":0.25},"memory":{"large":2048,"medium":1024,"small":512}}` | knative service limits  |
+| functions.limits | object | `{"cpu":{"large":1,"medium":"500m","small":"250m"},"disk":{"large":4096,"medium":1024,"small":256},"memory":{"large":2048,"medium":1024,"small":512}}` | knative service limits  |
 | functions.namespace | string | `"direktiv-services-direktiv"` |  |
 | functions.netShape | string | `"10M"` | Egress/Ingress network limit for functions if supported by network |
 | functions.no_proxy | string | `""` | no_proxy injected as environment variable in functions |
