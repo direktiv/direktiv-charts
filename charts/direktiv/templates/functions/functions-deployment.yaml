@@ -53,6 +53,8 @@ spec:
             mountPath: /etc/direktiv/functions-config.yaml
             subPath: functions-config.yaml
           env:
+            - name: DIREKTIV_APP
+              value: "functions"
             - name: DIREKTIV_LOG_JSON
               value: {{ .Values.logging | quote }}
             {{- if .Values.debug }}
