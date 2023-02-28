@@ -5246,7 +5246,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        image: docker.io/envoyproxy/envoy:v1.23.0
+        image: docker.io/envoyproxy/envoy:v1.23.1
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
