@@ -19,3 +19,4 @@ charts/direktiv/charts/*
 .vscode
 
 **/*.contour.yaml
+.idea

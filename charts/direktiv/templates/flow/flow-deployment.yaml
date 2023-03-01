@@ -50,6 +50,8 @@ spec:
         - name: updatedb
           image: "{{ .Values.registry }}/{{ .Values.flow.dbimage }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
           env:
+          - name: DIREKTIV_APP
+            value: "flow_dbinit"
           - name: DIREKTIV_DB
             valueFrom:
               secretKeyRef:
@@ -96,6 +98,8 @@ spec:
               containerPort: 3333
             {{- end }}
           env:
+          - name: DIREKTIV_APP
+            value: "flow"
           - name: DIREKTIV_LOG_JSON
             value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG
@@ -130,7 +134,6 @@ spec:
               memory: "512Mi"
               cpu: "1"
           image: "{{ .Values.registry }}/{{ .Values.secrets.image }}:{{ .Values.secrets.tag | default .Chart.AppVersion }}"
-          command: ["/bin/secrets"]
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
           {{- if .Values.flow.extraVolumeMounts -}}
@@ -141,6 +144,8 @@ spec:
               containerPort: 2610
               protocol: TCP
           env:
+          - name: DIREKTIV_APP
+            value: "secrets"
           - name: DIREKTIV_LOG_JSON
             value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG

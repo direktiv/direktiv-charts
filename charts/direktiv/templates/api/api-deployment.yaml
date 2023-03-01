@@ -59,7 +59,7 @@ spec:
               cpu: "2"
           image: "{{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          # command: ["/bin/server", "server", "/etc/direktiv/flow-config.yaml"]
+          command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]
           volumeMounts:
           {{- if .Values.api.extraVolumeMounts -}}
           {{ toYaml .Values.api.extraVolumeMounts | nindent 10 }}
@@ -75,6 +75,8 @@ spec:
           {{- if .Values.api.additionalEnvs }}
           {{- toYaml .Values.api.additionalEnvs | nindent 10 }}
           {{- end }}
+          - name: DIREKTIV_APP
+            value: "api"
           - name: DIREKTIV_LOG_JSON
             value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG
