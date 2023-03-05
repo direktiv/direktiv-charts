@@ -1,8 +1,8 @@
 # knative-instance
 
-A Helm chart for Kubernetes
+Helm chart to install a pre-configured Knative instance for Direktiv
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.8.0](https://img.shields.io/badge/AppVersion-v1.8.0-informational?style=flat-square)
+![Version: 1.9.2](https://img.shields.io/badge/Version-1.9.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.9.2](https://img.shields.io/badge/AppVersion-v1.9.2-informational?style=flat-square)
 
 ## Additional Information
 
@@ -27,5 +27,4 @@ $ helm install knative direktiv/knative-instance
 | no_proxy | string | `""` |  |
 | replicas | int | `1` | Knative replicas |
 | skip-digest | string | `"kind.local,ko.local,dev.local,localhost:5000,localhost:31212"` | Repositories which skip digest resolution |
-| version | string | `"1.8.0"` | Knative version |
 

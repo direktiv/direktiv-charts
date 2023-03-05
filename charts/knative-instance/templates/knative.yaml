@@ -5,7 +5,6 @@ metadata:
   labels:
     {{- include "knative-instance.labels" . | nindent 4 }}
 spec:
-  version: "{{ .Values.version }}"
   high-availability:
     replicas: {{ .Values.replicas }}
   ingress:
@@ -113,6 +112,8 @@ spec:
       queue-sidecar-ephemeral-storage-request: "512Mi"
       queue-sidecar-ephemeral-storage-limit: "1024Mi"
       concurrency-state-endpoint: ""
-      queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:505179c0c4892ea4a70e78bc52ac21b03cd7f1a763d2ecc78e7bbaa1ae59c86c
+      queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:63b1462d9c000ba8f6f7b57ff3e0789f2ff8ebf3121d63c585cb47443ef1a579
     network:
       ingress-class: "contour.ingress.networking.knative.dev"
+
+

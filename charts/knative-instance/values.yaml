@@ -1,6 +1,3 @@
-# -- Knative version
-version: 1.8.0
-
 # -- Knative replicas
 replicas: 1
 
