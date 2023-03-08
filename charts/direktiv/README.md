@@ -2,11 +2,15 @@
 
 direktiv helm chart
 
-![Version: 0.1.17](https://img.shields.io/badge/Version-0.1.17-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.3](https://img.shields.io/badge/AppVersion-v0.7.3-informational?style=flat-square)
+![Version: 0.1.18](https://img.shields.io/badge/Version-0.1.18-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.3](https://img.shields.io/badge/AppVersion-v0.7.3-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.18
+
+* Fixed image references
 
 ### Changes in 0.1.17
 
@@ -98,7 +102,7 @@ $ helm install direktiv direktiv/direktiv
 | api.extraContainers | list | `[]` |  |
 | api.extraVolumeMounts | string | `nil` | extra volume mounts in api pod |
 | api.extraVolumes | string | `nil` | extra volumes in api pod |
-| api.image | string | `"direktiv"` | image for api pod |
+| api.image | string | `"direktiv/api"` | image for api pod |
 | api.replicas | int | `1` |  |
 | api.tag | string | `""` | image tag for api pod |
 | apikey | string | `"none"` | enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none |
@@ -113,11 +117,11 @@ $ helm install direktiv direktiv/direktiv
 | encryptionKey | string | `"01234567890123456789012345678912"` |  |
 | eventing | object | `{"enabled":false}` | knative eventing enabled, requires knative setup and configuration |
 | flow.affinity | object | `{}` | affinity for flow pods |
-| flow.dbimage | string | `"direktiv"` | image for db update init container |
+| flow.dbimage | string | `"direktiv/flow-dbinit"` | image for db update init container |
 | flow.extraContainers | list | `[]` | extra container in flow pod |
 | flow.extraVolumeMounts | string | `nil` | extra volume mounts in flow pod |
 | flow.extraVolumes | string | `nil` | extra volumes in flow pod |
-| flow.image | string | `"direktiv"` | image for flow pod |
+| flow.image | string | `"direktiv/flow"` | image for flow pod |
 | flow.replicas | int | `1` | number of flow replicas |
 | flow.tag | string | `""` | image tag for flow pod |
 | fluentbit.extraConfig | string | `""` | postgres for direktiv services Append extra output to fluentbit configuration. There are two log types: application (system), functions (workflows) these can be matched to new outputs. |
@@ -127,7 +131,7 @@ $ helm install direktiv direktiv/direktiv
 | functions.extraVolumes | list | `[]` | extra volumes for tasks and knative pods |
 | functions.http_proxy | string | `""` | http_proxy injected as environment variable in functions |
 | functions.https_proxy | string | `""` | https_proxy injected as environment variable in functions |
-| functions.image | string | `"direktiv"` |  |
+| functions.image | string | `"direktiv/functions"` |  |
 | functions.ingressClass | string | `"contour.ingress.networking.knative.dev"` |  |
 | functions.initPodImage | string | `"direktiv/direktiv-init-pod"` |  |
 | functions.limits | object | `{"cpu":{"large":1,"medium":"500m","small":"250m"},"disk":{"large":4096,"medium":1024,"small":256},"memory":{"large":2048,"medium":1024,"small":512}}` | knative service limits  |
@@ -137,7 +141,7 @@ $ helm install direktiv direktiv/direktiv
 | functions.podCleaner | bool | `true` | Cleaning up tasks, Kubernetes < 1.20 does not clean finished tasks |
 | functions.replicas | int | `1` | number of controller replicas |
 | functions.runtime | string | `"default"` | runtime to use, e.g. gvisor on GCP |
-| functions.sidecar | string | `"direktiv"` |  |
+| functions.sidecar | string | `"direktiv/sidecar"` |  |
 | functions.tag | string | `""` |  |
 | http_proxy | string | `""` | http proxy settings |
 | https_proxy | string | `""` | https proxy settings |
@@ -174,7 +178,7 @@ $ helm install direktiv direktiv/direktiv
 | prometheus.serviceAccounts.server.create | bool | `true` |  |
 | pullPolicy | string | `"Always"` |  |
 | registry | string | `"docker.io"` |  |
-| secrets | object | `{"db":"","extraVolumeMounts":[],"image":"direktiv","tag":""}` | secrets sidecar in flow pod |
+| secrets | object | `{"db":"","extraVolumeMounts":[],"image":"direktiv/secrets","tag":""}` | secrets sidecar in flow pod |
 | serviceAccount | object | `{"annotations":{},"create":true,"name":""}` | service account for components. If preconfigured serviceaccounts are used the name ise the base  and two additional service accounts are needed, e.g. service account name is myaccount then another two  acounts are needed: myaccount-functions and myaccount-functions-pod |
 | timeout | int | `7200` | max request timeouts in seconds |
 | tolerations | list | `[]` |  |
