@@ -59,7 +59,7 @@ spec:
               cpu: "2"
           image: "{{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]
+          # command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]
           volumeMounts:
           {{- if .Values.api.extraVolumeMounts -}}
           {{ toYaml .Values.api.extraVolumeMounts | nindent 10 }}
