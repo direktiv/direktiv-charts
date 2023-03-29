@@ -146,7 +146,7 @@ otlp sidecar
 {{if not $agentconfig.exporters.otlp.endpoint}}
 {{- fail "opentelemetry.agentconfig.exporters.endpoint is required when opentelemetry is enabled" }}
 {{- end }}
-{{- "\"" }}{{ $agentconfig.exporters.endpoint}}{{ "\"" }}
+{{- $agentconfig.exporters.otlp.endpoint | quote }}
 {{- else }}
 {{- "\"\""}}
 {{- end }}
