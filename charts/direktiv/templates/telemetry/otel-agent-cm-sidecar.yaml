@@ -8,3 +8,4 @@ metadata:
 data:
   otel-agent-config: |
 {{- include "direktiv.opentelemetry" . | nindent 4 }}
+{{- end }}
