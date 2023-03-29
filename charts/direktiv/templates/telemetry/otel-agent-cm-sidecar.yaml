@@ -6,6 +6,6 @@ metadata:
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
 data:
-  otel-agent-config: |
-{{- include "direktiv.opentelemetry" . | nindent 4 }}
+    otel-agent-config: |
+{{- .Values.opentelemetry.agentconfig | nindent 8}}
 {{- end }}

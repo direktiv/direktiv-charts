@@ -15,15 +15,5 @@ data:
       {{- else }}
       prometheus-backend: {{ .Values.prometheus.backendName }}
       {{- end }}
-      {{- if .Values.opentelemetry.address }}
-      {{- if .Values.opentelemetry.enabled }}
-      opentelemetry-backend: {{ .Values.opentelemetry.address }}
-      {{- else }}
-      opentelemetry-backend: ""
-      {{- end }}
-      {{- else if .Values.opentelemetry.enabled }}
-      opentelemetry-backend: "localhost:4317"
-      {{- else }}
-      opentelemetry-backend: ""
-      {{- end }}
+      opentelemetry-backend: {{ include "direktiv.opentelemetry-backend" . }}
       eventing: {{ .Values.eventing.enabled }}

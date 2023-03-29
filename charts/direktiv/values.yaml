@@ -15,11 +15,11 @@ timeout: 7200
 # if set to empty, one will be generated on install
 encryptionKey: "01234567890123456789012345678912"
 
+# Added this to connect to tracing.direktiv.io
 opentelemetry:
-  # -- opentelemetry address where Direktiv is sending data to
-  address: "localhost:4317"
   # -- installs opentelemtry agent as sidecar in flow
-  enabled: false
+  enabled: true
+  image: otel/opentelemetry-collector-dev:latest
   # -- config for sidecar agent
   agentconfig: |
     receivers:
@@ -29,7 +29,7 @@ opentelemetry:
           http:
     exporters:
       otlp:
-        endpoint: "192.168.1.113:14250"
+        endpoint: "tempo:4317" # otel receivers grpc port for expl. tempo 
         insecure: true
         sending_queue:
           num_consumers: 4
