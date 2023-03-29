@@ -18,7 +18,7 @@ encryptionKey: "01234567890123456789012345678912"
 # Added this to connect to tracing.direktiv.io
 opentelemetry:
   # -- installs opentelemtry agent as sidecar in flow
-  enabled: true
+  enabled: false
   image: otel/opentelemetry-collector-dev:latest
   # -- config for sidecar agent
   agentconfig: |
