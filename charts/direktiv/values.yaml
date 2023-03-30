@@ -29,7 +29,7 @@ opentelemetry:
           http:
     exporters:
       otlp:
-        endpoint: "tempo:4317" # otel receivers grpc port for expl. tempo 
+        endpoint: "tempo.grafana.svc:4317" # otel receivers grpc port for expl. tempo 
         insecure: true
         sending_queue:
           num_consumers: 4
