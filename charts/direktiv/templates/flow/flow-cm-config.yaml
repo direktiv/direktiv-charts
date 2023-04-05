@@ -11,7 +11,7 @@ data:
       functions-timeout: {{ .Values.timeout }}
       flow-service: {{ include "direktiv.fullname" . }}-flow.{{ .Release.Namespace }}
       {{- if .Values.prometheus.install }}
-      prometheus-backend: {{ include "direktiv.fullname" . }}-prometheus-server
+      prometheus-backend: {{ include "direktiv.fullname" . }}-prometheus-server.{{ .Release.Namespace }}
       {{- else }}
       prometheus-backend: {{ .Values.prometheus.backendName }}
       {{- end }}
