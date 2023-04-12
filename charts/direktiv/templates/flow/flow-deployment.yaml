@@ -104,6 +104,11 @@ spec:
             value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG
             value: {{ .Values.debug | quote }}
+          - name: DIREKTIV_SECRETS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "direktiv.fullname" . }}
+                key: key
           - name: DIREKTIV_SERVICE_NAMESPACE
             value: {{ .Values.functions.namespace }}
           {{- if or (ne .Values.http_proxy "") (ne .Values.https_proxy "") }}
