@@ -53,10 +53,8 @@ spec:
           resources:
             requests:
               memory: "128Mi"
-              cpu: "100m"
             limits:
               memory: "1048Mi"
-              cpu: "2"
           image: "{{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]

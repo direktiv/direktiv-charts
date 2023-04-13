@@ -54,11 +54,9 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "0.25"
+              memory: "128Mi"
             limits:
               memory: "2048Mi"
-              cpu: "2"
           image: "{{ .Values.registry }}/{{ .Values.ui.image }}:{{ .Values.ui.tag | default .Chart.AppVersion }}"
           env:
           - name: SERVE_PORT

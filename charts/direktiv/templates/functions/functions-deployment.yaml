@@ -74,10 +74,8 @@ spec:
           resources:
             requests:
               memory: "128Mi"
-              cpu: "250m"
             limits:
               memory: "1024Mi"
-              cpu: "1"
           image: "{{ .Values.registry }}/{{ .Values.functions.image }}:{{ .Values.functions.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           ports:
