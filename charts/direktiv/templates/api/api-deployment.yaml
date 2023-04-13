@@ -53,13 +53,11 @@ spec:
           resources:
             requests:
               memory: "128Mi"
-              cpu: "100m"
             limits:
               memory: "1048Mi"
-              cpu: "2"
           image: "{{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          # command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]
+          command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]
           volumeMounts:
           {{- if .Values.api.extraVolumeMounts -}}
           {{ toYaml .Values.api.extraVolumeMounts | nindent 10 }}
@@ -69,7 +67,7 @@ spec:
             subPath: flow-config.yaml
           ports:
             - name: api
-              containerPort: 8080
+              containerPort: 1644
               protocol: TCP
           env:
           {{- if .Values.api.additionalEnvs }}

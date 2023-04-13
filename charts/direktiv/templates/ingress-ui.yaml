@@ -34,5 +34,5 @@ spec:
             service:
               name: {{ include "direktiv.fullname" . }}-ui
               port:
-                number: 8080
+                number: 1644
 {{ end }}

@@ -63,7 +63,7 @@ api:
 
   extraContainers: []
   # -- image for api pod
-  image: "direktiv/api"
+  image: "direktiv/direktiv"
   # -- image tag for api pod
   tag: ""
   # -- extra container in api pod
@@ -145,9 +145,9 @@ flow:
   # -- number of flow replicas
   replicas: 1
   # -- image for db update init container
-  dbimage: "direktiv/flow-dbinit"
+  dbimage: "direktiv/direktiv"
   # -- image for flow pod
-  image: "direktiv/flow"
+  image: "direktiv/direktiv"
   # -- image tag for flow pod
   tag: ""
   # -- extra container in flow pod
@@ -191,7 +191,7 @@ no_proxy: ""
 
 # -- secrets sidecar in flow pod
 secrets:
-  image: "direktiv/secrets"
+  image: "direktiv/direktiv"
   tag: ""
   db: ""
   extraVolumeMounts: []
@@ -264,10 +264,10 @@ functions:
   ingressClass: contour.ingress.networking.knative.dev
 
   # images for functions controller, knative sidecar and init-pod
-  image: "direktiv/functions"
+  image: "direktiv/direktiv"
   tag: ""
 
-  sidecar: "direktiv/sidecar"
+  sidecar: "direktiv/direktiv"
 
   initPodImage:  "direktiv/direktiv-init-pod" # deprecated
 

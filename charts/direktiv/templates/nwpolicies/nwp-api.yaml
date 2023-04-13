@@ -18,7 +18,7 @@ spec:
             matchLabels:
               networking.knative.dev/ingress-provider: contour
       ports:
-        - port: 8080
+        - port: 1644
   egress:
     - to:
         - namespaceSelector: {}
