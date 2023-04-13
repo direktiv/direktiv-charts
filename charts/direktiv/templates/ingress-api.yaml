@@ -41,5 +41,5 @@ spec:
             service:
               name: {{ include "direktiv.fullname" . }}-api
               port:
-                number: 8080
+                number: 1644
 {{ end }}

@@ -70,7 +70,7 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             requests:
-              memory: "512Mi"
+              memory: "256Mi"
               cpu: "250m"
             limits:
               memory: "2048Mi"
@@ -119,6 +119,11 @@ spec:
               secretKeyRef:
                 name: {{ include "direktiv.fullname" . }}
                 key: db
+          - name: DIREKTIV_SECRETS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "direktiv.fullname" . }}
+                key: key
         - name: secrets
           securityContext:
             readOnlyRootFilesystem: true
@@ -134,7 +139,6 @@ spec:
               memory: "512Mi"
               cpu: "1"
           image: "{{ .Values.registry }}/{{ .Values.secrets.image }}:{{ .Values.secrets.tag | default .Chart.AppVersion }}"
-          command: ["/bin/secrets"]
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
           {{- if .Values.flow.extraVolumeMounts -}}

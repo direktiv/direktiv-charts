@@ -8,8 +8,8 @@ metadata:
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 1644
+      targetPort: 1644
       protocol: TCP
       name: ui
   selector:

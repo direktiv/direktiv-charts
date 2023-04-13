@@ -62,13 +62,13 @@ spec:
           image: "{{ .Values.registry }}/{{ .Values.ui.image }}:{{ .Values.ui.tag | default .Chart.AppVersion }}"
           env:
           - name: SERVE_PORT
-            value: "8080"
+            value: "1644"
           - name: SERVE_ADDRESS
             value: "0.0.0.0"
           imagePullPolicy: {{ .Values.pullPolicy }}
           ports:
             - name: ui
-              containerPort: 8080
+              containerPort: 1644
               protocol: TCP
       volumes:
       - name: tmpfs-nginx

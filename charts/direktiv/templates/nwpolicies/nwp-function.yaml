@@ -56,6 +56,6 @@ spec:
             cidr: {{ .Values.networkPolicies.serviceCidr }}
       ports:
         - port: 443
-        - port: 8080
+        - port: 1644
         - port: 80
 {{- end }}
