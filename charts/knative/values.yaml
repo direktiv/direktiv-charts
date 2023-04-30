@@ -29,3 +29,82 @@ deployment:
 controller:
   # -- CA certifcate for self-signed certificate registries
   ca: none
+
+envoy:
+  containers:
+    shutdown-manager:
+      resources:
+        requests:
+          cpu: "40m"
+          memory: "40Mi"
+        limits:
+          cpu: "400m"
+          memory: "400Mi"
+    envoy:
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "200Mi"
+        limits:
+          cpu: "500m"
+          memory: "500Mi"
+net-contour-controller:
+  containers:
+    controller:
+      resources:
+        requests:
+          cpu: "40m"
+          memory: "400Mi"
+        limits:
+          cpu: "400m"
+          memory: "400Mi"
+activator:
+  containers:
+    activator:
+      resources:
+        requests:
+          cpu: "300m"
+          memory: "60Mi"
+        limits:
+          cpu: "1"
+          memory: "600Mi"
+    autoscaler:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+        limits:
+          cpu: "1"
+          memory: "1000Mi"
+    controller:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+        limits:
+          cpu: "1"
+          memory: "1000Mi"
+    domain-mapping:
+      resources:
+        requests:
+          cpu: "30m"
+          memory: "40Mi"
+        limits:
+          cpu: "300m"
+          memory: "400Mi"
+    domainmapping-webhook:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+        limits:
+          cpu: "500m"
+          memory: "500Mi"
+    webhook:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+        limits:
+          cpu: "500m"
+          memory: "500Mi"

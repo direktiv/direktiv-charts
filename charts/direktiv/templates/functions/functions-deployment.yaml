@@ -73,9 +73,9 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             requests:
-              memory: "128Mi"
+              memory: {{ .Values.functions.containers.functions-controller.resources.requests.memory }}
             limits:
-              memory: "1024Mi"
+              memory: {{ .Values.functions.containers.functions-controller.resources.limits.memory }}
           image: "{{ .Values.registry }}/{{ .Values.functions.image }}:{{ .Values.functions.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           ports:

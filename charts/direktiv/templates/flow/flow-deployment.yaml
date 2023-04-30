@@ -129,9 +129,9 @@ spec:
             runAsGroup: 65532
           resources:
             requests:
-              memory: "128Mi"
+              memory: {{ .Values.flow.containers.secrets.resources.requests.memory }}
             limits:
-              memory: "512Mi"
+              memory: {{ .Values.flow.containers.secrets.resources.limits.memory }}
           image: "{{ .Values.registry }}/{{ .Values.secrets.image }}:{{ .Values.secrets.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
