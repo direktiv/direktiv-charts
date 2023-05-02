@@ -79,6 +79,12 @@ api:
     #     name: service-template
   affinity: {}
 
+  resources:
+    requests:
+      memory: "128Mi"
+    limits:
+      memory: "1048Mi"
+
 networkPolicies:
   # -- adds network policies
   enabled: false
@@ -172,6 +178,14 @@ flow:
     #         values:
     #         - direktiv
     #     topologyKey: kubernetes.io/hostname
+  
+  containers:
+    secrets:
+      resources:
+        requests:
+          memory: "128Mi"
+        limits:
+          memory: "512Mi"
 
 
 nodeSelector: {}
@@ -204,6 +218,13 @@ ui:
   certificate: none
   extraContainers: []
   affinity: {}
+  containers:
+    ui:
+      resources:
+        requests:
+          memory: "128Mi"
+        limits:
+          memory: "2048Mi"
   
 prometheus:
   install: true
@@ -313,6 +334,14 @@ functions:
     #     requests:
     #       memory: "2Gi"
     #       cpu:    "1"
+  
+  containers:
+    functions-controller:
+      resources:
+        requests:
+          memory: "128Mi"
+        limits:
+          memory: "1024Mi"
 
 # -- enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none
 apikey: none

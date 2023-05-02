@@ -5255,11 +5255,11 @@ spec:
         name: shutdown-manager
         resources:
           limits:
-            cpu: 400m
-            memory: 400Mi
+            cpu: {{ .Values.envoy.containers.shutdown-manager.resources.limits.cpu }}
+            memory: {{ .Values.envoy.containers.shutdown-manager.resources.limits.memory }}
           requests:
-            cpu: 40m
-            memory: 40Mi
+            cpu: {{ .Values.envoy.containers.shutdown-manager.resources.requests.cpu }}
+            memory: {{ .Values.envoy.containers.shutdown-manager.resources.requests.memory }}
         volumeMounts:
         - mountPath: /admin
           name: envoy-admin
@@ -5306,11 +5306,11 @@ spec:
           periodSeconds: 4
         resources:
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: {{ .Values.envoy.containers.envoy.resources.limits.cpu }}
+            memory: {{ .Values.envoy.containers.envoy.resources.limits.memory }}
           requests:
-            cpu: 200m
-            memory: 200Mi
+            cpu: {{ .Values.envoy.containers.envoy.resources.requests.cpu }}
+            memory: {{ .Values.envoy.containers.envoy.resources.limits.memory }}
         volumeMounts:
         - mountPath: /config
           name: envoy-config
@@ -5898,11 +5898,11 @@ spec:
         name: shutdown-manager
         resources:
           limits:
-            cpu: 400m
-            memory: 400Mi
+            cpu: {{ .Values.envoy.containers.shutdown-manager.resources.limits.cpu }}
+            memory: {{ .Values.envoy.containers.shutdown-manager.resources.limits.memory }}
           requests:
-            cpu: 40m
-            memory: 40Mi
+            cpu: {{ .Values.envoy.containers.shutdown-manager.resources.requests.cpu }}
+            memory: {{ .Values.envoy.containers.shutdown-manager.resources.requests.memory }}
         volumeMounts:
         - mountPath: /admin
           name: envoy-admin
@@ -5949,11 +5949,11 @@ spec:
           periodSeconds: 4
         resources:
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: {{ .Values.envoy.containers.envoy.resources.limits.cpu }}
+            memory: {{ .Values.envoy.containers.envoy.resources.limits.memory }}
           requests:
-            cpu: 200m
-            memory: 200Mi
+            cpu: {{ .Values.envoy.containers.envoy.resources.requests.cpu }}
+            memory: {{ .Values.envoy.containers.envoy.resources.requests.memory }}
         volumeMounts:
         - mountPath: /config
           name: envoy-config

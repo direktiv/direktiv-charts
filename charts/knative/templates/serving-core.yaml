@@ -1221,11 +1221,11 @@ spec:
           periodSeconds: 5
         resources:
           limits:
-            cpu: "1"
-            memory: 600Mi
+            cpu: {{ .Values.activator.containers.activator.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.activator.resources.limits.memory }}
           requests:
-            cpu: 300m
-            memory: 60Mi
+            cpu: {{ .Values.activator.containers.activator.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.activator.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1356,11 +1356,11 @@ spec:
             port: 8080
         resources:
           limits:
-            cpu: "1"
-            memory: 1000Mi
+            cpu: {{ .Values.activator.containers.autoscaler.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.autoscaler.resources.limits.memory }}
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: {{ .Values.activator.containers.autoscaler.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.autoscaler.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1469,11 +1469,11 @@ spec:
           name: profiling
         resources:
           limits:
-            cpu: "1"
-            memory: 1000Mi
+            cpu: {{ .Values.activator.containers.controller.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.controller.resources.limits.memory }}
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: {{ .Values.activator.containers.controller.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.controller.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1574,11 +1574,11 @@ spec:
           name: profiling
         resources:
           limits:
-            cpu: 300m
-            memory: 400Mi
+            cpu: {{ .Values.activator.containers.domain-mapping.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.domain-mapping.resources.limits.memory }}
           requests:
-            cpu: 30m
-            memory: 40Mi
+            cpu: {{ .Values.activator.containers.domain-mapping.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.domain-mapping.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1675,11 +1675,11 @@ spec:
           periodSeconds: 1
         resources:
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: {{ .Values.activator.containers.domainmapping-webhook.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.domainmapping-webhook.resources.limits.memory }}
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: {{ .Values.activator.containers.domainmapping-webhook.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.domainmapping-webhook.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1859,11 +1859,11 @@ spec:
           periodSeconds: 1
         resources:
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: {{ .Values.activator.containers.webhook.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.webhook.resources.limits.memory }}
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: {{ .Values.activator.containers.webhook.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.webhook.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

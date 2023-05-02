@@ -12,4 +12,13 @@ certificate: ""
 # -- Repositories which skip digest resolution
 skip-digest: kind.local,ko.local,dev.local,localhost:5000,localhost:31212
 
-
+envoy:
+  containers:
+    shutdown-manager:
+      resources:
+        requests:
+          cpu: "40m"
+          memory: "40Mi"
+        limits:
+          cpu: "400m"
+          memory: "400Mi"

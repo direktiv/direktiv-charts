@@ -54,9 +54,9 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             requests:
-              memory: "128Mi"
+              memory: {{ .Values.ui.containers.ui.resources.requests.memory }}
             limits:
-              memory: "2048Mi"
+              memory: {{ .Values.ui.containers.ui.resources.limits.memory }}
           image: "{{ .Values.registry }}/{{ .Values.ui.image }}:{{ .Values.ui.tag | default .Chart.AppVersion }}"
           env:
           - name: SERVE_PORT

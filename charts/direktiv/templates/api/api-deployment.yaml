@@ -52,9 +52,9 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             requests:
-              memory: "128Mi"
+              memory: {{ .Values.api.resources.requests.memory }}
             limits:
-              memory: "1048Mi"
+              memory: {{ .Values.api.resources.limits.memory }}
           image: "{{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           command: ["/bin/direktiv", "-c", "/config/api-config.yaml"]
