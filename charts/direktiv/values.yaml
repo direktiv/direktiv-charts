@@ -336,7 +336,7 @@ functions:
     #       cpu:    "1"
   
   containers:
-    functions-controller:
+    functionscontroller:
       resources:
         requests:
           memory: "128Mi"

@@ -73,9 +73,9 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             requests:
-              memory: {{ .Values.functions.containers.functions-controller.resources.requests.memory }}
+              memory: {{ .Values.functions.containers.functionscontroller.resources.requests.memory }}
             limits:
-              memory: {{ .Values.functions.containers.functions-controller.resources.limits.memory }}
+              memory: {{ .Values.functions.containers.functionscontroller.resources.limits.memory }}
           image: "{{ .Values.registry }}/{{ .Values.functions.image }}:{{ .Values.functions.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           ports:
