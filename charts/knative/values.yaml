@@ -48,7 +48,7 @@ envoy:
         limits:
           cpu: "500m"
           memory: "500Mi"
-net-contour-controller:
+netcontourcontroller:
   containers:
     controller:
       resources:

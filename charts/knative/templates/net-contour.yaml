@@ -116,11 +116,11 @@ spec:
           name: profiling
         resources:
           limits:
-            cpu: {{ .Values.net-contour-controller.containers.controller.resources.limits.cpu }}
-            memory: {{ .Values.net-contour-controller.containers.controller.resources.limits.memory }}
+            cpu: {{ .Values.netcontourcontroller.containers.controller.resources.limits.cpu }}
+            memory: {{ .Values.netcontourcontroller.containers.controller.resources.limits.memory }}
           requests:
-            cpu: {{ .Values.net-contour-controller.containers.controller.resources.requests.cpu }}
-            memory: {{ .Values.net-contour-controller.containers.controller.resources.requests.memory }}
+            cpu: {{ .Values.netcontourcontroller.containers.controller.resources.requests.cpu }}
+            memory: {{ .Values.netcontourcontroller.containers.controller.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

@@ -88,10 +88,10 @@ $ helm install knative direktiv/knative
 | envoy.containers.shutdown-manager.resources.requests.memory | string | `"40Mi"` |  |
 | http_proxy | string | `""` | HTTP proxy information for knative |
 | https_proxy | string | `""` | HTTPS proxy information for knative |
-| net-contour-controller.containers.controller.resources.limits.cpu | string | `"400m"` |  |
-| net-contour-controller.containers.controller.resources.limits.memory | string | `"400Mi"` |  |
-| net-contour-controller.containers.controller.resources.requests.cpu | string | `"40m"` |  |
-| net-contour-controller.containers.controller.resources.requests.memory | string | `"400Mi"` |  |
+| netcontourcontroller.containers.controller.resources.limits.cpu | string | `"400m"` |  |
+| netcontourcontroller.containers.controller.resources.limits.memory | string | `"400Mi"` |  |
+| netcontourcontroller.containers.controller.resources.requests.cpu | string | `"40m"` |  |
+| netcontourcontroller.containers.controller.resources.requests.memory | string | `"400Mi"` |  |
 | no_proxy | string | `"localhost,127.0.0.1,10.0.0.0/8,.svc,.cluster.local"` | No proxy information for knative |
 | replicas | int | `1` | Replicas for knative components |
 
