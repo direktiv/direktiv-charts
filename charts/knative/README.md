@@ -44,6 +44,30 @@ $ helm install knative direktiv/knative
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| activator.containers.activator.resources.limits.cpu | string | `"1"` |  |
+| activator.containers.activator.resources.limits.memory | string | `"600Mi"` |  |
+| activator.containers.activator.resources.requests.cpu | string | `"300m"` |  |
+| activator.containers.activator.resources.requests.memory | string | `"60Mi"` |  |
+| activator.containers.autoscaler.resources.limits.cpu | string | `"1"` |  |
+| activator.containers.autoscaler.resources.limits.memory | string | `"1000Mi"` |  |
+| activator.containers.autoscaler.resources.requests.cpu | string | `"100m"` |  |
+| activator.containers.autoscaler.resources.requests.memory | string | `"100Mi"` |  |
+| activator.containers.controller.resources.limits.cpu | string | `"1"` |  |
+| activator.containers.controller.resources.limits.memory | string | `"1000Mi"` |  |
+| activator.containers.controller.resources.requests.cpu | string | `"100m"` |  |
+| activator.containers.controller.resources.requests.memory | string | `"100Mi"` |  |
+| activator.containers.domain-mapping.resources.limits.cpu | string | `"300m"` |  |
+| activator.containers.domain-mapping.resources.limits.memory | string | `"400Mi"` |  |
+| activator.containers.domain-mapping.resources.requests.cpu | string | `"30m"` |  |
+| activator.containers.domain-mapping.resources.requests.memory | string | `"40Mi"` |  |
+| activator.containers.domainmapping-webhook.resources.limits.cpu | string | `"500m"` |  |
+| activator.containers.domainmapping-webhook.resources.limits.memory | string | `"500Mi"` |  |
+| activator.containers.domainmapping-webhook.resources.requests.cpu | string | `"100m"` |  |
+| activator.containers.domainmapping-webhook.resources.requests.memory | string | `"100Mi"` |  |
+| activator.containers.webhook.resources.limits.cpu | string | `"500m"` |  |
+| activator.containers.webhook.resources.limits.memory | string | `"500Mi"` |  |
+| activator.containers.webhook.resources.requests.cpu | string | `"100m"` |  |
+| activator.containers.webhook.resources.requests.memory | string | `"100Mi"` |  |
 | autoscaler.allow_zero_initial_scale | string | `"true"` |  |
 | autoscaler.grace_period | string | `"120s"` |  |
 | autoscaler.initial_scale | string | `"0"` |  |
@@ -54,8 +78,20 @@ $ helm install knative direktiv/knative
 | defaults.revision_cpu_request | string | `"50m"` | cpu requests for direktiv sidecar |
 | defaults.timeout_seconds | string | `"900"` | default timeout for knative functions in seconds |
 | deployment.skip_tag | string | `"kind.local,ko.local,dev.local,localhost:5000,localhost:31212"` |  |
+| envoy.containers.envoy.resources.limits.cpu | string | `"500m"` |  |
+| envoy.containers.envoy.resources.limits.memory | string | `"500Mi"` |  |
+| envoy.containers.envoy.resources.requests.cpu | string | `"200m"` |  |
+| envoy.containers.envoy.resources.requests.memory | string | `"200Mi"` |  |
+| envoy.containers.shutdown-manager.resources.limits.cpu | string | `"400m"` |  |
+| envoy.containers.shutdown-manager.resources.limits.memory | string | `"400Mi"` |  |
+| envoy.containers.shutdown-manager.resources.requests.cpu | string | `"40m"` |  |
+| envoy.containers.shutdown-manager.resources.requests.memory | string | `"40Mi"` |  |
 | http_proxy | string | `""` | HTTP proxy information for knative |
 | https_proxy | string | `""` | HTTPS proxy information for knative |
+| net-contour-controller.containers.controller.resources.limits.cpu | string | `"400m"` |  |
+| net-contour-controller.containers.controller.resources.limits.memory | string | `"400Mi"` |  |
+| net-contour-controller.containers.controller.resources.requests.cpu | string | `"40m"` |  |
+| net-contour-controller.containers.controller.resources.requests.memory | string | `"400Mi"` |  |
 | no_proxy | string | `"localhost,127.0.0.1,10.0.0.0/8,.svc,.cluster.local"` | No proxy information for knative |
 | replicas | int | `1` | Replicas for knative components |
 

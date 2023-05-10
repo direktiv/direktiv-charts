@@ -22,6 +22,10 @@ $ helm install knative direktiv/knative-instance
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | certificate | string | `""` | Custom certificate for controller. This needs to be a secret create before installation in the knative-serving namespace |
+| envoy.containers.shutdown-manager.resources.limits.cpu | string | `"400m"` |  |
+| envoy.containers.shutdown-manager.resources.limits.memory | string | `"400Mi"` |  |
+| envoy.containers.shutdown-manager.resources.requests.cpu | string | `"40m"` |  |
+| envoy.containers.shutdown-manager.resources.requests.memory | string | `"40Mi"` |  |
 | http_proxy | string | `""` | Proxy settings for controller |
 | https_proxy | string | `""` |  |
 | no_proxy | string | `""` |  |
