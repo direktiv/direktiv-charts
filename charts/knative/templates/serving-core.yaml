@@ -1675,11 +1675,11 @@ spec:
           periodSeconds: 1
         resources:
           limits:
-            cpu: {{ .Values.activator.containers.domainmapping-webhook.resources.limits.cpu }}
-            memory: {{ .Values.activator.containers.domainmapping-webhook.resources.limits.memory }}
+            cpu: {{ .Values.activator.containers.domainmappingwebhook.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.domainmappingwebhook.resources.limits.memory }}
           requests:
-            cpu: {{ .Values.activator.containers.domainmapping-webhook.resources.requests.cpu }}
-            memory: {{ .Values.activator.containers.domainmapping-webhook.resources.requests.memory }}
+            cpu: {{ .Values.activator.containers.domainmappingwebhook.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.domainmappingwebhook.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

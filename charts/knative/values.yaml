@@ -92,7 +92,7 @@ activator:
         limits:
           cpu: "300m"
           memory: "400Mi"
-    domainmapping-webhook:
+    domainmappingwebhook:
       resources:
         requests:
           cpu: "100m"

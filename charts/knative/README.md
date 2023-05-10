@@ -60,10 +60,10 @@ $ helm install knative direktiv/knative
 | activator.containers.domain-mapping.resources.limits.memory | string | `"400Mi"` |  |
 | activator.containers.domain-mapping.resources.requests.cpu | string | `"30m"` |  |
 | activator.containers.domain-mapping.resources.requests.memory | string | `"40Mi"` |  |
-| activator.containers.domainmapping-webhook.resources.limits.cpu | string | `"500m"` |  |
-| activator.containers.domainmapping-webhook.resources.limits.memory | string | `"500Mi"` |  |
-| activator.containers.domainmapping-webhook.resources.requests.cpu | string | `"100m"` |  |
-| activator.containers.domainmapping-webhook.resources.requests.memory | string | `"100Mi"` |  |
+| activator.containers.domainmappingwebhook.resources.limits.cpu | string | `"500m"` |  |
+| activator.containers.domainmappingwebhook.resources.limits.memory | string | `"500Mi"` |  |
+| activator.containers.domainmappingwebhook.resources.requests.cpu | string | `"100m"` |  |
+| activator.containers.domainmappingwebhook.resources.requests.memory | string | `"100Mi"` |  |
 | activator.containers.webhook.resources.limits.cpu | string | `"500m"` |  |
 | activator.containers.webhook.resources.limits.memory | string | `"500Mi"` |  |
 | activator.containers.webhook.resources.requests.cpu | string | `"100m"` |  |
