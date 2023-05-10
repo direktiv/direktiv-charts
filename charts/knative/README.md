@@ -82,10 +82,10 @@ $ helm install knative direktiv/knative
 | envoy.containers.envoy.resources.limits.memory | string | `"500Mi"` |  |
 | envoy.containers.envoy.resources.requests.cpu | string | `"200m"` |  |
 | envoy.containers.envoy.resources.requests.memory | string | `"200Mi"` |  |
-| envoy.containers.shutdown-manager.resources.limits.cpu | string | `"400m"` |  |
-| envoy.containers.shutdown-manager.resources.limits.memory | string | `"400Mi"` |  |
-| envoy.containers.shutdown-manager.resources.requests.cpu | string | `"40m"` |  |
-| envoy.containers.shutdown-manager.resources.requests.memory | string | `"40Mi"` |  |
+| envoy.containers.shutdownmanager.resources.limits.cpu | string | `"400m"` |  |
+| envoy.containers.shutdownmanager.resources.limits.memory | string | `"400Mi"` |  |
+| envoy.containers.shutdownmanager.resources.requests.cpu | string | `"40m"` |  |
+| envoy.containers.shutdownmanager.resources.requests.memory | string | `"40Mi"` |  |
 | http_proxy | string | `""` | HTTP proxy information for knative |
 | https_proxy | string | `""` | HTTPS proxy information for knative |
 | netcontourcontroller.containers.controller.resources.limits.cpu | string | `"400m"` |  |

@@ -32,7 +32,7 @@ controller:
 
 envoy:
   containers:
-    shutdown-manager:
+    shutdownmanager:
       resources:
         requests:
           cpu: "40m"
