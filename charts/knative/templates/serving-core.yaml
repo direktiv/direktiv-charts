@@ -1574,11 +1574,11 @@ spec:
           name: profiling
         resources:
           limits:
-            cpu: {{ .Values.activator.containers.domain-mapping.resources.limits.cpu }}
-            memory: {{ .Values.activator.containers.domain-mapping.resources.limits.memory }}
+            cpu: {{ .Values.activator.containers.domainmapping.resources.limits.cpu }}
+            memory: {{ .Values.activator.containers.domainmapping.resources.limits.memory }}
           requests:
-            cpu: {{ .Values.activator.containers.domain-mapping.resources.requests.cpu }}
-            memory: {{ .Values.activator.containers.domain-mapping.resources.requests.memory }}
+            cpu: {{ .Values.activator.containers.domainmapping.resources.requests.cpu }}
+            memory: {{ .Values.activator.containers.domainmapping.resources.requests.memory }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

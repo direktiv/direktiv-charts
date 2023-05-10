@@ -84,7 +84,7 @@ activator:
         limits:
           cpu: "1"
           memory: "1000Mi"
-    domain-mapping:
+    domainmapping:
       resources:
         requests:
           cpu: "30m"
