@@ -189,13 +189,6 @@ https_proxy: ""
 # -- no proxy proxy settings
 no_proxy: ""
 
-# -- secrets sidecar in flow pod
-secrets:
-  image: "direktiv/direktiv"
-  tag: ""
-  db: ""
-  extraVolumeMounts: []
-
 # -- UI configuration
 ui:
   replicas: 1
