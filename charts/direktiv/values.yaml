@@ -178,7 +178,9 @@ flow:
     #         values:
     #         - direktiv
     #     topologyKey: kubernetes.io/hostname
-  
+  experimental_features: false
+  developer_mode: false
+
   containers:
     secrets:
       resources:

@@ -120,6 +120,10 @@ spec:
               secretKeyRef:
                 name: {{ include "direktiv.fullname" . }}
                 key: db
+          - name: ENABLE_EXPERIMENTAL_FEATURES
+            value: "{{ .Values.flow.experimental_features }}"
+          - name: ENABLE_DEVELOPER_MODE
+            value: "{{ .Values.flow.developer_mode }}"
       volumes:
 {{- if .Values.opentelemetry.enabled }}
 {{ include "direktiv.opentelemetry.volume" . | indent 8 }}
