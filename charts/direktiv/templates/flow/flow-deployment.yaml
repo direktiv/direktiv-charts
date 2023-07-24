@@ -82,6 +82,12 @@ spec:
             mountPath: /etc/direktiv/flow-config.yaml
             subPath: flow-config.yaml
           ports:
+            - name: bus
+              containerPort: 4222
+              protocol: TCP
+            - name: cluster
+              containerPort: 6222
+              protocol: TCP
             - name: flow
               containerPort: 6666
               protocol: TCP
@@ -120,6 +126,17 @@ spec:
               secretKeyRef:
                 name: {{ include "direktiv.fullname" . }}
                 key: db
+          - name: DIREKTIV_DEPLOYMENT_NAME
+            value: "{{ include "direktiv.fullname" . }}"
+          - name: DIREKTIV_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: NATS_PWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "direktiv.fullname" . }}
+                key: natsPwd
           - name: ENABLE_EXPERIMENTAL_FEATURES
             value: "{{ .Values.flow.experimental_features }}"
           - name: ENABLE_DEVELOPER_MODE
