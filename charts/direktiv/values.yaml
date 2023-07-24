@@ -7,8 +7,6 @@ eventing:
 
 # -- json or console logger
 logging: json
-# -- valid values are debug info and error
-logLevel: debug
 
 # -- max request timeouts in seconds
 timeout: 7200
