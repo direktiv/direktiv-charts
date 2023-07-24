@@ -107,6 +107,8 @@ spec:
                 key: key
           - name: DIREKTIV_SERVICE_NAMESPACE
             value: {{ .Values.functions.namespace }}
+          - name: DIREKTIV_NAMESPACE
+            value: {{ .Release.Namespace }}
           {{- if or (ne .Values.http_proxy "") (ne .Values.https_proxy "") }}
           - name: "HTTP_PROXY"
             value: "{{ .Values.http_proxy }}"
