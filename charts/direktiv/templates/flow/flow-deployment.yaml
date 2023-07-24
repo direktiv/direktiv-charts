@@ -104,6 +104,8 @@ spec:
             value: "flow"
           - name: DIREKTIV_LOG_JSON
             value: {{ .Values.logging | quote }}
+          - name: DIREKTIV_LOG_LEVEL
+            value: {{ .Values.logLevel | quote }}
           - name: DIREKTIV_DEBUG
             value: {{ .Values.debug | quote }}
           - name: DIREKTIV_SECRETS_KEY
