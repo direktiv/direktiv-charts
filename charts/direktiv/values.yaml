@@ -61,7 +61,6 @@ opentelemetry:
 api:
   replicas: 1
 
-  extraContainers: []
   # -- image for api pod
   image: "direktiv/direktiv"
   # -- image tag for api pod
@@ -207,6 +206,7 @@ no_proxy: ""
 
 # -- UI configuration
 ui:
+  install: true
   replicas: 1
   image: "direktiv/ui"
   tag: ""
