@@ -4,7 +4,6 @@ metadata:
   name: {{ include "direktiv.fullname" . }}-functions
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}-functions
-    direktiv-core-image: "true"
 spec:
   replicas: {{ .Values.functions.replicas }}
   strategy:
