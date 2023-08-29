@@ -18,6 +18,7 @@ spec:
     metadata:
       labels:
         {{- include "direktiv.selectorLabelsFunctions" . | nindent 8 }}
+        app: {{ include "direktiv.fullname" . }}-functions
     spec:
     {{- if gt (default $.Values.functions.replicas 1) 1 }}
       affinity:

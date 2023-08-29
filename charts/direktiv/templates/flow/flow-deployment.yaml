@@ -4,7 +4,6 @@ metadata:
   name: {{ include "direktiv.fullname" . }}-flow
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
-    direktiv-core-image: "true"
 spec:
   replicas: {{ .Values.flow.replicas }}
   strategy:
@@ -23,6 +22,7 @@ spec:
         prometheus.io/scheme: "http"
       labels:
         {{- include "direktiv.selectorLabels" . | nindent 8 }}
+        app: {{ include "direktiv.fullname" . }}-flow
     spec:
       {{- if gt (default $.Values.flow.replicas 1) 1 }}
       affinity:

@@ -4,7 +4,6 @@ metadata:
   name: {{ include "direktiv.fullname" . }}-api
   labels:
     {{- include "direktiv.labelsAPI" . | nindent 4 }}
-    direktiv-core-image: "true"
 spec:
   replicas: {{ .Values.api.replicas }}
   strategy:
@@ -18,6 +17,7 @@ spec:
     metadata:
       labels:
         {{- include "direktiv.selectorLabelsAPI" . | nindent 8 }}
+        app: {{ include "direktiv.fullname" . }}-flow
     spec:
       {{- if gt (default $.Values.api.replicas 1) 1 }}
       affinity:
