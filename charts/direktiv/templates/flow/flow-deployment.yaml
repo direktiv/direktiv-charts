@@ -4,6 +4,7 @@ metadata:
   name: {{ include "direktiv.fullname" . }}-flow
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
+    direktiv-core-image: "true"
 spec:
   replicas: {{ .Values.flow.replicas }}
   strategy:
