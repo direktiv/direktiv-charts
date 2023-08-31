@@ -17,7 +17,7 @@ spec:
     metadata:
       labels:
         {{- include "direktiv.selectorLabelsAPI" . | nindent 8 }}
-        app: {{ include "direktiv.fullname" . }}-flow
+        app: {{ include "direktiv.fullname" . }}-api
     spec:
       {{- if gt (default $.Values.api.replicas 1) 1 }}
       affinity:
