@@ -507,6 +507,17 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/knative-instance-0.1.0/knative-instance-0.1.0.tgz
     version: 0.1.0
+  percona-postgres:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2023-09-08T08:04:56.397315586Z"
+    description: Installer for Perconas Postgres operator
+    digest: fbe32319129e79b9bf0e467bd4268519f6f0d651650d8e29d79dd730495e5626
+    name: percona-postgres
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/percona-postgres-2.2.0/percona-postgres-2.2.0.tgz
+    version: 2.2.0
   pgo:
   - apiVersion: v2
     appVersion: 5.3.1
@@ -552,4 +563,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/postgrescluster-0.6.0/postgrescluster-0.6.0.tgz
     version: 0.6.0
-generated: "2023-05-10T07:39:22.81964345Z"
+generated: "2023-09-08T08:04:56.397450493Z"
