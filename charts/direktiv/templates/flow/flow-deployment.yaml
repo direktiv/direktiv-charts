@@ -85,6 +85,9 @@ spec:
             - name: flow
               containerPort: 6666
               protocol: TCP
+            - name: flow-v2
+              containerPort: 6667
+              protocol: TCP
             - name: internal
               containerPort: 7777
               protocol: TCP
