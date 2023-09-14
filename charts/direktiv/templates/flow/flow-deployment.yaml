@@ -43,7 +43,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "direktiv.serviceAccountName" . }}
+      serviceAccountName: {{ include "direktiv.serviceAccountName" . }}-functions
       initContainers:
         - name: updatedb
           image: "{{ .Values.registry }}/{{ .Values.flow.dbimage }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
