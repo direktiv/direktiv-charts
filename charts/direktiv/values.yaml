@@ -212,7 +212,7 @@ no_proxy: ""
 
 # -- Frontend configuration
 frontend:
-  image: "direktiv/ui"
+  image: "direktiv/frontend"
   tag: ""
   replicas: 1
 
