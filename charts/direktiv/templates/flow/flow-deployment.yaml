@@ -22,6 +22,7 @@ spec:
         prometheus.io/scheme: "http"
       labels:
         {{- include "direktiv.selectorLabels" . | nindent 8 }}
+        app: {{ include "direktiv.fullname" . }}-flow
     spec:
       {{- if gt (default $.Values.flow.replicas 1) 1 }}
       affinity:

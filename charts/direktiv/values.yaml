@@ -1,14 +1,17 @@
 # -- enable debug across all direktiv components
 debug: false
 
-# -- knative eventing enabled, requires knative setup and configuration
-eventing:
-  enabled: false
-
 # -- json or console logger
 logging: json
 
-# -- max request timeouts in seconds
+# -- knative eventing enabled, requires knative setup and configuration
+eventing:
+  enabled: true
+
+# -- enabled api key for API authentication with the `direktiv-token` header
+apikey: none
+
+# -- max request timeouts in seconds. Used in Knative and the ingress controller if enabled.
 timeout: 7200
 
 # used for encrpytion in the following resources: secrets
@@ -61,7 +64,6 @@ opentelemetry:
 api:
   replicas: 1
 
-  extraContainers: []
   # -- image for api pod
   image: "direktiv/direktiv"
   # -- image tag for api pod
@@ -96,15 +98,18 @@ networkPolicies:
   podCidr: 0.0.0.0/0
 
 ingress:
+  # -- 
   enabled: true
-  # -- host for external services, only required for TLS
-  host: ""
+  # -- Host for external services, only required for TLS
+  host:
   # -- TLS secret
-  certificate: none
-  # -- ingress class
+  certificate:
+  # -- Ingress class
   class: "nginx"
   # -- Additional Annotations
   additionalAnnotations: {}
+  # -- Additional Labels
+  additionalLabels: {}
 
 database:
   # -- database host
@@ -205,21 +210,36 @@ https_proxy: ""
 # -- no proxy proxy settings
 no_proxy: ""
 
-# -- UI configuration
-ui:
-  replicas: 1
+# -- Frontend configuration
+frontend:
   image: "direktiv/ui"
   tag: ""
-  certificate: none
-  extraContainers: []
-  affinity: {}
-  containers:
-    ui:
-      resources:
-        requests:
-          memory: "128Mi"
-        limits:
-          memory: "2048Mi"
+  replicas: 1
+
+  # -- Logging setting for the UI
+  logging:
+    # -- Logging in JSON or console format
+    json: true
+    # -- Enable/Disable debug mode
+    debug: true
+  
+  # -- certificate secret for frontend
+  certificate:
+  # -- Additional Annotations for frontend
+  additionalAnnotations: {}
+  # -- Additional Labels for frontend
+  additionalLabels: {}
+  # -- Backend configuration for the workflow engine
+  backend:
+    # -- Defaults to engine in the same namespace
+    url:
+    # -- Skip verifing TLS certificate if TLS is configured
+    skip-verify: false
+  resources:
+    requests:
+      memory: "128Mi"
+    limits:
+      memory: "512Mi"
   
 prometheus:
   install: true
@@ -338,8 +358,6 @@ functions:
         limits:
           memory: "1024Mi"
 
-# -- enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none
-apikey: none
 
 # -- nginx ingress controller configuration
 ingress-nginx:
