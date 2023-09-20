@@ -86,16 +86,16 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels ui
+Selector labels frontend
 */}}
-{{- define "direktiv.selectorLabelsUI" -}}
-app.kubernetes.io/name: {{ include "direktiv.name" . }}-ui
-app.kubernetes.io/instance: {{ .Release.Name }}-ui
+{{- define "direktiv.selectorLabelsFrontend" -}}
+app.kubernetes.io/name: {{ include "direktiv.name" . }}-frontend
+app.kubernetes.io/instance: {{ .Release.Name }}-frontend
 {{- end }}
 
-{{- define "direktiv.labelsUI" -}}
+{{- define "direktiv.labelsFrontend" -}}
 helm.sh/chart: {{ include "direktiv.chart" . }}
-{{ include "direktiv.selectorLabelsUI" . }}
+{{ include "direktiv.selectorLabelsFrontend" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

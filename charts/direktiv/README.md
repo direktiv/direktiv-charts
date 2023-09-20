@@ -98,8 +98,8 @@ $ helm install direktiv direktiv/direktiv
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.6.0 |
-| https://prometheus-community.github.io/helm-charts | prometheus | 20.2.0 |
+| https://kubernetes.github.io/ingress-nginx | ingress-nginx | 4.7.2 |
+| https://prometheus-community.github.io/helm-charts | prometheus | 25.0.0 |
 
 ## Values
 
@@ -107,7 +107,6 @@ $ helm install direktiv direktiv/direktiv
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | api.affinity | object | `{}` |  |
-| api.extraContainers | list | `[]` |  |
 | api.extraContainers | list | `[]` | extra container in api pod |
 | api.extraVolumeMounts | string | `nil` | extra volume mounts in api pod |
 | api.extraVolumes | string | `nil` | extra volumes in api pod |
@@ -116,7 +115,7 @@ $ helm install direktiv direktiv/direktiv
 | api.resources.limits.memory | string | `"1048Mi"` |  |
 | api.resources.requests.memory | string | `"128Mi"` |  |
 | api.tag | string | `""` | image tag for api pod |
-| apikey | string | `"none"` | enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none |
+| apikey | string | `"none"` | enabled api key for API authentication with the `direktiv-token` header |
 | database.additional | string | `""` | additional connection attributes, e.g. target_session_attrs |
 | database.host | string | `"postgres-postgresql-ha-pgpool.postgres"` | database host |
 | database.name | string | `"direktiv"` | database name, has to be created before installation |
@@ -126,11 +125,13 @@ $ helm install direktiv direktiv/direktiv
 | database.user | string | `"direktiv"` | database user |
 | debug | bool | `false` | enable debug across all direktiv components |
 | encryptionKey | string | `"01234567890123456789012345678912"` |  |
-| eventing | object | `{"enabled":false}` | knative eventing enabled, requires knative setup and configuration |
+| eventing | object | `{"enabled":true}` | knative eventing enabled, requires knative setup and configuration |
 | flow.affinity | object | `{}` | affinity for flow pods |
 | flow.containers.secrets.resources.limits.memory | string | `"512Mi"` |  |
 | flow.containers.secrets.resources.requests.memory | string | `"128Mi"` |  |
 | flow.dbimage | string | `"direktiv/direktiv"` | image for db update init container |
+| flow.developer_mode | bool | `false` |  |
+| flow.experimental_features | bool | `false` |  |
 | flow.extraContainers | list | `[]` | extra container in flow pod |
 | flow.extraVolumeMounts | string | `nil` | extra volume mounts in flow pod |
 | flow.extraVolumes | string | `nil` | extra volumes in flow pod |
@@ -138,6 +139,16 @@ $ helm install direktiv direktiv/direktiv
 | flow.replicas | int | `1` | number of flow replicas |
 | flow.tag | string | `""` | image tag for flow pod |
 | fluentbit.extraConfig | string | `""` | postgres for direktiv services Append extra output to fluentbit configuration. There are two log types: application (system), functions (workflows) these can be matched to new outputs. |
+| frontend | object | `{"additionalAnnotations":{},"additionalLabels":{},"backend":{"skip-verify":false,"url":null},"certificate":null,"image":"direktiv/ui","logging":{"debug":true,"json":true},"replicas":1,"resources":{"limits":{"memory":"512Mi"},"requests":{"memory":"128Mi"}},"tag":""}` | Frontend configuration |
+| frontend.additionalAnnotations | object | `{}` | Additional Annotations for frontend |
+| frontend.additionalLabels | object | `{}` | Additional Labels for frontend |
+| frontend.backend | object | `{"skip-verify":false,"url":null}` | Backend configuration for the workflow engine |
+| frontend.backend.skip-verify | bool | `false` | Skip verifing TLS certificate if TLS is configured |
+| frontend.backend.url | string | `nil` | Defaults to engine in the same namespace |
+| frontend.certificate | string | `nil` | certificate secret for frontend |
+| frontend.logging | object | `{"debug":true,"json":true}` | Logging setting for the UI |
+| frontend.logging.debug | bool | `true` | Enable/Disable debug mode |
+| frontend.logging.json | bool | `true` | Logging in JSON or console format |
 | functions.affinity | object | `{}` |  |
 | functions.containers.functionscontroller.resources.limits.memory | string | `"1024Mi"` |  |
 | functions.containers.functionscontroller.resources.requests.memory | string | `"128Mi"` |  |
@@ -163,10 +174,11 @@ $ helm install direktiv direktiv/direktiv
 | imagePullSecrets | list | `[]` |  |
 | ingress-nginx | object | `{"controller":{"admissionWebhooks":{"patch":{"podAnnotations":{"linkerd.io/inject":"disabled"}}},"config":{"proxy-buffer-size":"16k"},"podAnnotations":{"linkerd.io/inject":"disabled"},"replicaCount":1},"install":true}` | nginx ingress controller configuration |
 | ingress.additionalAnnotations | object | `{}` | Additional Annotations |
-| ingress.certificate | string | `"none"` | TLS secret |
-| ingress.class | string | `"nginx"` | ingress class |
+| ingress.additionalLabels | object | `{}` | Additional Labels |
+| ingress.certificate | string | `nil` | TLS secret |
+| ingress.class | string | `"nginx"` | Ingress class |
 | ingress.enabled | bool | `true` |  |
-| ingress.host | string | `""` | host for external services, only required for TLS |
+| ingress.host | string | `nil` | Host for external services, only required for TLS |
 | logging | string | `"json"` | json or console logger |
 | networkPolicies.db | string | `"0.0.0.0/0"` | CIDR for database, excempt from policies |
 | networkPolicies.enabled | bool | `false` | adds network policies |
@@ -193,9 +205,7 @@ $ helm install direktiv direktiv/direktiv
 | prometheus.serviceAccounts.server.create | bool | `true` |  |
 | pullPolicy | string | `"Always"` |  |
 | registry | string | `"docker.io"` |  |
-| secrets | object | `{"db":"","extraVolumeMounts":[],"image":"direktiv/direktiv","tag":""}` | secrets sidecar in flow pod |
 | serviceAccount | object | `{"annotations":{},"create":true,"name":""}` | service account for components. If preconfigured serviceaccounts are used the name ise the base  and two additional service accounts are needed, e.g. service account name is myaccount then another two  acounts are needed: myaccount-functions and myaccount-functions-pod |
-| timeout | int | `7200` | max request timeouts in seconds |
+| timeout | int | `7200` | max request timeouts in seconds. Used in Knative and the ingress controller if enabled. |
 | tolerations | list | `[]` |  |
-| ui | object | `{"affinity":{},"certificate":"none","containers":{"ui":{"resources":{"limits":{"memory":"2048Mi"},"requests":{"memory":"128Mi"}}}},"extraContainers":[],"image":"direktiv/ui","replicas":1,"tag":""}` | UI configuration |
 
