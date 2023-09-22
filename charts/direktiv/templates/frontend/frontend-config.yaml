@@ -24,3 +24,4 @@ data:
       backend: http://{{ include "direktiv.fullname" . }}-api.{{ .Release.Namespace }}:1644
       {{- end }}
       skipverify: {{ index .Values.frontend.backend "skip-verify" }}
+    {{ .Values.frontend.extraConfig }}

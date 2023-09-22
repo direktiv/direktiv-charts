@@ -229,12 +229,15 @@ frontend:
   additionalAnnotations: {}
   # -- Additional Labels for frontend
   additionalLabels: {}
+  # -- Additional secret environment variables
+  additionalSecEnvs: {}
   # -- Backend configuration for the workflow engine
   backend:
     # -- Defaults to engine in the same namespace
     url:
     # -- Skip verifing TLS certificate if TLS is configured
     skip-verify: false
+  extraConfig: 
   resources:
     requests:
       memory: "128Mi"
