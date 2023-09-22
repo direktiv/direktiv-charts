@@ -2,8 +2,8 @@ apiVersion: v1
 entries:
   direktiv:
   - apiVersion: v2
-    appVersion: v0.8.0-rc1
-    created: "2023-09-20T12:52:30.098065776Z"
+    appVersion: v0.8.0-rc2
+    created: "2023-09-22T11:41:05.828137886Z"
     dependencies:
     - condition: prometheus.install
       name: prometheus
@@ -14,13 +14,13 @@ entries:
       repository: https://kubernetes.github.io/ingress-nginx
       version: 4.7.2
     description: direktiv helm chart
-    digest: e9c0aa79bb9f785796702d5a02f151745caa35e840f75dd196783f8e4ce78366
+    digest: 8690a5721ac6ee734511062cd92edee985c573b71571e306ce8546de8ed7dbf2
     icon: https://chart.direktiv.io/logo.png
     name: direktiv
     type: application
     urls:
-    - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.21-rc1/direktiv-0.1.21-rc1.tgz
-    version: 0.1.21-rc1
+    - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.21-rc2/direktiv-0.1.21-rc2.tgz
+    version: 0.1.21-rc2
   - apiVersion: v2
     appVersion: v0.8.0-rc1
     created: "2023-09-20T13:18:22.259473233Z"
@@ -35,6 +35,26 @@ entries:
       version: 4.7.2
     description: direktiv helm chart
     digest: 5203d3bcff8419a88217448dea34be64e12c380e526095866fef80c693c107ab
+    icon: https://chart.direktiv.io/logo.png
+    name: direktiv
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.21-rc1/direktiv-0.1.21-rc1.tgz
+    version: 0.1.21-rc1
+  - apiVersion: v2
+    appVersion: v0.8.0-rc1
+    created: "2023-09-20T12:52:30.098065776Z"
+    dependencies:
+    - condition: prometheus.install
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 25.0.0
+    - condition: ingress-nginx.install
+      name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      version: 4.7.2
+    description: direktiv helm chart
+    digest: e9c0aa79bb9f785796702d5a02f151745caa35e840f75dd196783f8e4ce78366
     icon: https://chart.direktiv.io/logo.png
     name: direktiv
     type: application
@@ -603,4 +623,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/postgrescluster-0.6.0/postgrescluster-0.6.0.tgz
     version: 0.6.0
-generated: "2023-09-20T13:18:22.259655139Z"
+generated: "2023-09-22T11:41:05.828453387Z"
