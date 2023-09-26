@@ -1,25 +1,28 @@
 # -- enable debug across all direktiv components
 debug: false
 
-# -- knative eventing enabled, requires knative setup and configuration
-eventing:
-  enabled: false
-
 # -- json or console logger
 logging: json
 
-# -- max request timeouts in seconds
+# -- knative eventing enabled, requires knative setup and configuration
+eventing:
+  enabled: true
+
+# -- enabled api key for API authentication with the `direktiv-token` header
+apikey: none
+
+# -- max request timeouts in seconds. Used in Knative and the ingress controller if enabled.
 timeout: 7200
 
 # used for encrpytion in the following resources: secrets
 # if set to empty, one will be generated on install
 encryptionKey: "01234567890123456789012345678912"
 
+# Added this to connect to tracing.direktiv.io
 opentelemetry:
-  # -- opentelemetry address where Direktiv is sending data to
-  address: "localhost:4317"
   # -- installs opentelemtry agent as sidecar in flow
   enabled: false
+  image: otel/opentelemetry-collector-dev:latest
   # -- config for sidecar agent
   agentconfig: |
     receivers:
@@ -29,7 +32,7 @@ opentelemetry:
           http:
     exporters:
       otlp:
-        endpoint: "192.168.1.113:14250"
+        endpoint: "tempo.grafana.svc:4317" # otel receivers grpc port for expl. tempo 
         insecure: true
         sending_queue:
           num_consumers: 4
@@ -61,7 +64,6 @@ opentelemetry:
 api:
   replicas: 1
 
-  extraContainers: []
   # -- image for api pod
   image: "direktiv/direktiv"
   # -- image tag for api pod
@@ -96,15 +98,18 @@ networkPolicies:
   podCidr: 0.0.0.0/0
 
 ingress:
+  # -- 
   enabled: true
-  # -- host for external services, only required for TLS
-  host: ""
+  # -- Host for external services, only required for TLS
+  host:
   # -- TLS secret
-  certificate: none
-  # -- ingress class
+  certificate:
+  # -- Ingress class
   class: "nginx"
   # -- Additional Annotations
   additionalAnnotations: {}
+  # -- Additional Labels
+  additionalLabels: {}
 
 database:
   # -- database host
@@ -178,7 +183,9 @@ flow:
     #         values:
     #         - direktiv
     #     topologyKey: kubernetes.io/hostname
-  
+  experimental_features: false
+  developer_mode: false
+
   containers:
     secrets:
       resources:
@@ -203,21 +210,39 @@ https_proxy: ""
 # -- no proxy proxy settings
 no_proxy: ""
 
-# -- UI configuration
-ui:
-  replicas: 1
-  image: "direktiv/ui"
+# -- Frontend configuration
+frontend:
+  image: "direktiv/frontend"
   tag: ""
-  certificate: none
-  extraContainers: []
-  affinity: {}
-  containers:
-    ui:
-      resources:
-        requests:
-          memory: "128Mi"
-        limits:
-          memory: "2048Mi"
+  replicas: 1
+
+  # -- Logging setting for the UI
+  logging:
+    # -- Logging in JSON or console format
+    json: true
+    # -- Enable/Disable debug mode
+    debug: true
+  
+  # -- certificate secret for frontend
+  certificate:
+  # -- Additional Annotations for frontend
+  additionalAnnotations: {}
+  # -- Additional Labels for frontend
+  additionalLabels: {}
+  # -- Additional secret environment variables
+  additionalSecEnvs: {}
+  # -- Backend configuration for the workflow engine
+  backend:
+    # -- Defaults to engine in the same namespace
+    url:
+    # -- Skip verifing TLS certificate if TLS is configured
+    skip-verify: false
+  extraConfig: 
+  resources:
+    requests:
+      memory: "128Mi"
+    limits:
+      memory: "512Mi"
   
 prometheus:
   install: true
@@ -336,8 +361,6 @@ functions:
         limits:
           memory: "1024Mi"
 
-# -- enabled api key for API authentication with the `direktiv-token` header, key set in http-snippet in `ingress-nginx` none
-apikey: none
 
 # -- nginx ingress controller configuration
 ingress-nginx:

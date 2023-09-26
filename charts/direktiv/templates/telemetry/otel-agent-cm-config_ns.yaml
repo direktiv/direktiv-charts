@@ -8,5 +8,5 @@ metadata:
     {{- include "direktiv.labels" . | nindent 4 }}
 data:
   otel-agent-config: |
-{{- .Values.opentelemetry.agentconfig | nindent 4 }}
+{{- .Values.opentelemetry.agentconfig | nindent 4}}
 {{- end }}

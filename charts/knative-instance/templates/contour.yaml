@@ -7090,11 +7090,11 @@ spec:
         name: shutdown-manager
         resources:
           limits:
-            cpu: {{ .Values.envoy.containers.shutdown-manager.resources.limits.cpu }}
-            memory: {{ .Values.envoy.containers.shutdown-manager.resources.limits.memory }}
+            cpu: {{ index .Values "envoy" "containers" "shutdown-manager" "resources" "limits" "cpu" }}
+            memory: {{ index .Values "envoy" "containers" "shutdown-manager" "resources" "limits" "memory" }}
           requests:
-            cpu: {{ .Values.envoy.containers.shutdown-manager.resources.requests.cpu }}
-            memory: {{ .Values.envoy.containers.shutdown-manager.resources.requests.memory }}
+            cpu: {{ index .Values "envoy" "containers" "shutdown-manager" "resources" "requests" "cpu" }}
+            memory: {{ index .Values "envoy" "containers" "shutdown-manager" "resources" "requests" "memory" }}
         volumeMounts:
         - mountPath: /admin
           name: envoy-admin

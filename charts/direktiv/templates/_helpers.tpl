@@ -86,16 +86,16 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels ui
+Selector labels frontend
 */}}
-{{- define "direktiv.selectorLabelsUI" -}}
-app.kubernetes.io/name: {{ include "direktiv.name" . }}-ui
-app.kubernetes.io/instance: {{ .Release.Name }}-ui
+{{- define "direktiv.selectorLabelsFrontend" -}}
+app.kubernetes.io/name: {{ include "direktiv.name" . }}-frontend
+app.kubernetes.io/instance: {{ .Release.Name }}-frontend
 {{- end }}
 
-{{- define "direktiv.labelsUI" -}}
+{{- define "direktiv.labelsFrontend" -}}
 helm.sh/chart: {{ include "direktiv.chart" . }}
-{{ include "direktiv.selectorLabelsUI" . }}
+{{ include "direktiv.selectorLabelsFrontend" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -117,7 +117,7 @@ otlp sidecar
     - "/otelcol"
     - "--config=/conf/otel-agent-config.yaml"
     - "--mem-ballast-size-mib=165"
-  image: otel/opentelemetry-collector-dev:latest
+  image: {{ .Values.opentelemetry.image | default "otel/opentelemetry-collector-dev:latest"}}
   name: otel-agent
   resources:
     limits:
@@ -138,4 +138,16 @@ otlp sidecar
       - key: otel-agent-config
         path: otel-agent-config.yaml
   name: otel-agent-config-vol
+{{- end }}
+
+{{- define "direktiv.opentelemetry-backend" -}}
+{{- if .Values.opentelemetry.enabled }}
+{{- $agentconfig:= fromYaml .Values.opentelemetry.agentconfig -}}
+{{if not $agentconfig.exporters.otlp.endpoint}}
+{{- fail "opentelemetry.agentconfig.exporters.endpoint is required when opentelemetry is enabled" }}
+{{- end }}
+{{- $agentconfig.exporters.otlp.endpoint | quote }}
+{{- else }}
+{{- "\"\""}}
+{{- end }}
 {{- end }}
