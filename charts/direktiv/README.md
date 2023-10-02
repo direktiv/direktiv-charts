@@ -2,11 +2,16 @@
 
 direktiv helm chart
 
-![Version: 0.1.20](https://img.shields.io/badge/Version-0.1.20-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.5](https://img.shields.io/badge/AppVersion-v0.7.5-informational?style=flat-square)
+![Version: 0.1.21](https://img.shields.io/badge/Version-0.1.21-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.8.0](https://img.shields.io/badge/AppVersion-v0.8.0-informational?style=flat-square)
 
 ## Additional Information
 
 This chart installs direktiv.
+
+### Changes in 0.1.21
+* Changed ui image name to frontend
+* Changed ingress configuration for API and frontend
+* Version upgrade
 
 ### Changes in 0.1.20
 
@@ -139,9 +144,10 @@ $ helm install direktiv direktiv/direktiv
 | flow.replicas | int | `1` | number of flow replicas |
 | flow.tag | string | `""` | image tag for flow pod |
 | fluentbit.extraConfig | string | `""` | postgres for direktiv services Append extra output to fluentbit configuration. There are two log types: application (system), functions (workflows) these can be matched to new outputs. |
-| frontend | object | `{"additionalAnnotations":{},"additionalLabels":{},"backend":{"skip-verify":false,"url":null},"certificate":null,"image":"direktiv/ui","logging":{"debug":true,"json":true},"replicas":1,"resources":{"limits":{"memory":"512Mi"},"requests":{"memory":"128Mi"}},"tag":""}` | Frontend configuration |
+| frontend | object | `{"additionalAnnotations":{},"additionalLabels":{},"additionalSecEnvs":{},"backend":{"skip-verify":false,"url":null},"certificate":null,"extraConfig":null,"image":"direktiv/frontend","logging":{"debug":true,"json":true},"replicas":1,"resources":{"limits":{"memory":"512Mi"},"requests":{"memory":"128Mi"}},"tag":""}` | Frontend configuration |
 | frontend.additionalAnnotations | object | `{}` | Additional Annotations for frontend |
 | frontend.additionalLabels | object | `{}` | Additional Labels for frontend |
+| frontend.additionalSecEnvs | object | `{}` | Additional secret environment variables |
 | frontend.backend | object | `{"skip-verify":false,"url":null}` | Backend configuration for the workflow engine |
 | frontend.backend.skip-verify | bool | `false` | Skip verifing TLS certificate if TLS is configured |
 | frontend.backend.url | string | `nil` | Defaults to engine in the same namespace |
@@ -186,9 +192,9 @@ $ helm install direktiv direktiv/direktiv
 | networkPolicies.serviceCidr | string | `"0.0.0.0/0"` | CIDR for services, excempt from policies |
 | no_proxy | string | `""` | no proxy proxy settings |
 | nodeSelector | object | `{}` |  |
-| opentelemetry.address | string | `"localhost:4317"` | opentelemetry address where Direktiv is sending data to |
-| opentelemetry.agentconfig | string | `"receivers:\n  otlp:\n    protocols:\n      grpc:\n      http:\nexporters:\n  otlp:\n    endpoint: \"192.168.1.113:14250\"\n    insecure: true\n    sending_queue:\n      num_consumers: 4\n      queue_size: 100\n    retry_on_failure:\n      enabled: true\n  logging:\n    loglevel: debug\nprocessors:\n  batch:\n  memory_limiter:\n    # Same as --mem-ballast-size-mib CLI argument\n    ballast_size_mib: 165\n    # 80% of maximum memory up to 2G\n    limit_mib: 400\n    # 25% of limit up to 2G\n    spike_limit_mib: 100\n    check_interval: 5s\nextensions:\n  zpages: {}\nservice:\n  extensions: [zpages]\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [memory_limiter, batch]\n      exporters: [logging, otlp]\n"` | config for sidecar agent |
+| opentelemetry.agentconfig | string | `"receivers:\n  otlp:\n    protocols:\n      grpc:\n      http:\nexporters:\n  otlp:\n    endpoint: \"tempo.grafana.svc:4317\" # otel receivers grpc port for expl. tempo \n    insecure: true\n    sending_queue:\n      num_consumers: 4\n      queue_size: 100\n    retry_on_failure:\n      enabled: true\n  logging:\n    loglevel: debug\nprocessors:\n  batch:\n  memory_limiter:\n    # Same as --mem-ballast-size-mib CLI argument\n    ballast_size_mib: 165\n    # 80% of maximum memory up to 2G\n    limit_mib: 400\n    # 25% of limit up to 2G\n    spike_limit_mib: 100\n    check_interval: 5s\nextensions:\n  zpages: {}\nservice:\n  extensions: [zpages]\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [memory_limiter, batch]\n      exporters: [logging, otlp]\n"` | config for sidecar agent |
 | opentelemetry.enabled | bool | `false` | installs opentelemtry agent as sidecar in flow |
+| opentelemetry.image | string | `"otel/opentelemetry-collector-dev:latest"` |  |
 | prometheus.alertmanager.enabled | bool | `false` |  |
 | prometheus.backendName | string | `"prom-backend-server"` |  |
 | prometheus.global.evaluation_interval | string | `"1m"` |  |
