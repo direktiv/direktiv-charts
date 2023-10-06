@@ -45,17 +45,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "direktiv.serviceAccountName" . }}-functions
-      initContainers:
-        - name: updatedb
-          image: "{{ .Values.registry }}/{{ .Values.flow.dbimage }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
-          env:
-          - name: DIREKTIV_APP
-            value: "flow_dbinit"
-          - name: DIREKTIV_DB
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: db
       containers:
 {{- if .Values.opentelemetry.enabled }}
 {{ include "direktiv.opentelemetry" . | indent 8 }}
