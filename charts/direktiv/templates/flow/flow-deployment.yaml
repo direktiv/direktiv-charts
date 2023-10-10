@@ -111,11 +111,11 @@ spec:
           #  value: my_value
 
           - name: DIREKTIV_API_V1_PORT
-            value: 6665
+            value: "6665"
           - name: DIREKTIV_API_V2_PORT
-            value: 6667
+            value: "6667"
           - name: DIREKTIV_GRPC_PORT
-            value: 6666
+            value: "6666"
 
           - name: DIREKTIV_SECRET_KEY
             valueFrom:
