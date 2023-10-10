@@ -102,7 +102,22 @@ spec:
             value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG
             value: {{ .Values.debug | quote }}
-          - name: DIREKTIV_SECRETS_KEY
+
+          #- name: DIREKTIV_PROMETHEUS_BACKEND
+          #  value: my_value
+          #- name: DIREKTIV_OPEN_TELEMETRY_BACKEND
+          #  value: my_value
+          #- name: DIREKTIV_ENABLE_EVENTING
+          #  value: my_value
+
+          - name: DIREKTIV_API_V1_PORT
+            value: 6665
+          - name: DIREKTIV_API_V2_PORT
+            value: 6667
+          - name: DIREKTIV_GRPC_PORT
+            value: 6666
+
+          - name: DIREKTIV_SECRET_KEY
             valueFrom:
               secretKeyRef:
                 name: {{ include "direktiv.fullname" . }}
@@ -144,9 +159,6 @@ spec:
         {{- if .Values.flow.extraVolumes }}
         {{ toYaml .Values.flow.extraVolumes | nindent 8 }}
         {{- end }}
-        - name: flow-config
-          configMap:
-            name: {{ include "direktiv.fullname" . }}-config-flow
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
