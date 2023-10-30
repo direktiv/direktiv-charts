@@ -100,6 +100,19 @@ spec:
           - name: DIREKTIV_DEBUG
             value: {{ .Values.debug | quote }}
 
+          - name: DIREKTIV_KNATIVE_SERVICE_ACCOUNT
+            value: "direktiv-functions-pod"
+          - name: DIREKTIV_KNATIVE_NAMESPACE
+            value: "direktiv-services-direktiv"
+          - name: DIREKTIV_KNATIVE_INGRESS_CLASS
+            value: "contour.ingress.networking.knative.dev"
+          - name: DIREKTIV_KNATIVE_SIDECAR
+            value: "localhost:5000/direktiv"
+          - name: DIREKTIV_KNATIVE_MAX_SCALE
+            value: "5"
+          - name: DIREKTIV_KNATIVE_NET_SHAPE
+            value: "10M"
+
           #- name: DIREKTIV_PROMETHEUS_BACKEND
           #  value: my_value
           #- name: DIREKTIV_OPEN_TELEMETRY_BACKEND
