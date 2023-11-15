@@ -11,9 +11,9 @@ metadata:
   annotations:
      {{- if eq .Values.ingress.class "nginx" }}
     nginx.ingress.kubernetes.io/service-upstream: "true"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.timeout }}"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.timeout }}"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.timeout }}"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.requestTimeout }}"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.requestTimeout }}"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.requestTimeout }}"
     {{- end }}
     {{- range $key, $value := .Values.ingress.additionalAnnotations }}
     {{ $key }}: {{ $value | quote }}

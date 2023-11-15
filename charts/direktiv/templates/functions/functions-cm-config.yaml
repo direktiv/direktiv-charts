@@ -25,7 +25,7 @@ data:
       namespace: {{ .Values.functions.namespace }}
 
       # pod sidecar name
-      sidecar: {{ .Values.registry }}/{{ .Values.functions.sidecar }}:{{ .Values.functions.tag | default .Chart.AppVersion }}
+      sidecar: {{ .Values.registry }}/{{ .Values.functions.sidecar }}:{{ .Values.tag | default .Chart.AppVersion }}
 
       # max number of pods per service
       max-scale: 3
@@ -80,7 +80,7 @@ data:
       concurrency: 100
 
       # maximum timeout, needs to be in below knative max
-      request-timeout: {{ .Values.timeout }}
+      request-timeout: {{ .Values.requestTimeout }}
 
       # max ephemeral storage in MB
       storage: 100
@@ -89,5 +89,5 @@ data:
       rollout-duration: 10
       
       # init pod name
-      init-pod: {{ .Values.registry }}/{{ .Values.functions.initPodImage }}:{{ .Values.functions.tag | default .Chart.AppVersion }}    
+      init-pod: {{ .Values.registry }}/{{ .Values.functions.initPodImage }}:{{ .Values.tag | default .Chart.AppVersion }}    
 

@@ -61,7 +61,7 @@ spec:
               memory: "128Mi"
             limits:
               memory: "2048Mi"
-          image: "{{ .Values.registry }}/{{ .Values.flow.image }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.registry }}/{{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           command: ["/bin/direktiv", "server"]
           volumeMounts:
@@ -69,12 +69,6 @@ spec:
           {{ toYaml .Values.flow.extraVolumeMounts | nindent 10 }}
           {{- end }}
           ports:
-            - name: bus
-              containerPort: 4222
-              protocol: TCP
-            - name: cluster
-              containerPort: 6222
-              protocol: TCP
             - name: flow-v1
               containerPort: 6665
               protocol: TCP
@@ -95,11 +89,39 @@ spec:
           env:
           - name: DIREKTIV_APP
             value: "flow"
-          - name: DIREKTIV_LOG_JSON
-            value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG
-            value: {{ .Values.debug | quote }}
-
+            value: {{ .Values.flow.debug | quote }}
+          - name: DIREKTIV_LOG_FORMAT
+            value: {{ .Values.flow.logging | quote }}
+          - name: DIREKTIV_API_V1_PORT
+            value: "6665"
+          - name: DIREKTIV_API_V2_PORT
+            value: "6667"
+          - name: DIREKTIV_GRPC_PORT
+            value: "6666"
+          - name: DIREKTIV_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "direktiv.fullname" . }}
+                key: key
+          - name: DIREKTIV_DB
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "direktiv.fullname" . }}
+                key: db
+          - name: DIREKTIV_FUNCTIONS_TIMEOUT
+            value: {{ .Values.requestTimeout | quote }}
+          - name: DIREKTIV_PROMETHEUS_BACKEND
+            value: {{ .Values.prometheus.backendName | quote }}
+          {{- if .Values.prometheus.install }}
+            value: {{ include "direktiv.fullname" . }}-prometheus-server.{{ .Release.Namespace }}
+          {{- else }}
+            value: {{ .Values.prometheus.backendName }}
+          {{- end }}
+          - name: DIREKTIV_OPEN_TELEMETRY_BACKEND
+            value: {{ include "direktiv.opentelemetry-backend" . }}
+          - name: DIREKTIV_ENABLE_EVENTING
+            value: {{ .Values.eventing.enabled | quote }}
           - name: DIREKTIV_KNATIVE_SERVICE_ACCOUNT
             value: "direktiv-functions-pod"
           - name: DIREKTIV_KNATIVE_NAMESPACE
@@ -107,31 +129,11 @@ spec:
           - name: DIREKTIV_KNATIVE_INGRESS_CLASS
             value: "contour.ingress.networking.knative.dev"
           - name: DIREKTIV_KNATIVE_SIDECAR
-            value: "localhost:5000/direktiv"
+            value: "{{ .Values.registry }}/{{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}"
           - name: DIREKTIV_KNATIVE_MAX_SCALE
             value: "5"
           - name: DIREKTIV_KNATIVE_NET_SHAPE
             value: "10M"
-
-          #- name: DIREKTIV_PROMETHEUS_BACKEND
-          #  value: my_value
-          #- name: DIREKTIV_OPEN_TELEMETRY_BACKEND
-          #  value: my_value
-          #- name: DIREKTIV_ENABLE_EVENTING
-          #  value: my_value
-
-          - name: DIREKTIV_API_V1_PORT
-            value: "6665"
-          - name: DIREKTIV_API_V2_PORT
-            value: "6667"
-          - name: DIREKTIV_GRPC_PORT
-            value: "6666"
-
-          - name: DIREKTIV_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: key
           - name: DIREKTIV_SERVICE_NAMESPACE
             value: {{ .Values.functions.namespace }}
           {{- if or (ne .Values.http_proxy "") (ne .Values.https_proxy "") }}
@@ -142,11 +144,6 @@ spec:
           - name: "NO_PROXY"
             value: "{{ .Values.no_proxy }}"
           {{- end }}
-          - name: DIREKTIV_DB
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: db
           - name: DIREKTIV_DEPLOYMENT_NAME
             value: "{{ include "direktiv.fullname" . }}"
           - name: DIREKTIV_NAMESPACE
@@ -158,10 +155,6 @@ spec:
               secretKeyRef:
                 name: {{ include "direktiv.fullname" . }}
                 key: natsPwd
-          - name: ENABLE_EXPERIMENTAL_FEATURES
-            value: "{{ .Values.flow.experimental_features }}"
-          - name: ENABLE_DEVELOPER_MODE
-            value: "{{ .Values.flow.developer_mode }}"
       volumes:
 {{- if .Values.opentelemetry.enabled }}
 {{ include "direktiv.opentelemetry.volume" . | indent 8 }}

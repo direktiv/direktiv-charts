@@ -4,16 +4,3 @@ metadata:
   name: {{ include "direktiv.fullname" . }}-config-flow
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
-
-data:
-  flow-config.yaml: |
-      functions-service: {{ include "direktiv.fullname" . }}-functions.{{ .Release.Namespace }}
-      functions-timeout: {{ .Values.timeout }}
-      flow-service: {{ include "direktiv.fullname" . }}-flow.{{ .Release.Namespace }}
-      {{- if .Values.prometheus.install }}
-      prometheus-backend: {{ include "direktiv.fullname" . }}-prometheus-server.{{ .Release.Namespace }}
-      {{- else }}
-      prometheus-backend: {{ .Values.prometheus.backendName }}
-      {{- end }}
-      opentelemetry-backend: {{ include "direktiv.opentelemetry-backend" . }}
-      eventing: {{ .Values.eventing.enabled }}
