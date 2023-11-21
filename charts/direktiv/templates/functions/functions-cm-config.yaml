@@ -56,9 +56,9 @@ data:
 
       # proxy values
       proxy:
-        no: "{{ .Values.functions.no_proxy }}"
-        https: "{{ .Values.functions.https_proxy }}"
-        http: "{{ .Values.functions.http_proxy }}"
+        no: "{{ .Values.no_proxy }}"
+        https: "{{ .Values.https_proxy }}"
+        http: "{{ .Values.http_proxy }}"
 
       # additional volumes
       extraVolumes:
