@@ -33,6 +33,10 @@ flow:
   encryptionKey:
   # -- number of flow replicas
   replicas: 1
+  # -- extra environment variables in flow pod 
+  extraVariables: []
+    # - name: 
+    #   value:
   # -- extra container in flow pod
   extraContainers: []
   # -- extra volume mounts in flow pod
