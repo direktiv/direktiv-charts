@@ -152,11 +152,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          - name: NATS_PWD
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: natsPwd
           {{- range .Values.flow.extraVariables }}
           - name: {{ .name | quote }}
             value: {{ .value | quote }}
