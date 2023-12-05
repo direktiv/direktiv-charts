@@ -212,8 +212,9 @@ serviceAccount:
 frontend:
   image: "direktiv/frontend"
   tag: ""
+  command: ""
   replicas: 1
-
+  extraVariables: []
   nginx: 
     resolver: kube-dns.kube-system.svc.cluster.local valid=10s;
     config: 

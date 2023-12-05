@@ -5,11 +5,20 @@ metadata:
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
 data:
-  default.conf: |
+  default.conf.template: |
       lua_shared_dict discovery 1m;
       lua_shared_dict jwks 1m;
-
+      
       server {
+
+        set $session_storage cookie;
+        set $session_cookie_persistent on;
+        set $session_cookie_secure on;
+        set $session_cookie_httponly on;
+        set $session_cookie_samesite Strict;
+
+        server_tokens off;  
+
         listen 2304;
         
         resolver {{ .Values.frontend.nginx.resolver }}
@@ -19,10 +28,20 @@ data:
 
         root /usr/share/nginx/html;
 
+        location /assets {
+        }
+
+        location /locales {
+        }
+
+        location = /favicon.ico {
+        }
+
         location / {
-          try_files $uri /index.html;  
+          try_files $uri /index.html;
           {{ .Values.frontend.nginx.config | nindent 10 }}
         }
+
       }
 
 

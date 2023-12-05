@@ -44,6 +44,11 @@ spec:
       serviceAccountName: {{ include "direktiv.serviceAccountName" . }}
       containers:
         - name: frontend
+          {{- if .Values.frontend.command }}
+          command: {{  range .Values.frontend.command }}
+                   - {{ . }}
+                   {{ end }}          
+          {{- end }}
           securityContext:
             readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
@@ -55,18 +60,19 @@ spec:
           image: "{{ .Values.registry }}/{{ .Values.frontend.image }}:{{ .Values.frontend.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           env: 
-            - name: DIREKTIV_DB
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "direktiv.fullname" . }}
-                  key: db
+          {{- if len .Values.frontend.extraVariables }}
+          {{- range .Values.frontend.extraVariables }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+          {{- end }}
+          {{- end }}            
           ports:
             - name: frontend
               containerPort: 2304
               protocol: TCP
           volumeMounts:
           - name: nginx-conf
-            mountPath: /etc/nginx/conf.d
+            mountPath: /etc/nginx/templates
             readOnly: true
           {{- if .Values.frontend.certificate }}
           - name: cert-volume
