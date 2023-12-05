@@ -158,16 +158,6 @@ opentelemetry:
 eventing:
   enabled: true
 
-networkPolicies:
-  # -- adds network policies
-  enabled: false
-  # -- CIDR for database, excempt from policies
-  db: 0.0.0.0/0
-  # -- CIDR for services, excempt from policies
-  serviceCidr: 0.0.0.0/0
-  # -- CIDR for pods, excempt from policies
-  podCidr: 0.0.0.0/0
-
 ingress:
   # -- 
   enabled: true
@@ -223,6 +213,10 @@ frontend:
   image: "direktiv/frontend"
   tag: ""
   replicas: 1
+
+  nginx: 
+    resolver: kube-dns.kube-system.svc.cluster.local valid=10s;
+    config: 
 
   # -- Logging setting for the UI
   logging:

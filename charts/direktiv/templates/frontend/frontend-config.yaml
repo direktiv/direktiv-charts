@@ -5,6 +5,27 @@ metadata:
   labels:
     {{- include "direktiv.labels" . | nindent 4 }}
 data:
+  default.conf: |
+      lua_shared_dict discovery 1m;
+      lua_shared_dict jwks 1m;
+
+      server {
+        listen 2304;
+        
+        resolver {{ .Values.frontend.nginx.resolver }}
+
+        lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        lua_ssl_verify_depth 5;
+
+        root /usr/share/nginx/html;
+
+        location / {
+          try_files $uri /index.html;  
+          {{ .Values.frontend.nginx.config | nindent 10 }}
+        }
+      }
+
+
   direktiv.yaml: |
     log:
       json: {{ .Values.frontend.logging.json }}

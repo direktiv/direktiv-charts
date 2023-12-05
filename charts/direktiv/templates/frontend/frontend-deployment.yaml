@@ -64,14 +64,20 @@ spec:
             - name: frontend
               containerPort: 2304
               protocol: TCP
-          {{- if .Values.frontend.certificate }}
           volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+            readOnly: true
+          {{- if .Values.frontend.certificate }}
           - name: cert-volume
             mountPath: /etc/certs
             readOnly: true
           {{- end }}
-      {{- if .Values.frontend.certificate }}
       volumes:
+      - name: nginx-conf
+        configMap:
+          name: {{ include "direktiv.fullname" . }}-config-frontend
+      {{- if .Values.frontend.certificate }}
       - name: cert-volume
         secret:
           secretName: {{ .Values.frontend.certificate }}

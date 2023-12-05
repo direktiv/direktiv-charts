@@ -14,6 +14,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.requestTimeout }}"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.requestTimeout }}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.requestTimeout }}"
+    nginx.ingress.kubernetes.io/proxy-body-size: 128m
     {{- end }}
     {{- range $key, $value := .Values.ingress.additionalAnnotations }}
     {{ $key }}: {{ $value | quote }}
@@ -33,11 +34,32 @@ spec:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
-        - path: /ui/
+        - path: /
           pathType: Prefix
           backend:
             service:
               name: {{ include "direktiv.fullname" . }}-frontend
               port:
                 number: 2304
+        - path: /api/
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "direktiv.fullname" . }}-flow
+              port:
+                number: 6665
+        - path: /gw/
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "direktiv.fullname" . }}-flow
+              port:
+                number: 6665
+        - path: /ns/
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "direktiv.fullname" . }}-flow
+              port:
+                number: 6665
 {{ end }}
