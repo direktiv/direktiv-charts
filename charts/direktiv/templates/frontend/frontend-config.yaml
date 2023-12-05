@@ -43,25 +43,3 @@ data:
         }
 
       }
-
-
-  direktiv.yaml: |
-    log:
-      json: {{ .Values.frontend.logging.json }}
-      api: {{ if eq .Values.frontend.logging.debug true }}debug{{- else }}info{{ end }}
-    server:
-      assets: /html
-      {{- if ne .Values.apikey "none" }}
-      apikey: {{ .Values.apikey }}
-      {{- end }}
-      {{- if .Values.frontend.certificate }}
-      tlscert: /etc/certs/tls.crt
-      tlskey: /etc/certs/tls.key
-      {{- end }}
-      {{- if .Values.frontend.backend.url }}
-      backend: {{ .Values.frontend.backend.url }}
-      {{- else }}
-      backend: http://{{ include "direktiv.fullname" . }}-flow.{{ .Release.Namespace }}:6665
-      {{- end }}
-      skipverify: {{ index .Values.frontend.backend "skip-verify" }}
-    {{ .Values.frontend.extraConfig }}

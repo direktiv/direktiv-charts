@@ -217,7 +217,7 @@ frontend:
   extraVariables: []
   nginx: 
     resolver: kube-dns.kube-system.svc.cluster.local valid=10s;
-    config: 
+    config: ""
 
   # -- Logging setting for the UI
   logging:
