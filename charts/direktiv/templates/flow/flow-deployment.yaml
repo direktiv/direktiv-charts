@@ -100,7 +100,7 @@ spec:
           - name: DIREKTIV_GRPC_PORT
             value: "6666"
           - name: DIREKTIV_API_KEY
-            vale: {{ .Values.apikey }}
+            value: {{ .Values.apikey }}
           - name: DIREKTIV_SECRET_KEY
             valueFrom:
               secretKeyRef:
