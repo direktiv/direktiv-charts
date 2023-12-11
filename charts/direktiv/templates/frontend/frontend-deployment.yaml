@@ -65,7 +65,15 @@ spec:
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
           {{- end }}
-          {{- end }}            
+          {{- end }}           
+          {{- if or (ne .Values.http_proxy "") (ne .Values.https_proxy "") }}
+          - name: "HTTP_PROXY"
+            value: "{{ .Values.http_proxy }}"
+          - name: "HTTPS_PROXY"
+            value: "{{ .Values.https_proxy }}"
+          - name: "NO_PROXY"
+            value: "{{ .Values.no_proxy }}"
+          {{- end }} 
           ports:
             - name: frontend
               containerPort: 2304
