@@ -44,18 +44,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "direktiv.serviceAccountName" . }}
-      initContainers:
-        - name: updatedb
-          image: "{{ .Values.registry }}/{{ .Values.flow.dbimage }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
-          env:
-          - name: DIREKTIV_APP
-            value: "flow_dbinit"
-          - name: DIREKTIV_DB
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: db
+      serviceAccountName: {{ include "direktiv.serviceAccountName" . }}-functions
       containers:
 {{- if .Values.opentelemetry.enabled }}
 {{ include "direktiv.opentelemetry" . | indent 8 }}
@@ -72,25 +61,22 @@ spec:
               memory: "128Mi"
             limits:
               memory: "2048Mi"
-          image: "{{ .Values.registry }}/{{ .Values.flow.image }}:{{ .Values.flow.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.registry }}/{{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          command: ["/bin/direktiv", "server", "/etc/direktiv/flow-config.yaml"]
+          command: ["/bin/direktiv", "server"]
           volumeMounts:
           {{- if .Values.flow.extraVolumeMounts -}}
           {{ toYaml .Values.flow.extraVolumeMounts | nindent 10 }}
           {{- end }}
-          - name: flow-config
-            mountPath: /etc/direktiv/flow-config.yaml
-            subPath: flow-config.yaml
           ports:
-            - name: bus
-              containerPort: 4222
-              protocol: TCP
-            - name: cluster
-              containerPort: 6222
+            - name: flow-v1
+              containerPort: 6665
               protocol: TCP
             - name: flow
               containerPort: 6666
+              protocol: TCP
+            - name: flow-v2
+              containerPort: 6667
               protocol: TCP
             - name: internal
               containerPort: 7777
@@ -103,15 +89,55 @@ spec:
           env:
           - name: DIREKTIV_APP
             value: "flow"
-          - name: DIREKTIV_LOG_JSON
-            value: {{ .Values.logging | quote }}
           - name: DIREKTIV_DEBUG
-            value: {{ .Values.debug | quote }}
-          - name: DIREKTIV_SECRETS_KEY
+            value: {{ .Values.flow.debug | quote }}
+          - name: DIREKTIV_LOG_FORMAT
+            value: {{ .Values.flow.logging | quote }}
+          - name: DIREKTIV_API_V1_PORT
+            value: "6665"
+          - name: DIREKTIV_API_V2_PORT
+            value: "6667"
+          - name: DIREKTIV_GRPC_PORT
+            value: "6666"
+          {{- if ne .Values.apikey "none" }}
+          - name: DIREKTIV_API_KEY
+            value: {{ .Values.apikey }}
+          {{- end }}
+          - name: DIREKTIV_SECRET_KEY
             valueFrom:
               secretKeyRef:
                 name: {{ include "direktiv.fullname" . }}
                 key: key
+          - name: DIREKTIV_DB
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "direktiv.fullname" . }}
+                key: db
+          - name: DIREKTIV_FUNCTIONS_TIMEOUT
+            value: {{ .Values.requestTimeout | quote }}
+          - name: DIREKTIV_PROMETHEUS_BACKEND
+            value: {{ .Values.prometheus.backendName | quote }}
+          {{- if .Values.prometheus.install }}
+            value: {{ include "direktiv.fullname" . }}-prometheus-server.{{ .Release.Namespace }}
+          {{- else }}
+            value: {{ .Values.prometheus.backendName }}
+          {{- end }}
+          - name: DIREKTIV_OPEN_TELEMETRY_BACKEND
+            value: {{ include "direktiv.opentelemetry-backend" . }}
+          - name: DIREKTIV_ENABLE_EVENTING
+            value: {{ .Values.eventing.enabled | quote }}
+          - name: DIREKTIV_KNATIVE_SERVICE_ACCOUNT
+            value: "direktiv-functions-pod"
+          - name: DIREKTIV_KNATIVE_NAMESPACE
+            value: "direktiv-services-direktiv"
+          - name: DIREKTIV_KNATIVE_INGRESS_CLASS
+            value: "contour.ingress.networking.knative.dev"
+          - name: DIREKTIV_KNATIVE_SIDECAR
+            value: "{{ .Values.registry }}/{{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}"
+          - name: DIREKTIV_KNATIVE_MAX_SCALE
+            value: "5"
+          - name: DIREKTIV_KNATIVE_NET_SHAPE
+            value: "10M"
           - name: DIREKTIV_SERVICE_NAMESPACE
             value: {{ .Values.functions.namespace }}
           {{- if or (ne .Values.http_proxy "") (ne .Values.https_proxy "") }}
@@ -122,26 +148,16 @@ spec:
           - name: "NO_PROXY"
             value: "{{ .Values.no_proxy }}"
           {{- end }}
-          - name: DIREKTIV_DB
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: db
           - name: DIREKTIV_DEPLOYMENT_NAME
             value: "{{ include "direktiv.fullname" . }}"
           - name: DIREKTIV_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          - name: NATS_PWD
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "direktiv.fullname" . }}
-                key: natsPwd
-          - name: ENABLE_EXPERIMENTAL_FEATURES
-            value: "{{ .Values.flow.experimental_features }}"
-          - name: ENABLE_DEVELOPER_MODE
-            value: "{{ .Values.flow.developer_mode }}"
+          {{- range .Values.flow.extraVariables }}
+          - name: {{ .name | quote }}
+            value: {{ .value | quote }}
+          {{- end }}
       volumes:
 {{- if .Values.opentelemetry.enabled }}
 {{ include "direktiv.opentelemetry.volume" . | indent 8 }}
@@ -149,9 +165,6 @@ spec:
         {{- if .Values.flow.extraVolumes }}
         {{ toYaml .Values.flow.extraVolumes | nindent 8 }}
         {{- end }}
-        - name: flow-config
-          configMap:
-            name: {{ include "direktiv.fullname" . }}-config-flow
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,22 +1,115 @@
-# -- enable debug across all direktiv components
-debug: false
+# -- Container registry from which to pull direktiv.
+registry: "docker.io"
 
-# -- json or console logger
-logging: json
+# -- Container pull policy.
+pullPolicy: Always
 
-# -- knative eventing enabled, requires knative setup and configuration
-eventing:
-  enabled: true
+# -- Container registry secrets.
+imagePullSecrets: []
+
+
+# -- image for main direktiv binary
+image: "direktiv/direktiv"
+
+# -- image tag for main direktiv binary pod
+tag: ""
 
 # -- enabled api key for API authentication with the `direktiv-token` header
 apikey: none
 
 # -- max request timeouts in seconds. Used in Knative and the ingress controller if enabled.
-timeout: 7200
+requestTimeout: 7200
 
-# used for encrpytion in the following resources: secrets
-# if set to empty, one will be generated on install
-encryptionKey: "01234567890123456789012345678912"
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+flow:
+  # -- Output debug-level logs.
+  debug: false
+  # -- Set to 'json' or 'console' to change log output format.
+  logging: json
+  # -- Set to define an encryption key to be used for secrets. If set to empty, one will be generated on install.
+  encryptionKey:
+  # -- number of flow replicas
+  replicas: 1
+  # -- extra environment variables in flow pod 
+  extraVariables: []
+    # - name: 
+    #   value:
+  # -- extra container in flow pod
+  extraContainers: []
+  # -- extra volume mounts in flow pod
+  extraVolumeMounts:
+    # - name: service-template
+    #   mountPath: /etc/config
+  # -- extra volumes in flow pod
+  extraVolumes:
+    # - name: service-template
+    #   configMap:
+    #     name: service-template
+  # -- affinity for flow pods
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app.kubernetes.io/name
+    #         operator: In
+    #         values:
+    #         - direktiv
+    #     topologyKey: kubernetes.io/hostname
+  containers:
+    secrets:
+      resources:
+        requests:
+          memory: "128Mi"
+        limits:
+          memory: "512Mi"
+
+database:
+  # -- database host
+  host: "postgres-postgresql-ha-pgpool.postgres"
+  # -- database port
+  port: 5432
+  # -- database user
+  user: "direktiv"
+  # -- database password
+  password: "direktivdirektiv"
+  # -- database name, has to be created before installation
+  name: "direktiv"
+  # -- sslmode for database
+  sslmode: require
+  # -- additional connection attributes, e.g. target_session_attrs
+  additional: ""
+
+prometheus:
+  install: true
+  backendName: "prom-backend-server" # required if install = false
+  global:
+    scrape_interval: 1m
+    evaluation_interval: 1m
+  server:
+    retention: 96h
+    persistentVolume:
+      enabled: false
+  alertmanager:
+    enabled: false
+  nodeExporter:
+    enabled: false
+  pushgateway:
+    enabled: false
+  kubeStateMetrics:
+    enabled: false
+  serviceAccounts:
+    alertmanager:
+      create: false
+    nodeExporter:
+      create: false
+    pushgateway:
+      create: false
+    server:
+      create: true
 
 # Added this to connect to tracing.direktiv.io
 opentelemetry:
@@ -61,41 +154,9 @@ opentelemetry:
           processors: [memory_limiter, batch]
           exporters: [logging, otlp]
 
-api:
-  replicas: 1
-
-  # -- image for api pod
-  image: "direktiv/direktiv"
-  # -- image tag for api pod
-  tag: ""
-  # -- extra container in api pod
-  extraContainers: []
-  # -- extra volume mounts in api pod
-  extraVolumeMounts:
-    # - name: service-template
-    #   mountPath: /etc/config
-  # -- extra volumes in api pod
-  extraVolumes:
-    # - name: service-template
-    #   configMap:
-    #     name: service-template
-  affinity: {}
-
-  resources:
-    requests:
-      memory: "128Mi"
-    limits:
-      memory: "1048Mi"
-
-networkPolicies:
-  # -- adds network policies
-  enabled: false
-  # -- CIDR for database, excempt from policies
-  db: 0.0.0.0/0
-  # -- CIDR for services, excempt from policies
-  serviceCidr: 0.0.0.0/0
-  # -- CIDR for pods, excempt from policies
-  podCidr: 0.0.0.0/0
+# -- knative eventing enabled, requires knative setup and configuration
+eventing:
+  enabled: true
 
 ingress:
   # -- 
@@ -111,21 +172,19 @@ ingress:
   # -- Additional Labels
   additionalLabels: {}
 
-database:
-  # -- database host
-  host: "postgres-postgresql-ha-pgpool.postgres"
-  # -- database port
-  port: 5432
-  # -- database user
-  user: "direktiv"
-  # -- database password
-  password: "direktivdirektiv"
-  # -- database name, has to be created before installation
-  name: "direktiv"
-  # -- sslmode for database
-  sslmode: require
-  # -- additional connection attributes, e.g. target_session_attrs
-  additional: ""
+# -- nginx ingress controller configuration
+ingress-nginx:
+  install: true
+  controller:
+    podAnnotations:
+      linkerd.io/inject: disabled
+    config:
+      proxy-buffer-size: "16k"
+    replicaCount: 1
+    admissionWebhooks:
+      patch:
+        podAnnotations:
+          linkerd.io/inject: disabled
 
 fluentbit:
   # -- postgres for direktiv services
@@ -138,7 +197,6 @@ fluentbit:
   #           name stdout
   #           match application
 
-
 # -- service account for components. If preconfigured serviceaccounts are used the name ise the base 
 # and two additional service accounts are needed, e.g. service account name is myaccount then another two 
 # acounts are needed: myaccount-functions and myaccount-functions-pod
@@ -150,71 +208,16 @@ serviceAccount:
   #   annotations:
   #      iam.gke.io/gcp-service-account: IAM_USER@GCP_PROJECT.iam.gserviceaccount.com
 
-
-# flow config
-flow:
-  # -- number of flow replicas
-  replicas: 1
-  # -- image for db update init container
-  dbimage: "direktiv/direktiv"
-  # -- image for flow pod
-  image: "direktiv/direktiv"
-  # -- image tag for flow pod
-  tag: ""
-  # -- extra container in flow pod
-  extraContainers: []
-  # -- extra volume mounts in flow pod
-  extraVolumeMounts:
-    # - name: service-template
-    #   mountPath: /etc/config
-  # -- extra volumes in flow pod
-  extraVolumes:
-    # - name: service-template
-    #   configMap:
-    #     name: service-template
-  # -- affinity for flow pods
-  affinity: {}
-    # podAntiAffinity:
-    #   requiredDuringSchedulingIgnoredDuringExecution:
-    #   - labelSelector:
-    #       matchExpressions:
-    #       - key: app.kubernetes.io/name
-    #         operator: In
-    #         values:
-    #         - direktiv
-    #     topologyKey: kubernetes.io/hostname
-  experimental_features: false
-  developer_mode: false
-
-  containers:
-    secrets:
-      resources:
-        requests:
-          memory: "128Mi"
-        limits:
-          memory: "512Mi"
-
-
-nodeSelector: {}
-tolerations: []
-affinity: {}
-
-registry: "docker.io"
-pullPolicy: Always
-imagePullSecrets: []
-
-# -- http proxy settings
-http_proxy: ""
-# -- https proxy settings
-https_proxy: ""
-# -- no proxy proxy settings
-no_proxy: ""
-
 # -- Frontend configuration
 frontend:
   image: "direktiv/frontend"
   tag: ""
+  command: ""
   replicas: 1
+  extraVariables: []
+  nginx: 
+    resolver: kube-dns.kube-system.svc.cluster.local valid=10s;
+    config: ""
 
   # -- Logging setting for the UI
   logging:
@@ -243,45 +246,15 @@ frontend:
       memory: "128Mi"
     limits:
       memory: "512Mi"
-  
-prometheus:
-  install: true
-  backendName: "prom-backend-server" # required if install = false
-  global:
-    scrape_interval: 1m
-    evaluation_interval: 1m
-  server:
-    retention: 96h
-    persistentVolume:
-      enabled: false
-  alertmanager:
-    enabled: false
-  nodeExporter:
-    enabled: false
-  pushgateway:
-    enabled: false
-  kubeStateMetrics:
-    enabled: false
-  serviceAccounts:
-    alertmanager:
-      create: false
-    nodeExporter:
-      create: false
-    pushgateway:
-      create: false
-    server:
-      create: true
+
+# -- http proxy settings
+http_proxy: ""
+# -- https proxy settings
+https_proxy: ""
+# -- no proxy proxy settings
+no_proxy: ""
 
 functions:
-
-  # -- http_proxy injected as environment variable in functions
-  http_proxy: ""
-
-  # -- https_proxy injected as environment variable in functions
-  https_proxy: ""
-
-  # -- no_proxy injected as environment variable in functions
-  no_proxy: ""
 
   # -- knative service limits 
   limits:
@@ -301,14 +274,6 @@ functions:
   # namespace to run functions in
   namespace: direktiv-services-direktiv
   ingressClass: contour.ingress.networking.knative.dev
-
-  # images for functions controller, knative sidecar and init-pod
-  image: "direktiv/direktiv"
-  tag: ""
-
-  sidecar: "direktiv/direktiv"
-
-  initPodImage:  "direktiv/direktiv-init-pod" # deprecated
 
   # -- number of controller replicas
   replicas: 1
@@ -362,16 +327,4 @@ functions:
           memory: "1024Mi"
 
 
-# -- nginx ingress controller configuration
-ingress-nginx:
-  install: true
-  controller:
-    podAnnotations:
-      linkerd.io/inject: disabled
-    config:
-      proxy-buffer-size: "16k"
-    replicaCount: 1
-    admissionWebhooks:
-      patch:
-        podAnnotations:
-          linkerd.io/inject: disabled
+

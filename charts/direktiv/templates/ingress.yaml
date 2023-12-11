@@ -11,9 +11,10 @@ metadata:
   annotations:
      {{- if eq .Values.ingress.class "nginx" }}
     nginx.ingress.kubernetes.io/service-upstream: "true"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.timeout }}"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.timeout }}"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.timeout }}"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "{{ .Values.requestTimeout }}"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "{{ .Values.requestTimeout }}"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "{{ .Values.requestTimeout }}"
+    nginx.ingress.kubernetes.io/proxy-body-size: 128m
     {{- end }}
     {{- range $key, $value := .Values.ingress.additionalAnnotations }}
     {{ $key }}: {{ $value | quote }}
@@ -40,4 +41,25 @@ spec:
               name: {{ include "direktiv.fullname" . }}-frontend
               port:
                 number: 2304
+        - path: /api/
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "direktiv.fullname" . }}-flow
+              port:
+                number: 6665
+        - path: /gw/
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "direktiv.fullname" . }}-flow
+              port:
+                number: 6665
+        - path: /ns/
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "direktiv.fullname" . }}-flow
+              port:
+                number: 6665
 {{ end }}

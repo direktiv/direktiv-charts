@@ -44,8 +44,13 @@ spec:
       serviceAccountName: {{ include "direktiv.serviceAccountName" . }}
       containers:
         - name: frontend
+          {{- if .Values.frontend.command }}
+          command: {{  range .Values.frontend.command }}
+                   - {{ . }}
+                   {{ end }}          
+          {{- end }}
           securityContext:
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
           resources:
             requests:
@@ -54,27 +59,20 @@ spec:
               memory: {{ .Values.frontend.resources.limits.memory }}
           image: "{{ .Values.registry }}/{{ .Values.frontend.image }}:{{ .Values.frontend.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          args: ["/etc/direktiv"]
           env: 
-            {{- range $k, $v := .Values.frontend.additionalSecEnvs }}
-            - name: {{ $k }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $v.secret }}
-                  key: {{ $v.key }}
-            {{- end }}
-            - name: DIREKTIV_DB
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "direktiv.fullname" . }}
-                  key: db
+          {{- if len .Values.frontend.extraVariables }}
+          {{- range .Values.frontend.extraVariables }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+          {{- end }}
+          {{- end }}            
           ports:
             - name: frontend
               containerPort: 2304
               protocol: TCP
           volumeMounts:
-          - name: config-volume
-            mountPath: /etc/direktiv
+          - name: nginx-conf
+            mountPath: /etc/nginx/templates
             readOnly: true
           {{- if .Values.frontend.certificate }}
           - name: cert-volume
@@ -82,7 +80,7 @@ spec:
             readOnly: true
           {{- end }}
       volumes:
-      - name: config-volume
+      - name: nginx-conf
         configMap:
           name: {{ include "direktiv.fullname" . }}-config-frontend
       {{- if .Values.frontend.certificate }}
