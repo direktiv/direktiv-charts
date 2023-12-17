@@ -139,8 +139,10 @@ spec:
             value: "{{ .Values.registry }}/{{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}"
           - name: DIREKTIV_KNATIVE_MAX_SCALE
             value: "5"
+          {{- if .Values.netShape }}
           - name: DIREKTIV_KNATIVE_NET_SHAPE
-            value: "10M"
+            value: {{ .Values.netShape | quote }}
+          {{- end }}
           - name: DIREKTIV_SERVICE_NAMESPACE
             value: {{ .Values.functions.namespace }}
           {{- if or (ne .Values.http_proxy "") (ne .Values.https_proxy "") }}
