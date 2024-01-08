@@ -95,19 +95,13 @@ prometheus:
       enabled: false
   alertmanager:
     enabled: false
-  nodeExporter:
+  prometheus-node-exporter:
     enabled: false
-  pushgateway:
+  prometheus-pushgateway:
     enabled: false
-  kubeStateMetrics:
+  kube-state-metrics:
     enabled: false
   serviceAccounts:
-    alertmanager:
-      create: false
-    nodeExporter:
-      create: false
-    pushgateway:
-      create: false
     server:
       create: true
 
