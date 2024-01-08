@@ -119,11 +119,10 @@ spec:
           - name: DIREKTIV_FUNCTIONS_TIMEOUT
             value: {{ .Values.requestTimeout | quote }}
           - name: DIREKTIV_PROMETHEUS_BACKEND
-            value: {{ .Values.prometheus.backendName | quote }}
           {{- if .Values.prometheus.install }}
             value: {{ include "direktiv.fullname" . }}-prometheus-server.{{ .Release.Namespace }}
           {{- else }}
-            value: {{ .Values.prometheus.backendName }}
+            value: {{ .Values.prometheus.backendName | quote }}
           {{- end }}
           - name: DIREKTIV_OPEN_TELEMETRY_BACKEND
             value: {{ include "direktiv.opentelemetry-backend" . }}
