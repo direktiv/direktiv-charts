@@ -23,7 +23,7 @@ entries:
     version: 0.1.22-rc1
   - apiVersion: v2
     appVersion: v0.8.1-rc1
-    created: "2024-01-09T09:50:44.364567613Z"
+    created: "2024-01-09T09:50:52.521591015Z"
     dependencies:
     - condition: prometheus.install
       name: prometheus
@@ -34,7 +34,7 @@ entries:
       repository: https://kubernetes.github.io/ingress-nginx
       version: 4.9.0
     description: direktiv helm chart
-    digest: b5526ee81c5fe85f9b765d0e8ca2d5154b4098532fe3960e879a0eaf3c37a2ab
+    digest: 871678ee969b182fdc3ccc8fee02ff2a2290370a6a704ed726272b1b2e017a6b
     icon: https://chart.direktiv.io/logo.png
     name: direktiv
     type: application
@@ -703,4 +703,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/postgrescluster-0.6.0/postgrescluster-0.6.0.tgz
     version: 0.6.0
-generated: "2024-01-09T09:50:44.364794084Z"
+generated: "2024-01-09T09:50:52.521793342Z"
