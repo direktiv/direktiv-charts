@@ -106,6 +106,13 @@ spec:
                 name: {{ include "direktiv.fullname" . }}
                 key: apikey
           {{- end }}
+          {{- range .Values.flow.additionalSecEnvs }}
+          - name: {{ .name | quote }}
+            valueFrom:
+               secretKeyRef:
+                 name: {{ .secret | quote }}
+                 key: {{ .key | quote }}
+          {{- end }}
           - name: DIREKTIV_SECRET_KEY
             valueFrom:
               secretKeyRef:
