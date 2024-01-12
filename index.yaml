@@ -62,6 +62,26 @@ entries:
     - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.22-rc1/direktiv-0.1.22-rc1.tgz
     version: 0.1.22-rc1
   - apiVersion: v2
+    appVersion: v0.8.1-rc1
+    created: "2024-01-12T12:39:45.20172486Z"
+    dependencies:
+    - condition: prometheus.install
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 25.8.1
+    - condition: ingress-nginx.install
+      name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      version: 4.9.0
+    description: direktiv helm chart
+    digest: 27869c923d76824a957134b490faa4d8cea9af69c298afe4d726b8771d8b1c1d
+    icon: https://chart.direktiv.io/logo.png
+    name: direktiv
+    type: application
+    urls:
+    - https://github.com/direktiv/direktiv-charts/releases/download/direktiv-0.1.22-rc1/direktiv-0.1.22-rc1.tgz
+    version: 0.1.22-rc1
+  - apiVersion: v2
     appVersion: v0.8.0
     created: "2023-09-29T06:26:53.227833994Z"
     dependencies:
@@ -723,4 +743,4 @@ entries:
     urls:
     - https://github.com/direktiv/direktiv-charts/releases/download/postgrescluster-0.6.0/postgrescluster-0.6.0.tgz
     version: 0.6.0
-generated: "2024-01-10T14:28:07.96056341Z"
+generated: "2024-01-12T12:39:45.202013795Z"
