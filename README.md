@@ -1,4 +1,7 @@
-MOVED TO: https://github.com/direktiv/direktiv/tree/main/charts/direktiv
+
+
+> :warning: **Charts have moved!**: https://github.com/direktiv/direktiv/tree/main/charts/direktiv
+
 
 [![Slack](https://img.shields.io/badge/Slack-Join%20Direktiv-4a154b?style=flat&logo=slack)](https://join.slack.com/t/direktiv-io/shared_invite/zt-zf7gmfaa-rYxxBiB9RpuRGMuIasNO~g)
 
